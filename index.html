@@ -1,73 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LevelUp Games</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <title>Floppy Bird</title>
+    <style>
+        body { margin: 0; background: #70c5ce; overflow: hidden; }
+        canvas { display: block; margin: auto; background: #fff; }
+        footer { text-align: center; font-family: sans-serif; font-size: 12px; margin-top: 10px; }
+    </style>
 </head>
-<body class="bg-gray-950 text-white font-sans">
-
-  <!-- Navbar -->
-  <header class="bg-gray-900 shadow-lg">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-yellow-400">LevelUp Games</h1>
-      <nav class="space-x-4">
-        <a href="#about" class="hover:text-yellow-400">About</a>
-        <a href="#games" class="hover:text-yellow-400">Games</a>
-        <a href="#contact" class="hover:text-yellow-400">Contact</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <section class="text-center py-20 bg-gradient-to-br from-gray-900 to-gray-800">
-    <h2 class="text-4xl font-bold mb-4">The Next Generation of Filipino Gaming</h2>
-    <p class="text-lg mb-6 text-gray-300">Home of independent MOBAs, multiplayer hits, and community-driven titles.</p>
-    <a href="#games" class="px-6 py-3 bg-yellow-400 text-black font-bold rounded-full hover:bg-yellow-300 transition">Explore Games</a>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="py-20 px-6 max-w-4xl mx-auto">
-    <h3 class="text-3xl font-semibold mb-4">About LevelUp Games</h3>
-    <p class="text-gray-300 leading-relaxed">
-      LevelUp Games is an independent game publishing and hosting platform based in the Philippines. 
-      We are on a mission to build a homegrown ecosystem for Filipino developers and players. 
-      Whether you’re building the next big MOBA, or you're just looking to play something built for your community — you're welcome here.
-    </p>
-  </section>
-
-  <!-- Games Section -->
-  <section id="games" class="py-20 bg-gray-900 px-6">
-    <div class="max-w-6xl mx-auto text-center">
-      <h3 class="text-3xl font-semibold mb-8">Featured Games</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <div class="bg-gray-800 p-4 rounded-xl shadow hover:shadow-yellow-500 transition">
-          <div class="h-40 bg-gray-700 rounded mb-4"></div>
-          <h4 class="text-xl font-semibold">Project Tayju</h4>
-          <p class="text-sm text-gray-400">Our prototype MOBA built for mobile and PC — fast, fierce, and Filipino.</p>
-        </div>
-        <div class="bg-gray-800 p-4 rounded-xl shadow hover:shadow-yellow-500 transition">
-          <div class="h-40 bg-gray-700 rounded mb-4"></div>
-          <h4 class="text-xl font-semibold">Coming Soon</h4>
-          <p class="text-sm text-gray-400">New games in development. Join our Discord to stay updated!</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="py-20 px-6 max-w-4xl mx-auto text-center">
-    <h3 class="text-3xl font-semibold mb-4">Contact & Partnerships</h3>
-    <p class="text-gray-300 mb-6">Want to publish your game? Have an idea for collaboration? Reach out to us. /n You can message me on my social media accounts.</p>
-    <a href="mailto:partnerships@lvlupgames.org" class="inline-block px-6 py-3 bg-yellow-400 text-black font-bold rounded hover:bg-yellow-300 transition">
-      Email Us
-    </a>
-  </section>
-
-  <footer class="bg-gray-800 text-center py-6 text-sm text-gray-400">
-    &copy; 2025 LevelUp Games. All rights reserved.
-  </footer>
-
+<body>
+    <canvas id="gameCanvas" width="320" height="480"></canvas>
+    <script src="game.js"></script>
+    <footer>
+        "Floppy Bird" is an open-source clone created by @nebez, licensed under the MIT License.
+    </footer>
 </body>
 </html>
