@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LvlUpGames — Mini Garden Defense (Level 1)</title>
+  <style>
+    :root{--bg:#e8f7ff;--panel:#ffffff;--accent:#2b8cff;--tile:#cfe9b8}
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#dfeffd)}
+    .wrap{max-width:980px;margin:24px auto;padding:18px;background:var(--panel);border-radius:14px;box-shadow:0 8px 30px rgba(17,24,39,.08)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{font-size:1.15rem;margin:0;color:#0f172a}
+    p.lead{margin:6px 0 0;color:#475569;font-size:.95rem}
+    .controls{display:flex;gap:8px;align-items:center}
+    button{background:var(--accent);color:#fff;border:none;padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:600}
+    button.secondary{background:#f1f5f9;color:#0f172a}
+
+    .game-area{display:flex;gap:16px;margin-top:14px}
+    .left{flex:1}
+    .right{width:240px}
+
+    /* Grid */
+    .grid{background:linear-gradient(90deg,rgba(0,0,0,.02),transparent);padding:10px;border-radius:10px}
+    .board{width:100%;aspect-ratio:16/9;background:linear-gradient(#eef9ee,#e1f0df);border-radius:8px;position:relative;overflow:hidden}
+    .rows{position:absolute;inset:0;display:grid;grid-template-rows:repeat(3,1fr)}
+    .row{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;padding:8px}
+    .cell{background:var(--tile);border-radius:6px;position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .cell.locked{opacity:.6}
+
+    /* Plant */
+    .plant{width:44px;height:44px;border-radius:8px;background:linear-gradient(#9be88f,#6fc36a);display:flex;align-items:center;justify-content:center;font-weight:700;color:#063;box-shadow:0 6px 12px rgba(34,197,94,.12);position:absolute;transform:translate(-50%,-50%)}
+    .projectile{width:10px;height:10px;border-radius:50%;position:absolute;transform:translate(-50%,-50%)}
+
+    /* Zombie */
+    .zombie{width:48px;height:56px;border-radius:6px;background:linear-gradient(#fbc2c2,#f28b8b);position:absolute;display:flex;align-items:center;justify-content:center;font-weight:700;color:#5a1f1f}
+
+    /* HUD */
+    .hud{display:grid;gap:8px;padding:12px;background:#fbfdff;border-radius:10px}
+    .seed-bank{display:flex;gap:8px;align-items:center}
+    .seed{width:54px;padding:8px;border-radius:8px;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #eef2ff}
+    .seed .cost{font-size:.8rem;color:#64748b}
+    .status{font-size:.95rem;color:#0f172a}
+
+    /* mobile tweaks */
+    @media (max-width:760px){.game-area{flex-direction:column}.right{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>LvlUpGames — Mini Garden Defense</h1>
+        <p class="lead">Temporary one-level playable demo. Place plants to stop the incoming zombies!</p>
+      </div>
+      <div class="controls">
+        <button id="restart">Restart</button>
+        <button class="secondary" id="mute">Mute</button>
+      </div>
+    </header>
+
+    <main class="game-area">
+      <section class="left">
+        <div class="grid">
+          <div class="board" id="board">
+            <div class="rows" id="rows"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right">
+        <div class="hud">
+          <div class="seed-bank">
+            <div class="seed" id="sunflower" data-cost="50">
+              <div style="font-weight:800">P</div>
+              <div class="cost">Cost: <span>50</span></div>
+            </div>
+            <div class="seed" id="shooter" data-cost="100">
+              <div style="font-weight:800">S</div>
+              <div class="cost">Cost: <span>100</span></div>
+            </div>
+          </div>
+          <div class="status">Sun: <strong id="sun">150</strong></div>
+          <div class="status">Wave: <strong id="wave">0</strong> / 1</div>
+          <div class="status">Zombies Remaining: <strong id="zrem">0</strong></div>
+          <div style="font-size:.9rem;color:#475569">Instructions: Click a seed, then click a cell to place. Shooter fires peas. Survive the wave!</div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+  // Minimal Plants-vs-Zombies-like single-level demo
+  const ROWS = 3, COLS = 9;
+  const boardEl = document.getElementById('rows');
+  const sunEl = document.getElementById('sun');
+  const waveEl = document.getElementById('wave');
+  const zremEl = document.getElementById('zrem');
+  let sun = 150; let wave = 0; let zombiesRemaining = 0;
+  let selectedSeed = null;
+  const grid = [];
+
+  function createGrid(){
+    boardEl.innerHTML = '';
+    for(let r=0;r<ROWS;r++){
+      const row = document.createElement('div'); row.className='row';
+      grid[r]=[];
+      for(let c=0;c<COLS;c++){
+        const cell = document.createElement('div'); cell.className='cell';
+        cell.dataset.r=r; cell.dataset.c=c;
+        cell.addEventListener('click',onCellClick);
+        row.appendChild(cell);
+        grid[r][c]={el:cell, plant:null};
+      }
+      boardEl.appendChild(row);
+    }
+  }
+
+  function onCellClick(e){
+    const r = +this.dataset.r; const c = +this.dataset.c;
+    if(selectedSeed==null) return;
+    const plantType = selectedSeed.id;
+    const cost = +selectedSeed.dataset.cost;
+    if(sun < cost) { flash(sunEl); return; }
+    if(grid[r][c].plant) return; // occupied
+    placePlant(r,c,plantType);
+    sun -= cost; updateHUD();
+  }
+
+  function flash(el){el.style.transition='none';el.style.transform='scale(1.08)';setTimeout(()=>el.style.transform='');setTimeout(()=>el.style.transition='',200)}
+
+  function placePlant(r,c,type){
+    const p = document.createElement('div'); p.className='plant';
+    const cell = grid[r][c];
+    p.textContent = type==='shooter'?'S':'P';
+    cell.el.appendChild(p);
+    // position center
+    p.style.left = '50%'; p.style.top='50%';
+    cell.plant = {type, el:p, row:r, col:c, cooldown:0};
+  }
+
+  // Seed selection
+  document.querySelectorAll('.seed').forEach(s=>s.addEventListener('click',()=>{document.querySelectorAll('.seed').forEach(x=>x.style.outline=''); s.style.outline='3px solid rgba(43,140,255,.18)'; selectedSeed=s;}));
+
+  // Zombies
+  const zombies = [];
+  function spawnZombie(row, hp=100, speed=0.3){
+    const z = document.createElement('div'); z.className='zombie'; z.textContent='Z';
+    const boardRect = document.getElementById('board').getBoundingClientRect();
+    const cellRect = grid[row][COLS-1].el.getBoundingClientRect();
+    document.getElementById('board').appendChild(z);
+    const startX = boardRect.width - 24; // px from left inside board
+    const y = (cellRect.top - boardRect.top) + cellRect.height/2;
+    z.style.left = startX + 'px'; z.style.top = y + 'px';
+    const obj = {el:z,row, x:startX, hp, speed};
+    zombies.push(obj); zombiesRemaining++; updateHUD();
+  }
+
+  // Game loop
+  let last = performance.now();
+  function gameLoop(t){
+    const dt = (t-last)/1000; last=t;
+    // plants act
+    for(let r=0;r<ROWS;r++){
+      for(let c=0;c<COLS;c++){
+        const p = grid[r][c].plant;
+        if(!p) continue;
+        p.cooldown -= dt;
+        if(p.type==='shooter' && p.cooldown<=0){
+          firePea(p);
+          p.cooldown = 0.9; // shoot rate
+        }
+        if(p.type==='sunflower'){
+          p.cooldown -= dt; // reuse cooldown to spawn sun
+          if(p.cooldown<=-6){ sun += 25; p.cooldown = 0; updateHUD(); }
+        }
+      }
+    }
+
+    // move zombies
+    for(let i=zombies.length-1;i>=0;i--){
+      const z = zombies[i];
+      z.x -= z.speed * dt * 100; // px
+      z.el.style.left = z.x + 'px';
+      // check collision with plants in same row
+      // find column x pos
+      const boardRect = document.getElementById('board').getBoundingClientRect();
+      const cellW = boardRect.width / COLS;
+      const col = Math.floor(z.x / cellW);
+      if(col<0){ // reached left edge -> lose
+        endGame(false);
+        return;
+      }
+      const cell = grid[z.row][col];
+      if(cell && cell.plant && Math.abs((z.x) - (col*cellW + cellW/2)) < 28){
+        // zombie eats plant slowly
+        cell.plant.el.style.filter = 'brightness(.8)';
+        z.hp -= 60 * dt; // eating damages zombie? actually reverse: plant gets eaten
+        // instead, kill plant after some time
+        if(!z.eating) z.eating = 0;
+        z.eating += dt;
+        if(z.eating>1.2){
+          // remove plant
+          cell.el.removeChild(cell.plant.el); cell.plant=null; z.eating=0;
+        }
+      }
+      if(z.hp<=0){ // removed by projectiles
+        z.el.remove(); zombies.splice(i,1); zombiesRemaining--; updateHUD();
+      }
+    }
+
+    // move projectiles
+    const peas = document.querySelectorAll('.projectile');
+    peas.forEach(pEl=>{
+      const data = pEl._data;
+      data.x += data.speed * dt * 100;
+      pEl.style.left = data.x + 'px';
+      // check collision with zombies
+      for(let i=0;i<zombies.length;i++){
+        const z = zombies[i];
+        const zx = z.x; const zy = z.el.getBoundingClientRect().top + z.el.getBoundingClientRect().height/2 - document.getElementById('board').getBoundingClientRect().top;
+        const px = data.x; const py = data.y;
+        if(z.row === data.row && Math.abs(px - zx) < 22){
+          z.hp -= 40; // hit
+          pEl.remove();
+          return;
+        }
+      }
+      // remove if offscreen
+      const boardRect = document.getElementById('board').getBoundingClientRect();
+      if(data.x > boardRect.width + 20) pEl.remove();
+    });
+
+    // win condition
+    if(wave===1 && zombiesRemaining===0 && zombies.length===0){ endGame(true); return; }
+
+    requestAnimationFrame(gameLoop);
+  }
+
+  function firePea(plant){
+    const bRect = document.getElementById('board').getBoundingClientRect();
+    const cellRect = grid[plant.row][plant.col].el.getBoundingClientRect();
+    const pEl = document.createElement('div'); pEl.className='projectile';
+    pEl._data = {x:cellRect.left - bRect.left + cellRect.width/2, y:cellRect.top - bRect.top + cellRect.height/2, row:plant.row, speed:2.2};
+    pEl.style.left = pEl._data.x + 'px'; pEl.style.top = pEl._data.y + 'px';
+    document.getElementById('board').appendChild(pEl);
+  }
+
+  // Wave spawner
+  function startWave(){
+    if(wave>=1) return; wave=1; updateHUD();
+    const spawnOrder = [0,2,1,0,2,1,1];
+    let i=0;
+    const si = setInterval(()=>{
+      if(i>=spawnOrder.length){ clearInterval(si); return; }
+      spawnZombie(spawnOrder[i],120,0.7 + Math.random()*0.2); i++;
+    },1400);
+  }
+
+  function updateHUD(){ sunEl.textContent = sun; waveEl.textContent = wave; zremEl.textContent = zombiesRemaining; }
+
+  function endGame(win){
+    setTimeout(()=>{
+      alert(win? 'You survived Level 1!':'A zombie reached your house! Restart to try again.');
+      resetGame();
+    },100);
+  }
+
+  function resetGame(){
+    // clean
+    document.querySelectorAll('.zombie').forEach(n=>n.remove()); zombies.length=0; zombiesRemaining=0;
+    document.querySelectorAll('.plant').forEach(n=>n.remove());
+    document.querySelectorAll('.projectile').forEach(n=>n.remove());
+    sun = 150; wave=0; selectedSeed=null; document.querySelectorAll('.seed').forEach(x=>x.style.outline='');
+    createGrid(); updateHUD();
+  }
+
+  // init
+  createGrid(); updateHUD(); requestAnimationFrame(gameLoop);
+
+  document.getElementById('restart').addEventListener('click',resetGame);
+  document.getElementById('board').addEventListener('click',(e)=>{ /* click board to start wave */ startWave(); });
+
+  // mobile friendly: brief touch instruction
+  // show seed selection hint
+
+  </script>
+</body>
+</html>
