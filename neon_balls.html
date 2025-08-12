@@ -1,110 +1,210 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Neon Balls Shooter</title>
-<style>
-  body { margin: 0; background: black; overflow: hidden; }
-  canvas { display: block; }
-</style>
+    <title>Neon Balls</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            background-color: black;
+            display: block;
+            margin: auto;
+            border: 2px solid #0ff;
+        }
+        #ui {
+            margin-top: 10px;
+        }
+        .button {
+            padding: 5px 10px;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 2px solid #0ff;
+            background: black;
+            color: #0ff;
+        }
+    </style>
 </head>
 <body>
-<canvas id="gameCanvas"></canvas>
-<script>
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+    <h1>Neon Balls</h1>
+    <canvas id="gameCanvas" width="750" height="500"></canvas>
+    <div id="ui">
+        <span>Energy: <span id="energy">1</span></span>
+        <button class="button" id="plantMode">Plant Mode</button>
+        <button class="button" id="eraseMode">Erase Mode</button>
+    </div>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const energyDisplay = document.getElementById("energy");
+        let gridRows = 3, gridCols = 5, cellSize = 100;
+        let offsetX = 50, offsetY = 50;
+        let grid = Array(gridRows).fill(null).map(() => Array(gridCols).fill(null));
+        let mode = "plant"; 
+        let energy = 1;
+        let enemies = [];
+        let projectiles = [];
+        let balls = [];
+        let enemySpawnTimer = 0;
 
-const shooters = [
-  { x: canvas.width / 4, y: canvas.height - 50, color: "cyan" },
-  { x: canvas.width * 3/4, y: 50, color: "magenta" }
-];
+        document.getElementById("plantMode").onclick = () => mode = "plant";
+        document.getElementById("eraseMode").onclick = () => mode = "erase";
 
-let projectiles = [];
+        // Ball Types
+        const ballTypes = [
+            { color: "#0ff", projectileColor: "#0ff", cost: 3, damage: 1, explode: false },
+            { color: "#00f", projectileColor: "#0ff", cost: 3, damage: 3, explode: true }
+        ];
 
-function randomNeonColor() {
-  const colors = ["#ff00ff", "#00ffff", "#ffff00", "#ff8800", "#00ff00", "#ff0044"];
-  return colors[Math.floor(Math.random() * colors.length)];
-}
+        class Ball {
+            constructor(row, col, type) {
+                this.row = row;
+                this.col = col;
+                this.type = type;
+                this.shootTimer = 0;
+            }
+            update() {
+                this.shootTimer++;
+                if (this.shootTimer > 60) {
+                    this.shootTimer = 0;
+                    projectiles.push(new Projectile(this.col * cellSize + offsetX + cellSize / 2,
+                        this.row * cellSize + offsetY + cellSize / 2, this.type));
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.col * cellSize + offsetX + cellSize / 2,
+                    this.row * cellSize + offsetY + cellSize / 2, 20, 0, Math.PI * 2);
+                ctx.fillStyle = this.type.color;
+                ctx.shadowColor = this.type.color;
+                ctx.shadowBlur = 20;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
 
-function shoot(shooter) {
-  projectiles.push({
-    x: shooter.x,
-    y: shooter.y,
-    radius: 10,
-    color: randomNeonColor(),
-    vy: shooter.y < canvas.height / 2 ? 5 : -5,
-    trail: []
-  });
-}
+        class Projectile {
+            constructor(x, y, type) {
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.speed = 4;
+                this.damage = type.damage;
+                this.explode = type.explode;
+            }
+            update() {
+                this.x += this.speed;
+                for (let e of enemies) {
+                    if (this.x > e.x && this.x < e.x + 40 && this.y > e.y && this.y < e.y + 40) {
+                        e.health -= this.damage;
+                        if (this.explode) {
+                            enemies = enemies.filter(en => !(Math.abs(en.x - this.x) < 60 && Math.abs(en.y - this.y) < 60));
+                        }
+                        projectiles.splice(projectiles.indexOf(this), 1);
+                        break;
+                    }
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = this.type.projectileColor;
+                ctx.shadowColor = this.type.projectileColor;
+                ctx.shadowBlur = 15;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
 
-function drawShooter(s) {
-  ctx.fillStyle = s.color;
-  ctx.beginPath();
-  ctx.arc(s.x, s.y, 20, 0, Math.PI * 2);
-  ctx.fill();
-}
+        class Enemy {
+            constructor(row) {
+                this.x = canvas.width - 50;
+                this.y = row * cellSize + offsetY + cellSize / 2 - 20;
+                this.speed = 0.5;
+                this.health = 5; // tougher
+            }
+            update() {
+                this.x -= this.speed;
+                if (this.x <= offsetX) {
+                    alert("Game Over! The enemies reached your base!");
+                    document.location.reload();
+                }
+            }
+            draw() {
+                ctx.fillStyle = "#f0f";
+                ctx.shadowColor = "#f0f";
+                ctx.shadowBlur = 15;
+                ctx.fillRect(this.x, this.y, 40, 40);
+                ctx.shadowBlur = 0;
+            }
+        }
 
-function drawProjectiles() {
-  for (let p of projectiles) {
-    // Draw trail
-    for (let i = 0; i < p.trail.length; i++) {
-      const t = p.trail[i];
-      ctx.fillStyle = t.color;
-      ctx.globalAlpha = t.alpha;
-      ctx.beginPath();
-      ctx.arc(t.x, t.y, t.radius, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
+        // Mouse click to plant or erase
+        canvas.addEventListener("click", (e) => {
+            let rect = canvas.getBoundingClientRect();
+            let mouseX = e.clientX - rect.left;
+            let mouseY = e.clientY - rect.top;
+            let col = Math.floor((mouseX - offsetX) / cellSize);
+            let row = Math.floor((mouseY - offsetY) / cellSize);
+            if (col >= 0 && col < gridCols && row >= 0 && row < gridRows) {
+                if (mode === "plant" && !grid[row][col] && energy >= 3) {
+                    grid[row][col] = new Ball(row, col, ballTypes[Math.floor(Math.random() * ballTypes.length)]);
+                    balls.push(grid[row][col]);
+                    energy -= 3;
+                } else if (mode === "erase" && grid[row][col]) {
+                    balls.splice(balls.indexOf(grid[row][col]), 1);
+                    grid[row][col] = null;
+                }
+            }
+        });
 
-    // Draw glowing main ball
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = p.color;
-    ctx.fillStyle = p.color;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.shadowBlur = 0;
-  }
-}
+        function update() {
+            balls.forEach(ball => ball.update());
+            projectiles.forEach(p => p.update());
+            enemies.forEach(e => e.update());
+            enemies = enemies.filter(e => e.health > 0);
+            projectiles = projectiles.filter(p => p.x < canvas.width);
+            enemySpawnTimer++;
+            if (enemySpawnTimer > 200) {
+                enemies.push(new Enemy(Math.floor(Math.random() * gridRows)));
+                enemySpawnTimer = 0;
+            }
+            if (energy < 10 && Math.random() < 0.01) {
+                energy++;
+            }
+        }
 
-function update() {
-  projectiles.forEach(p => {
-    // Update position
-    p.y += p.vy;
+        function drawGrid() {
+            ctx.strokeStyle = "#0ff";
+            ctx.lineWidth = 1;
+            for (let r = 0; r < gridRows; r++) {
+                for (let c = 0; c < gridCols; c++) {
+                    ctx.strokeRect(c * cellSize + offsetX, r * cellSize + offsetY, cellSize, cellSize);
+                }
+            }
+        }
 
-    // Add trail position
-    p.trail.unshift({ 
-      x: p.x, 
-      y: p.y, 
-      radius: p.radius, 
-      color: p.color, 
-      alpha: 0.5 
-    });
-    if (p.trail.length > 10) p.trail.pop();
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
+            balls.forEach(ball => ball.draw());
+            projectiles.forEach(p => p.draw());
+            enemies.forEach(e => e.draw());
+            energyDisplay.textContent = energy;
+        }
 
-    // Fade trail
-    p.trail.forEach(t => t.alpha -= 0.05);
-  });
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
 
-  // Remove off-screen projectiles
-  projectiles = projectiles.filter(p => p.y > 0 && p.y < canvas.height);
-}
-
-function loop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  shooters.forEach(drawShooter);
-  drawProjectiles();
-  update();
-  requestAnimationFrame(loop);
-}
-
-setInterval(() => shoot(shooters[0]), 500);
-setInterval(() => shoot(shooters[1]), 500);
-
-loop();
-</script>
+        gameLoop();
+    </script>
 </body>
 </html>
