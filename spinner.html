@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LVLUP | Loot Spinner</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .gamer-font { font-family: 'Rajdhani', sans-serif; }
@@ -19,14 +19,14 @@
 <body class="min-h-screen flex flex-col md:flex-row">
 
     <div class="w-full md:w-1/4 p-6 border-r border-slate-800 flex flex-col gap-6">
-        <div class="ad-zone h-32 w-full">Ad Space (Top)</div>
+        <div class="ad-zone h-32 w-full">Ad Space (Top Sidebar)</div>
 
         <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 shadow-xl">
             <h2 class="gamer-font text-2xl text-violet-400 mb-4 uppercase tracking-wider font-bold">Entries</h2>
             <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-900 border border-slate-700 rounded-lg p-4 text-white outline-none focus:border-violet-500 transition-all text-sm" placeholder="Enter names (one per line)">Yang&#10;Player 2&#10;Loot Box&#10;Critical Hit&#10;Game Over&#10;Level Up</textarea>
         </div>
 
-        <div class="ad-zone h-48 w-full mt-auto">Ad Space (Bottom)</div>
+        <div class="ad-zone h-48 w-full mt-auto">Ad Space (Bottom Sidebar)</div>
     </div>
 
     <div class="flex-1 flex flex-col items-center justify-center p-6 relative">
@@ -36,11 +36,11 @@
         </div>
 
         <div class="relative mt-20 scale-90 md:scale-100">
-            <div id="arrow" class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[30px] border-t-white drop-shadow-lg"></div>
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[30px] border-t-white drop-shadow-lg"></div>
             <canvas id="wheelCanvas" width="500" height="500"></canvas>
         </div>
 
-        <button id="spinBtn" onclick="handleAction()" class="mt-10 bg-gradient-to-r from-violet-600 to-indigo-600 hover:scale-110 active:scale-95 transition-all px-16 py-5 rounded-full font-bold text-2xl shadow-xl shadow-violet-500/40 uppercase tracking-widest min-w-[300px]">
+        <button id="spinBtn" onclick="spin()" class="mt-10 bg-gradient-to-r from-violet-600 to-indigo-600 hover:scale-110 active:scale-95 transition-all px-16 py-5 rounded-full font-bold text-2xl shadow-xl shadow-violet-500/40 uppercase tracking-widest">
             Spin
         </button>
     </div>
@@ -51,20 +51,25 @@
             <button id="copyBtn" onclick="copyResults()" class="text-[10px] bg-slate-700 hover:bg-violet-600 px-3 py-1 rounded-md transition-colors uppercase font-bold hidden">Copy All</button>
         </div>
         
-        <div id="chosenList" class="flex flex-col gap-3 overflow-y-auto max-h-[50vh] pr-2 mb-6">
+        <div id="chosenList" class="flex flex-col gap-3 overflow-y-auto max-h-[70vh] pr-2">
             <p id="emptyState" class="text-gray-600 italic text-sm text-center mt-10">No winners yet...</p>
         </div>
 
-        <div class="ad-zone flex-1 w-full">Ad Space (Vertical)</div>
+        <div class="ad-zone h-32 w-full mt-auto pt-4">Sticky Footer Ad</div>
     </div>
 
     <div id="winnerModal" class="fixed inset-0 bg-slate-950/90 hidden flex items-center justify-center z-[100] backdrop-blur-md">
         <div class="text-center p-12 bg-slate-900 rounded-3xl border border-violet-500 shadow-2xl max-w-sm w-full mx-4">
             <h3 class="text-violet-400 uppercase tracking-widest mb-2 font-bold text-sm">Target Acquired:</h3>
             <h2 id="winnerName" class="gamer-font text-5xl text-white mb-8 break-words uppercase">NAME</h2>
+            
             <div class="flex flex-col gap-3">
-                <button onclick="removeAndClose()" class="w-full bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-600/50 py-3 rounded-xl font-bold transition-all uppercase text-sm tracking-widest">Remove from List</button>
-                <button onclick="closeModal()" class="w-full bg-slate-700 hover:bg-slate-600 py-3 rounded-xl font-bold transition-all uppercase text-sm tracking-widest">Keep & Continue</button>
+                <button onclick="removeAndClose()" class="w-full bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-600/50 py-3 rounded-xl font-bold transition-all uppercase text-sm tracking-widest">
+                    Remove from List
+                </button>
+                <button onclick="closeModal()" class="w-full bg-slate-700 hover:bg-slate-600 py-3 rounded-xl font-bold transition-all uppercase text-sm tracking-widest">
+                    Keep & Continue
+                </button>
             </div>
         </div>
     </div>
@@ -89,23 +94,9 @@
 
         const colors = ["#8b5cf6", "#6d28d9", "#4c1d95", "#7c3aed", "#5b21b6", "#1e1b4b"];
 
-        function updateWheel() {
+        function drawWheel() {
             names = namesInput.value.split('\n').filter(name => name.trim() !== "");
-            
-            // Toggle Button Mode
-            if (names.length === 1) {
-                spinBtn.innerText = "Claim Final Loot";
-                spinBtn.className = "mt-10 bg-gradient-to-r from-amber-500 to-orange-600 hover:scale-110 active:scale-95 transition-all px-16 py-5 rounded-full font-bold text-2xl shadow-xl shadow-orange-500/40 uppercase tracking-widest min-w-[300px]";
-            } else {
-                spinBtn.innerText = "Spin";
-                spinBtn.className = "mt-10 bg-gradient-to-r from-violet-600 to-indigo-600 hover:scale-110 active:scale-95 transition-all px-16 py-5 rounded-full font-bold text-2xl shadow-xl shadow-violet-500/40 uppercase tracking-widest min-w-[300px]";
-            }
-
-            if (names.length === 0) {
-                ctx.clearRect(0,0,500,500);
-                return;
-            }
-            
+            if (names.length === 0) { ctx.clearRect(0,0,500,500); return; }
             arc = Math.PI / (names.length / 2);
             ctx.clearRect(0,0,500,500);
             names.forEach((name, i) => {
@@ -121,18 +112,8 @@
             });
         }
 
-        function handleAction() {
-            if (names.length === 1) {
-                lastWinner = names[0];
-                addToChosenList(lastWinner);
-                namesInput.value = "";
-                updateWheel();
-            } else if (names.length > 1) {
-                spin();
-            }
-        }
-
         function spin() {
+            if (names.length < 2) { alert("Add at least 2 entries!"); return; }
             spinBtn.disabled = true;
             spinAngleStart = Math.random() * 10 + 10;
             spinTime = 0;
@@ -198,8 +179,8 @@
             return b + c * (tc + -3 * ts + 3 * t);
         }
 
+        function updateWheel() { drawWheel(); }
         function closeModal() { document.getElementById('winnerModal').classList.add('hidden'); }
-        
         updateWheel();
     </script>
 </body>
