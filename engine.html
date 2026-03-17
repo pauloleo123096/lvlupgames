@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LVLUP | Custom Quest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+        .gamer-font { font-family: 'Rajdhani', sans-serif; }
+        #no-btn { transition: all 0.15s ease-out; z-index: 50; position: relative; }
+        #yes-btn { transition: all 0.2s ease-in-out; z-index: 60; position: relative; }
+        .confetti { position: absolute; animation: fall 3s linear forwards; z-index: 100; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="main-container" class="text-center p-6 w-full max-w-4xl">
+        <h1 id="display-question" class="gamer-font text-4xl md:text-6xl mb-16 uppercase tracking-widest text-violet-400">Loading Quest...</h1>
+        
+        <div id="button-area" class="flex justify-center items-center gap-10 min-h-[400px]">
+            <button id="yes-btn" onclick="victory()" class="bg-green-500 text-white font-bold py-4 px-10 rounded-full shadow-lg text-2xl">YES</button>
+            <button id="no-btn" onmouseover="evade()" onclick="evade()" class="bg-red-600 text-white font-bold py-4 px-10 rounded-full shadow-lg text-xl">NO</button>
+        </div>
+    </div>
+
+    <script>
+        let scale = 1;
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const questionH1 = document.getElementById('display-question');
+
+        // 1. DATA DECODER: Grab info from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const rawData = urlParams.get('data');
+        let customData = { n: "Friend", q: "Will you be my Player 2?", y: "YES!", no: "NO" };
+
+        if (rawData) {
+            try {
+                customData = JSON.parse(atob(rawData));
+                questionH1.innerText = customData.q;
+                yesBtn.innerText = customData.y;
+                noBtn.innerText = customData.no;
+                document.title = `Quest for ${customData.n}`;
+            } catch (e) { console.error("Error decoding link data"); }
+        }
+
+        function evade() {
+            noBtn.style.position = 'fixed';
+            const yesRect = yesBtn.getBoundingClientRect();
+            const padding = 60; // Extra space so they never touch
+
+            let newX, newY, isOverlapping;
+
+            // 2. ANTI-OVERLAP LOGIC
+            do {
+                const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+                const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+                newX = Math.random() * maxX;
+                newY = Math.random() * maxY;
+
+                // Check if the random X/Y falls within the Yes Button's box (plus padding)
+                isOverlapping = (
+                    newX < yesRect.right + padding &&
+                    newX + noBtn.offsetWidth > yesRect.left - padding &&
+                    newY < yesRect.bottom + padding &&
+                    newY + noBtn.offsetHeight > yesRect.top - padding
+                );
+            } while (isOverlapping);
+
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+
+            scale += 0.4;
+            yesBtn.style.transform = `scale(${scale})`;
+        }
+
+        function victory() {
+            noBtn.style.display = 'none';
+            document.getElementById('main-container').innerHTML = `
+                <h1 class="gamer-font text-6xl text-green-400 animate-bounce mb-4 text-center">SUCCESS!</h1>
+                <p class="text-2xl text-violet-300 text-center uppercase tracking-widest">Target Acquired. Happy Birthday!</p>
+                <div class="mt-10 text-8xl text-center">🎂🎮✨</div>
+            `;
+            for(let i=0; i<50; i++) { createConfetti(); }
+        }
+
+        function createConfetti() {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            c.innerText = ['💜', '✨', '🎮'][Math.floor(Math.random() * 3)];
+            c.style.left = Math.random() * 100 + 'vw';
+            c.style.top = '-5vh';
+            c.style.fontSize = '24px';
+            c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(c);
+        }
+    </script>
+</body>
+</html>
