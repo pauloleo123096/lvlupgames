@@ -42,6 +42,32 @@
                     <label class="block text-sm font-semibold text-red-400 mb-2 uppercase tracking-wider">No Button</label>
                     <input type="text" id="noInput" placeholder="NO" class="input-style">
                 </div>
+                <div>
+    <label class="block text-sm font-semibold text-violet-300 mb-2 uppercase tracking-wider">
+        Victory Message <span class="text-[10px] text-green-400 font-normal ml-2">(PREMIUM - NOW FREE)</span>
+    </label>
+    <textarea id="victoryInput" placeholder="e.g. You're the best! I knew you'd say yes." class="input-style h-24 resize-none"></textarea>
+</div>
+
+<script>
+    // Update your generateLink function
+    function generateLink() {
+        const data = {
+            n: document.getElementById('nameInput').value || 'Friend',
+            q: document.getElementById('questionInput').value || 'Will you be my Player 2?',
+            y: document.getElementById('yesInput').value || 'YES!',
+            no: document.getElementById('noInput').value || 'NO',
+            v: document.getElementById('victoryInput').value || "The best co-op journey begins now!" // New Victory Data
+        };
+
+        const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+        const baseUrl = window.location.href.replace('builder.html', 'engine.html');
+        const finalUrl = `${baseUrl}?data=${encodedData}`;
+
+        document.getElementById('generatedUrl').value = finalUrl;
+        document.getElementById('resultArea').classList.remove('hidden');
+    }
+</script>
             </div>
 
             <button onclick="generateLink()" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-violet-500/20 uppercase tracking-widest">
