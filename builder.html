@@ -42,32 +42,13 @@
                     <label class="block text-sm font-semibold text-red-400 mb-2 uppercase tracking-wider">No Button</label>
                     <input type="text" id="noInput" placeholder="NO" class="input-style">
                 </div>
-                <div>
-    <label class="block text-sm font-semibold text-violet-300 mb-2 uppercase tracking-wider">
-        Victory Message <span class="text-[10px] text-green-400 font-normal ml-2">(PREMIUM - NOW FREE)</span>
-    </label>
-    <textarea id="victoryInput" placeholder="e.g. You're the best! I knew you'd say yes." class="input-style h-24 resize-none"></textarea>
-</div>
+            </div>
 
-<script>
-    // Update your generateLink function
-    function generateLink() {
-        const data = {
-            n: document.getElementById('nameInput').value || 'Friend',
-            q: document.getElementById('questionInput').value || 'Will you be my Player 2?',
-            y: document.getElementById('yesInput').value || 'YES!',
-            no: document.getElementById('noInput').value || 'NO',
-            v: document.getElementById('victoryInput').value || "The best co-op journey begins now!" // New Victory Data
-        };
-
-        const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-        const baseUrl = window.location.href.replace('builder.html', 'engine.html');
-        const finalUrl = `${baseUrl}?data=${encodedData}`;
-
-        document.getElementById('generatedUrl').value = finalUrl;
-        document.getElementById('resultArea').classList.remove('hidden');
-    }
-</script>
+            <div>
+                <label class="block text-sm font-semibold text-violet-300 mb-2 uppercase tracking-wider">
+                    Victory Message <span class="text-[10px] text-green-400 font-normal ml-2">(PREMIUM - NOW FREE)</span>
+                </label>
+                <textarea id="victoryInput" placeholder="e.g. You're the best! I knew you'd say yes." class="input-style h-24 resize-none"></textarea>
             </div>
 
             <button onclick="generateLink()" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-violet-500/20 uppercase tracking-widest">
@@ -80,7 +61,7 @@
                 <p class="text-sm text-violet-300 mb-2 font-bold">YOUR CUSTOM LINK:</p>
                 <div class="flex gap-2">
                     <input type="text" id="generatedUrl" readonly class="input-style text-sm font-mono text-violet-200">
-                    <button onclick="copyLink()" class="bg-slate-700 px-4 rounded-lg hover:bg-slate-600">Copy</button>
+                    <button onclick="copyLink()" class="bg-slate-700 px-4 rounded-lg hover:bg-slate-600 transition-colors">Copy</button>
                 </div>
                 <p class="text-xs text-gray-500 mt-4 italic">Send this link to your friend. They'll never be able to click "No"!</p>
             </div>
@@ -93,13 +74,13 @@
                 n: document.getElementById('nameInput').value || 'Friend',
                 q: document.getElementById('questionInput').value || 'Will you be my Player 2?',
                 y: document.getElementById('yesInput').value || 'YES!',
-                no: document.getElementById('noInput').value || 'NO'
+                no: document.getElementById('noInput').value || 'NO',
+                v: document.getElementById('victoryInput').value || "The best co-op journey begins now!"
             };
 
-            // Encode data to Base64 so it looks cleaner in the URL
-            const encodedData = btoa(JSON.stringify(data));
+            // Enhanced encoding to handle special characters/emojis
+            const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
             
-            // Generate the full URL (Assumes your quest page is named quest.html)
             const baseUrl = window.location.href.replace('builder.html', 'engine.html');
             const finalUrl = `${baseUrl}?data=${encodedData}`;
 
@@ -111,7 +92,12 @@
             const copyText = document.getElementById("generatedUrl");
             copyText.select();
             navigator.clipboard.writeText(copyText.value);
-            alert("Link copied to clipboard!");
+            
+            // Just a bit of flair for the copy button
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "Saved!";
+            setTimeout(() => { btn.innerText = originalText; }, 2000);
         }
     </script>
 </body>
