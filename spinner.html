@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LVLUP | Loot Spinner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .gamer-font { font-family: 'Rajdhani', sans-serif; }
+        canvas { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); }
+        /* Ad Space Placeholder Styles */
+        .ad-zone { background: #1e293b; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 0.75rem; text-transform: uppercase; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row">
+
+    <div class="w-full md:w-1/4 p-6 border-r border-slate-800 flex flex-col gap-6">
+        <div class="ad-zone h-32 w-full mb-4">Ad Space (Top Sidebar)</div>
+
+        <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 shadow-xl">
+            <h2 class="gamer-font text-2xl text-violet-400 mb-4 uppercase tracking-wider">Entries</h2>
+            <textarea id="namesInput" class="w-full h-64 bg-slate-900 border border-slate-700 rounded-lg p-4 text-white outline-none focus:border-violet-500 transition-all" placeholder="Enter names (one per line)">Yang&#10;Player 2&#10;Loot Box&#10;Critical Hit&#10;Game Over&#10;Level Up</textarea>
+            <button onclick="updateWheel()" class="w-full mt-4 bg-slate-700 hover:bg-slate-600 py-2 rounded-lg font-bold transition">Update Wheel</button>
+        </div>
+
+        <div class="ad-zone h-64 w-full mt-auto">Ad Space (Bottom Sidebar)</div>
+    </div>
+
+    <div class="flex-1 flex flex-col items-center justify-center p-6 relative">
+        <div class="absolute top-10 text-center">
+            <h1 class="gamer-font text-5xl font-bold accent-glow text-white">LOOT <span class="text-violet-500">SPINNER</span></h1>
+            <p class="text-gray-500 uppercase tracking-widest text-xs">Destiny is a spin away</p>
+        </div>
+
+        <div class="relative mt-20">
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[30px] border-t-white drop-shadow-lg"></div>
+            <canvas id="wheelCanvas" width="500" height="500"></canvas>
+        </div>
+
+        <button id="spinBtn" onclick="spin()" class="mt-10 bg-gradient-to-r from-violet-600 to-indigo-600 hover:scale-110 transition-transform px-16 py-5 rounded-full font-bold text-2xl shadow-xl shadow-violet-500/40 uppercase tracking-widest">
+            Spin
+        </button>
+    </div>
+
+    <div class="w-full md:w-1/4 p-6 border-l border-slate-800 flex flex-col">
+        <div class="ad-zone h-full w-full mb-4">Ad Space (Vertical Skybox)</div>
+    </div>
+
+    <div id="winnerModal" class="fixed inset-0 bg-slate-950/90 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
+        <div class="text-center p-12 bg-slate-900 rounded-3xl border border-violet-500 shadow-2xl">
+            <h3 class="text-violet-400 uppercase tracking-widest mb-2 font-bold">The Winner is:</h3>
+            <h2 id="winnerName" class="gamer-font text-7xl text-white mb-8">NAME</h2>
+            <button onclick="closeModal()" class="bg-violet-600 px-10 py-3 rounded-full font-bold hover:bg-violet-500 transition">Awesome!</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const namesInput = document.getElementById('namesInput');
+        
+        let names = [];
+        let startAngle = 0;
+        let arc = 0;
+        let spinTimeout = null;
+        let spinAngleStart = 10;
+        let spinTime = 0;
+        let spinTimeTotal = 0;
+
+        const colors = ["#8b5cf6", "#6d28d9", "#4c1d95", "#7c3aed", "#5b21b6", "#1e1b4b"];
+
+        function drawWheel() {
+            names = namesInput.value.split('\n').filter(name => name.trim() !== "");
+            if (names.length === 0) return;
+            
+            arc = Math.PI / (names.length / 2);
+            ctx.clearRect(0,0,500,500);
+            
+            names.forEach((name, i) => {
+                const angle = startAngle + i * arc;
+                ctx.fillStyle = colors[i % colors.length];
+                
+                ctx.beginPath();
+                ctx.moveTo(250, 250);
+                ctx.arc(250, 250, 240, angle, angle + arc, false);
+                ctx.lineTo(250, 250);
+                ctx.fill();
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.fillStyle = "white";
+                ctx.font = 'bold 16px Inter';
+                ctx.translate(250 + Math.cos(angle + arc / 2) * 180, 250 + Math.sin(angle + arc / 2) * 180);
+                ctx.rotate(angle + arc / 2);
+                ctx.fillText(name, -ctx.measureText(name).width / 2, 0);
+                ctx.restore();
+            });
+        }
+
+        function spin() {
+            spinAngleStart = Math.random() * 10 + 10;
+            spinTime = 0;
+            spinTimeTotal = Math.random() * 3 + 4 * 1000;
+            rotateWheel();
+        }
+
+        function rotateWheel() {
+            spinTime += 30;
+            if(spinTime >= spinTimeTotal) {
+                stopRotateWheel();
+                return;
+            }
+            const spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
+            startAngle += (spinAngle * Math.PI / 180);
+            drawWheel();
+            spinTimeout = setTimeout(rotateWheel, 30);
+        }
+
+        function stopRotateWheel() {
+            clearTimeout(spinTimeout);
+            const degrees = startAngle * 180 / Math.PI + 90;
+            const arcd = arc * 180 / Math.PI;
+            const index = Math.floor((360 - degrees % 360) / arcd);
+            
+            const winner = names[index < 0 ? index + names.length : index];
+            document.getElementById('winnerName').innerText = winner;
+            document.getElementById('winnerModal').classList.remove('hidden');
+        }
+
+        function easeOut(t, b, c, d) {
+            const ts = (t /= d) * t;
+            const tc = ts * t;
+            return b + c * (tc + -3 * ts + 3 * t);
+        }
+
+        function updateWheel() { drawWheel(); }
+        function closeModal() { document.getElementById('winnerModal').classList.add('hidden'); }
+
+        updateWheel();
+    </script>
+</body>
+</html>
