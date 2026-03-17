@@ -74,7 +74,7 @@
             const encodedData = btoa(JSON.stringify(data));
             
             // Generate the full URL (Assumes your quest page is named quest.html)
-            const baseUrl = window.location.href.replace('builder.html', 'quest.html');
+            const baseUrl = window.location.href.replace('builder.html', 'engine.html');
             const finalUrl = `${baseUrl}?data=${encodedData}`;
 
             document.getElementById('generatedUrl').value = finalUrl;
