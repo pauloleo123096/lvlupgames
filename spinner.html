@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LVLUP | Loot Spinner</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .gamer-font { font-family: 'Rajdhani', sans-serif; }
         canvas { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); }
-        .ad-container { background: rgba(30, 41, 59, 0.5); border: 1px solid #334155; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .ad-zone { background: #1e293b; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 0.75rem; text-transform: uppercase; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
@@ -21,20 +19,14 @@
 <body class="min-h-screen flex flex-col md:flex-row">
 
     <div class="w-full md:w-1/4 p-6 border-r border-slate-800 flex flex-col gap-6">
-        <div class="ad-container h-32 w-full">
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
+        <div class="ad-zone h-32 w-full">Ad Space (Top)</div>
 
         <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 shadow-xl">
             <h2 class="gamer-font text-2xl text-violet-400 mb-4 uppercase tracking-wider font-bold">Entries</h2>
-            <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-900 border border-slate-700 rounded-lg p-4 text-white outline-none focus:border-violet-500 transition-all text-sm" placeholder="Enter names...">Yang&#10;Player 2&#10;Loot Box&#10;Critical Hit&#10;Game Over&#10;Level Up</textarea>
+            <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-900 border border-slate-700 rounded-lg p-4 text-white outline-none focus:border-violet-500 transition-all text-sm" placeholder="Enter names (one per line)">Yang&#10;Player 2&#10;Loot Box&#10;Critical Hit&#10;Game Over&#10;Level Up</textarea>
         </div>
 
-        <div class="ad-container h-48 w-full mt-auto">
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="1111111111" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
+        <div class="ad-zone h-48 w-full mt-auto">Ad Space (Bottom)</div>
     </div>
 
     <div class="flex-1 flex flex-col items-center justify-center p-6 relative">
@@ -63,10 +55,7 @@
             <p id="emptyState" class="text-gray-600 italic text-sm text-center mt-10">No winners yet...</p>
         </div>
 
-        <div class="ad-container flex-1 w-full">
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="2222222222" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
+        <div class="ad-zone flex-1 w-full">Ad Space (Vertical)</div>
     </div>
 
     <div id="winnerModal" class="fixed inset-0 bg-slate-950/90 hidden flex items-center justify-center z-[100] backdrop-blur-md">
@@ -103,13 +92,13 @@
         function updateWheel() {
             names = namesInput.value.split('\n').filter(name => name.trim() !== "");
             
+            // Toggle Button Mode
             if (names.length === 1) {
                 spinBtn.innerText = "Claim Final Loot";
-                spinBtn.classList.replace('from-violet-600', 'from-amber-500');
-                spinBtn.classList.replace('to-indigo-600', 'to-orange-600');
+                spinBtn.className = "mt-10 bg-gradient-to-r from-amber-500 to-orange-600 hover:scale-110 active:scale-95 transition-all px-16 py-5 rounded-full font-bold text-2xl shadow-xl shadow-orange-500/40 uppercase tracking-widest min-w-[300px]";
             } else {
                 spinBtn.innerText = "Spin";
-                spinBtn.classList.add('from-violet-600', 'to-indigo-600');
+                spinBtn.className = "mt-10 bg-gradient-to-r from-violet-600 to-indigo-600 hover:scale-110 active:scale-95 transition-all px-16 py-5 rounded-full font-bold text-2xl shadow-xl shadow-violet-500/40 uppercase tracking-widest min-w-[300px]";
             }
 
             if (names.length === 0) {
@@ -138,17 +127,16 @@
                 addToChosenList(lastWinner);
                 namesInput.value = "";
                 updateWheel();
-            } else {
+            } else if (names.length > 1) {
                 spin();
             }
         }
 
         function spin() {
-            if (names.length < 2) return;
             spinBtn.disabled = true;
             spinAngleStart = Math.random() * 10 + 10;
             spinTime = 0;
-            spinTimeTotal = Math.random() * 3000 + 1000;
+            spinTimeTotal = Math.random() * 3000 + 1000; // 1-4 seconds
             rotateWheel();
         }
 
@@ -211,6 +199,7 @@
         }
 
         function closeModal() { document.getElementById('winnerModal').classList.add('hidden'); }
+        
         updateWheel();
     </script>
 </body>
