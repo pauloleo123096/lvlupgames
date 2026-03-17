@@ -76,15 +76,29 @@
             yesBtn.style.transform = `scale(${scale})`;
         }
 
-        function victory() {
-            noBtn.style.display = 'none';
-            document.getElementById('main-container').innerHTML = `
-                <h1 class="gamer-font text-6xl text-green-400 animate-bounce mb-4 text-center">SUCCESS!</h1>
-                <p class="text-2xl text-violet-300 text-center uppercase tracking-widest">Target Acquired. Happy Birthday!</p>
-                <div class="mt-10 text-8xl text-center">🎂🎮✨</div>
-            `;
-            for(let i=0; i<50; i++) { createConfetti(); }
-        }
+        // REPLACEMENT CODE
+function victory() {
+    noBtn.style.display = 'none';
+    
+    // Get custom victory message or use default
+    const victoryMessage = customData.v || "The best co-op journey begins now!";
+    
+    document.getElementById('main-container').innerHTML = `
+        <div class="animate-in zoom-in duration-500">
+            <h1 class="gamer-font text-6xl md:text-8xl text-green-400 animate-bounce mb-4 text-center tracking-tighter">SUCCESS!</h1>
+            <p class="text-2xl text-violet-300 text-center uppercase tracking-widest mb-8">Target Acquired</p>
+            
+            <div class="bg-slate-800/80 p-8 rounded-2xl border border-violet-500/30 max-w-lg mx-auto mb-10 shadow-2xl">
+                <p class="text-xl md:text-2xl text-white italic leading-relaxed">"${victoryMessage}"</p>
+            </div>
+            
+            <div class="text-8xl text-center">🎂🎮✨</div>
+        </div>
+    `;
+    
+    // Trigger celebration
+    for(let i=0; i<50; i++) { createConfetti(); }
+}
 
         function createConfetti() {
             const c = document.createElement('div');
