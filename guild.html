@@ -18,16 +18,26 @@
         .accent-glow {
             text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
         }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            border-color: #8b5cf6;
-            transition: all 0.3s ease;
+        /* The Classic Paper Quest Aesthetic */
+        .paper-quest {
+            background: #e2e8f0;
+            color: #0f172a;
+            box-shadow: 10px 10px 0px #8b5cf6;
+            transform: rotate(-1.5deg);
+            transition: all 0.2s ease-in-out;
+            border: 1px solid rgba(0,0,0,0.1);
         }
-        .quest-line {
-            border-left: 2px solid #8b5cf6;
+        .paper-quest:hover {
+            transform: rotate(0deg) translateY(-5px);
+            box-shadow: 15px 15px 0px #a78bfa;
         }
-        .rank-badge {
-            background: linear-gradient(90deg, #8b5cf6 0%, #4c1d95 100%);
+        .pin {
+            background: radial-gradient(circle at 30% 30%, #ef4444, #7f1d1d);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #450a0a;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -43,149 +53,128 @@
             <a href="guild.html" class="text-violet-400 transition font-bold border-b-2 border-violet-500">The Guild</a>
             <a href="guildrecruitment.html" class="hover:text-violet-400 transition">Recruitment</a>
         </div>
-        <button class="bg-violet-600 hover:bg-violet-700 px-6 py-2 rounded-full font-bold transition">Member Profile</button>
+        <button class="bg-violet-600 hover:bg-violet-700 px-6 py-2 rounded-full font-bold transition">Profile</button>
     </nav>
 
     <header class="hero-gradient pt-16 pb-12 text-center border-b border-slate-800">
-        <h1 class="text-6xl md:text-7xl font-bold accent-glow uppercase tracking-tighter">Guild <span class="text-violet-500">Command</span></h1>
-        <p class="text-gray-400 mt-4 max-w-2xl mx-auto px-4">The central hub for contributors, pro-players, and visionaries building the future of LVLUP Games.</p>
-        
-        <div class="flex flex-wrap justify-center gap-6 mt-10">
-            <div class="bg-slate-800/80 border border-violet-500/30 px-6 py-3 rounded-xl flex items-center gap-3">
-                <span class="text-violet-500 animate-pulse text-xl">◈</span>
-                <span class="text-xs font-bold uppercase tracking-widest text-gray-300">Global Buff: <span class="text-white">1.5x XP Active</span></span>
-            </div>
-            <div class="bg-slate-800/80 border border-blue-500/30 px-6 py-3 rounded-xl flex items-center gap-3">
-                <span class="text-blue-500 text-xl">✦</span>
-                <span class="text-xs font-bold uppercase tracking-widest text-gray-300">Community Goal: <span class="text-white">92% to Secret Unlock</span></span>
+        <h1 class="text-6xl md:text-8xl font-bold accent-glow uppercase tracking-tighter">THE <span class="text-violet-500">GUILD.</span></h1>
+        <div class="flex justify-center gap-4 mt-8">
+            <div class="bg-slate-900 border border-violet-500/30 px-5 py-2 rounded-lg flex items-center gap-3">
+                <span class="text-violet-500 animate-pulse font-black">●</span>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-300">Global Perk: <span class="text-white">Quest Rewards x1.5</span></span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-8 py-16 grid lg:grid-cols-12 gap-12">
+    <main class="max-w-7xl mx-auto px-8 py-16 grid lg:grid-cols-12 gap-16">
         
         <div class="lg:col-span-4 space-y-12">
             <section>
-                <h2 class="text-3xl font-bold text-violet-400 mb-6 uppercase">The Protocol</h2>
-                <div class="space-y-6">
-                    <div>
-                        <h3 class="text-white font-bold text-lg mb-2 underline decoration-violet-500 decoration-2 underline-offset-4">Our Vision</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">To decentralize game discovery and reward merit over marketing. We believe the best games are found by the community, for the community.</p>
-                    </div>
-                    <div>
-                        <h3 class="text-white font-bold text-lg mb-2 underline decoration-violet-500 decoration-2 underline-offset-4">Ranking Values</h3>
-                        <ul class="text-gray-400 text-sm space-y-3">
-                            <li class="flex items-start gap-2">
-                                <span class="text-violet-500 font-bold">01. Contribution</span>
-                                <span>Building tools and submitting games.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-violet-500 font-bold">02. Mastery</span>
-                                <span>Dominating leaderboards and Spinner logic.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-violet-500 font-bold">03. Mentorship</span>
-                                <span>Guiding new recruits in the Recruitment hall.</span>
-                            </li>
-                        </ul>
-                    </div>
+                <h2 class="text-3xl font-bold text-violet-400 mb-6 uppercase italic">Protocol & Vision</h2>
+                <div class="p-6 bg-slate-800/30 border border-slate-800 rounded-2xl mb-6">
+                    <h3 class="text-white font-bold mb-2 uppercase text-sm">Our Mandate</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">
+                        To empower independent creators by turning game development into a rewarding competitive ecosystem. Your rank is your reputation.
+                    </p>
                 </div>
-            </section>
-
-            <section class="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl">
-                <h3 class="text-xl font-bold text-white mb-4 uppercase italic">Rank Tiers</h3>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-3 bg-slate-800/40 rounded-lg">
-                        <span class="text-gray-300 font-bold">Grand Architect</span>
-                        <span class="text-[10px] rank-badge px-2 py-1 rounded-full font-bold">Level 100+</span>
+                
+                <h3 class="text-white font-bold mb-4 uppercase text-sm">Rank Hierarchy</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border-l-4 border-violet-600">
+                        <span class="text-xs font-bold">Grand Architect</span>
+                        <span class="text-[10px] text-violet-400 font-black">MAX LVL</span>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-slate-800/40 rounded-lg">
-                        <span class="text-gray-300 font-bold">Core Dev Rogue</span>
-                        <span class="text-[10px] bg-slate-700 px-2 py-1 rounded-full font-bold">Level 50</span>
+                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border-l-4 border-slate-700">
+                        <span class="text-xs font-bold">Lead Developer</span>
+                        <span class="text-[10px] text-gray-500 font-black">LVL 50</span>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-slate-800/40 rounded-lg">
-                        <span class="text-gray-300 font-bold">Beta Paladin</span>
-                        <span class="text-[10px] bg-slate-700 px-2 py-1 rounded-full font-bold">Level 10</span>
+                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border-l-4 border-slate-800">
+                        <span class="text-xs font-bold">Beta Paladin</span>
+                        <span class="text-[10px] text-gray-600 font-black">LVL 10</span>
                     </div>
                 </div>
             </section>
         </div>
 
-        <div class="lg:col-span-8 space-y-16">
+        <div class="lg:col-span-8 space-y-24">
             
             <section>
-                <div class="flex justify-between items-end mb-8">
-                    <h2 class="text-4xl font-bold text-white uppercase tracking-tight">The Quest Board</h2>
-                    <span class="text-violet-500 text-sm font-bold animate-pulse">● 4 NEW BOUNTIES</span>
+                <div class="flex items-center gap-6 mb-12">
+                    <h2 class="text-5xl font-bold text-white uppercase italic">Quest Board</h2>
+                    <div class="h-[2px] bg-slate-800 flex-grow"></div>
                 </div>
-                
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="p-6 rounded-xl bg-slate-800/50 border border-slate-700 card-hover quest-line">
-                        <div class="flex justify-between mb-4">
-                            <span class="text-[10px] font-bold text-violet-400 uppercase tracking-widest">Engineering</span>
-                            <span class="text-xs font-bold text-emerald-400">500 XP</span>
+
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="paper-quest p-8 relative min-h-[350px] flex flex-col">
+                        <div class="pin absolute -top-3 left-1/2 -translate-x-1/2"></div>
+                        <div class="text-[10px] font-black uppercase text-slate-400 mb-2">Request #A-201</div>
+                        <h3 class="text-2xl font-black uppercase border-b-2 border-slate-900/10 pb-2 mb-4">Spinner Audit</h3>
+                        <p class="text-sm font-bold text-slate-700 leading-snug mb-8 flex-grow">
+                            Client needs the "Evasion Logic" calibrated. Ensure the button stays exactly 150px away from the cursor at all times.
+                        </p>
+                        <div class="mt-auto pt-4 border-t border-slate-900/5">
+                            <div class="flex justify-between text-[10px] font-bold uppercase mb-1">
+                                <span>Party Size:</span>
+                                <span>1 - 2 Members</span>
+                            </div>
+                            <div class="flex justify-between text-xl font-black text-violet-700">
+                                <span>Bounty:</span>
+                                <span>1,500 PTS</span>
+                            </div>
                         </div>
-                        <h4 class="text-xl font-bold text-white mb-2">Optimize Spinner Logic</h4>
-                        <p class="text-gray-400 text-xs mb-4">Reduce latency in the randomizer engine for low-end mobile devices.</p>
-                        <button class="w-full py-2 bg-violet-600/20 border border-violet-500/50 hover:bg-violet-600 hover:text-white transition text-xs font-bold rounded-lg uppercase">Accept Quest</button>
+                        <button onclick="openModal('Spinner Audit')" class="mt-6 w-full bg-slate-900 text-white py-3 font-bold uppercase text-xs hover:bg-violet-600 transition-colors">
+                            Accept Job
+                        </button>
                     </div>
-                    <div class="p-6 rounded-xl bg-slate-800/50 border border-slate-700 card-hover quest-line">
-                        <div class="flex justify-between mb-4">
-                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Creative</span>
-                            <span class="text-xs font-bold text-emerald-400">250 XP</span>
+
+                    <div class="paper-quest p-8 relative min-h-[350px] flex flex-col">
+                        <div class="pin absolute -top-3 left-1/2 -translate-x-1/2"></div>
+                        <div class="text-[10px] font-black uppercase text-slate-400 mb-2">Request #B-404</div>
+                        <h3 class="text-2xl font-black uppercase border-b-2 border-slate-900/10 pb-2 mb-4">The Great Wipe</h3>
+                        <p class="text-sm font-bold text-slate-700 leading-snug mb-8 flex-grow">
+                            Client requires a purge of all non-active leaderboard entries older than 90 days. Precision is required.
+                        </p>
+                        <div class="mt-auto pt-4 border-t border-slate-900/5">
+                            <div class="flex justify-between text-[10px] font-bold uppercase mb-1">
+                                <span>Party Size:</span>
+                                <span>3 - 5 Members</span>
+                            </div>
+                            <div class="flex justify-between text-xl font-black text-violet-700">
+                                <span>Bounty:</span>
+                                <span>4,000 PTS</span>
+                            </div>
                         </div>
-                        <h4 class="text-xl font-bold text-white mb-2">Guild Badge Design</h4>
-                        <p class="text-gray-400 text-xs mb-4">Create vector assets for the upcoming 'Season of the Void' ranks.</p>
-                        <button class="w-full py-2 bg-violet-600/20 border border-violet-500/50 hover:bg-violet-600 hover:text-white transition text-xs font-bold rounded-lg uppercase">Accept Quest</button>
+                        <button onclick="openModal('The Great Wipe')" class="mt-6 w-full bg-slate-900 text-white py-3 font-bold uppercase text-xs hover:bg-violet-600 transition-colors">
+                            Accept Job
+                        </button>
                     </div>
                 </div>
             </section>
 
             <section>
-                <h2 class="text-4xl font-bold text-white uppercase tracking-tight mb-8">Elite Operatives</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-800 text-[10px] uppercase tracking-widest text-gray-500">
-                                <th class="pb-4 font-bold">Operative</th>
-                                <th class="pb-4 font-bold">Expertise</th>
-                                <th class="pb-4 font-bold">Quests</th>
-                                <th class="pb-4 font-bold">Rank</th>
+                <h2 class="text-3xl font-bold text-white uppercase italic mb-8">Elite Operatives</h2>
+                <div class="overflow-hidden border border-slate-800 rounded-xl">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-900 text-[10px] uppercase font-bold text-gray-500 tracking-widest">
+                            <tr>
+                                <th class="p-5">Member</th>
+                                <th class="p-5">Field</th>
+                                <th class="p-5 text-center">Quests</th>
+                                <th class="p-5 text-right">Rank</th>
                             </tr>
                         </thead>
-                        <tbody class="text-sm">
-                            <tr class="border-b border-slate-800/50 group">
-                                <td class="py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center font-bold text-xs">ZX</div>
-                                        <span class="font-bold text-white group-hover:text-violet-400 transition">ZeroX_Dev</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 text-gray-400">Logic Architect</td>
-                                <td class="py-4 text-violet-400 font-bold">142</td>
-                                <td class="py-4"><span class="px-2 py-1 bg-violet-900/50 border border-violet-500/50 rounded text-[10px] text-white">ARCHITECT</span></td>
+                        <tbody class="divide-y divide-slate-800 bg-slate-900/20">
+                            <tr>
+                                <td class="p-5 font-bold text-violet-400">ZeroX_Dev</td>
+                                <td class="p-5 text-gray-400">Logic Architect</td>
+                                <td class="p-5 text-center font-black">142</td>
+                                <td class="p-5 text-right"><span class="text-[10px] bg-violet-500/10 border border-violet-500/40 px-2 py-1 rounded text-violet-400 uppercase font-black">Grand Architect</span></td>
                             </tr>
-                            <tr class="border-b border-slate-800/50 group">
-                                <td class="py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-xs">NB</div>
-                                        <span class="font-bold text-white group-hover:text-blue-400 transition">Nebula_Knight</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 text-gray-400">UI/UX Specialist</td>
-                                <td class="py-4 text-violet-400 font-bold">98</td>
-                                <td class="py-4"><span class="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-white">PALADIN</span></td>
-                            </tr>
-                            <tr class="border-b border-slate-800/50 group">
-                                <td class="py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center font-bold text-xs">QC</div>
-                                        <span class="font-bold text-white group-hover:text-emerald-400 transition">QuestCounter</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 text-gray-400">QA Rogue</td>
-                                <td class="py-4 text-violet-400 font-bold">87</td>
-                                <td class="py-4"><span class="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-white">PALADIN</span></td>
+                            <tr>
+                                <td class="p-5 font-bold text-blue-400">Nebula_Knight</td>
+                                <td class="p-5 text-gray-400">UI/UX Specialist</td>
+                                <td class="p-5 text-center font-black">89</td>
+                                <td class="p-5 text-right"><span class="text-[10px] bg-slate-800 px-2 py-1 rounded text-gray-400 uppercase font-black">Lead Dev</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -194,14 +183,45 @@
         </div>
     </main>
 
+    <div id="questModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-violet-500/50 p-8 rounded-2xl max-w-md w-full shadow-2xl">
+            <h2 class="text-2xl font-bold text-white mb-1 uppercase italic tracking-tight" id="activeQuestName">Contract Verification</h2>
+            <p class="text-gray-400 text-[10px] mb-8 font-bold uppercase tracking-widest">Required by Guild Master</p>
+            
+            <form onsubmit="event.preventDefault(); alert('Contract Sent to Guild Master.'); closeModal();" class="space-y-5">
+                <div>
+                    <label class="text-[10px] font-bold text-violet-400 uppercase block mb-2">Member License Number</label>
+                    <input type="text" required placeholder="LVL-0000-0000" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white outline-none focus:border-violet-500 transition">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-violet-400 uppercase block mb-2">List Party Members</label>
+                    <textarea required placeholder="Username_1, Username_2, Username_3..." class="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white outline-none focus:border-violet-500 transition" rows="3"></textarea>
+                </div>
+                
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="closeModal()" class="flex-1 px-4 py-3 text-xs font-bold text-gray-500 uppercase">Abandon</button>
+                    <button type="submit" class="flex-1 bg-violet-600 text-white text-xs font-black uppercase py-3 rounded-lg hover:bg-violet-700 shadow-lg shadow-violet-500/20">Sign Contract</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <footer class="py-12 border-t border-slate-800 text-center text-gray-500 text-sm">
         <p>&copy; 2026 LVLUP Games. Built for the community.</p>
         <div class="flex justify-center space-x-6 mt-4">
             <a href="https://github.com" class="hover:text-white transition">GitHub</a>
             <a href="#" class="hover:text-white transition">Discord</a>
-            <a href="#" class="hover:text-white transition">Privacy</a>
         </div>
     </footer>
 
+    <script>
+        function openModal(name) {
+            document.getElementById('activeQuestName').innerText = name;
+            document.getElementById('questModal').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('questModal').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
