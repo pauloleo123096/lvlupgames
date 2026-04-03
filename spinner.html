@@ -5,75 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loot Spinner | LVLUP Games Hub</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5597393742237061" crossorigin="anonymous"></script>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .gamer-font { font-family: 'Rajdhani', sans-serif; }
-        canvas { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); max-width: 100%; height: auto; }
+        canvas { filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.4)); transition: transform 0.1s ease-out; max-width: 100%; height: auto; }
         .ad-zone { background: #1e293b; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 0.75rem; text-transform: uppercase; border-radius: 12px; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
     <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full border-b border-slate-800/50">
         <div class="gamer-font text-3xl font-bold tracking-tighter text-violet-500">
-            <a href="index.html">LVLUP<span class="text-white">GAMES</span></a>
+            <a href="index.html text-glow">LVLUP<span class="text-white">GAMES</span></a>
         </div>
-        <div class="hidden md:flex space-x-8 font-medium text-[10px] uppercase tracking-widest">
+        <div class="hidden lg:flex space-x-6 font-medium text-[10px] uppercase tracking-widest items-center">
             <a href="index.html" class="hover:text-violet-400 transition">Library</a>
-            <a href="spinner.html" class="text-violet-400 border-b-2 border-violet-500 pb-1">Loot Spinner</a>
+            <a href="spinner.html" class="text-violet-400 border-b-2 border-violet-500 pb-1">Spinner</a>
+            <a href="builder.html" class="hover:text-violet-400 transition">Quest Maker</a>
             <a href="guild.html" class="hover:text-violet-400 transition">The Guild</a>
-            <a href="guildrecruitment.html" class="hover:text-violet-400 transition">Recruitment</a>
-            <a href="privacy.html" class="hover:text-violet-400 transition">Privacy</a>
+            <a href="guildrecruitment.html" class="hover:text-violet-400 transition">Recruit</a>
+            <span class="h-4 w-[1px] bg-slate-800"></span>
+            <a href="privacy.html" class="text-gray-500 hover:text-white transition">Privacy</a>
         </div>
-        <a href="index.html" class="text-gray-500 hover:text-white transition text-[10px] font-bold uppercase">← Exit</a>
+        <a href="index.html" class="text-gray-500 hover:text-white transition text-[10px] font-bold uppercase border border-slate-800 px-3 py-2 rounded-lg">Home</a>
     </nav>
 
     <main class="flex-1 flex flex-col md:flex-row max-w-[1600px] mx-auto w-full">
-        
         <aside class="w-full md:w-1/4 p-6 border-r border-slate-800 space-y-6">
             <div class="ad-zone h-32 w-full">
                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5597393742237061" data-ad-slot="default" data-ad-format="horizontal"></ins>
                 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
-
             <div class="bg-slate-800/30 p-6 rounded-2xl border border-slate-700 shadow-xl">
                 <h2 class="gamer-font text-xl text-violet-400 mb-4 uppercase font-bold tracking-widest">Loot Table</h2>
-                <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none focus:border-violet-500 transition-all text-sm leading-relaxed" placeholder="One name per line...">Patrixja&#10;Epic Loot&#10;Common Item&#10;Critical Hit&#10;Quest Item</textarea>
+                <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none focus:border-violet-500 transition-all text-sm leading-relaxed" placeholder="One name per line...">Common Loot&#10;Epic Drop&#10;Rare Gem&#10;Legendary Core</textarea>
             </div>
         </aside>
 
         <section class="flex-1 flex flex-col items-center justify-center p-8 relative">
-            <div class="text-center mb-12">
-                <h1 class="gamer-font text-5xl md:text-6xl font-black text-white uppercase tracking-tighter">LOOT <span class="text-violet-500 text-shadow-glow">SPINNER.</span></h1>
-                <p class="text-gray-500 uppercase tracking-widest text-xs mt-2 font-semibold">Randomizing Destiny via Physics-Based Probability</p>
+            <div class="text-center mb-10">
+                <h1 class="gamer-font text-5xl md:text-6xl font-black text-white uppercase tracking-tighter">LOOT <span class="text-violet-500">SPINNER.</span></h1>
+                <p class="text-gray-500 uppercase tracking-widest text-[9px] mt-2 font-bold opacity-80">High-Precision RNG Algorithmic Probability</p>
             </div>
 
-            <div class="relative mb-12">
+            <div class="relative mb-10">
                 <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[25px] border-t-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
                 <canvas id="wheelCanvas" width="500" height="500"></canvas>
             </div>
 
-            <button id="spinBtn" onclick="spin()" class="bg-gradient-to-br from-violet-600 to-indigo-700 hover:from-violet-500 hover:to-indigo-600 hover:scale-105 active:scale-95 transition-all px-20 py-5 rounded-2xl font-bold text-xl shadow-2xl shadow-violet-500/20 uppercase tracking-[0.2em] gamer-font">
+            <button id="spinBtn" onclick="spin()" class="bg-gradient-to-br from-violet-600 to-indigo-700 hover:scale-105 active:scale-95 transition-all px-16 py-5 rounded-2xl font-bold text-xl shadow-2xl shadow-violet-500/20 uppercase tracking-[0.2em] gamer-font">
                 Initiate Spin
             </button>
         </section>
 
         <aside class="w-full md:w-1/4 p-6 border-l border-slate-800 flex flex-col bg-slate-900/20">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="gamer-font text-xl text-indigo-400 uppercase font-bold tracking-widest">History</h2>
-                <button id="copyBtn" onclick="copyResults()" class="text-[9px] bg-slate-800 hover:bg-violet-600 px-3 py-1.5 rounded-lg transition-colors uppercase font-bold hidden border border-slate-700">Copy Log</button>
-            </div>
-            
+            <h2 class="gamer-font text-xl text-indigo-400 uppercase font-bold tracking-widest mb-6">Drop History</h2>
             <div id="chosenList" class="flex flex-col gap-3 overflow-y-auto flex-1 mb-6">
                 <p id="emptyState" class="text-slate-600 italic text-xs text-center mt-10">Awaiting first drop...</p>
             </div>
-
             <div class="ad-zone h-64 w-full">
                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5597393742237061" data-ad-slot="default" data-ad-format="rectangle"></ins>
                 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -81,19 +72,19 @@
         </aside>
     </main>
 
-    <section class="max-w-7xl mx-auto px-8 py-20 border-t border-slate-800">
-        <div class="grid md:grid-cols-3 gap-12 text-[11px] leading-relaxed text-slate-500 uppercase tracking-wider">
+    <section class="max-w-7xl mx-auto px-8 py-20 border-t border-slate-800 bg-slate-950/30">
+        <div class="grid md:grid-cols-3 gap-12 text-[10px] leading-loose text-slate-500 uppercase tracking-widest">
             <div class="space-y-4">
-                <h3 class="text-white font-bold tracking-[0.3em]">Theoretical RNG</h3>
-                <p>The LVLUP Loot Spinner utilizes an ease-out physics algorithm to simulate real-world rotational inertia. By calculating angular momentum against a random friction coefficient, we ensure results are cryptographically unpredictable for gaming sessions.</p>
+                <h3 class="text-white font-bold tracking-[0.3em]">Physics Engine</h3>
+                <p>Our randomization utilizes a cubic ease-out function. By distributing angular velocity across a ~5000ms timeframe, we simulate mechanical friction and rotational inertia for authentic outcomes.</p>
             </div>
             <div class="space-y-4">
-                <h3 class="text-white font-bold tracking-[0.3em]">Developer Protocol</h3>
-                <p>Designed for Philippine developers and gamers, this tool is static and client-side. No entry data is transmitted to external servers, maintaining complete privacy for sensitive loot tables or guild rosters.</p>
+                <h3 class="text-white font-bold tracking-[0.3em]">Developer Note</h3>
+                <p>This utility is built on a client-side Canvas API. All data remains local to your browser session, ensuring zero latency and 100% privacy for your loot tables and guild lists.</p>
             </div>
             <div class="space-y-4">
-                <h3 class="text-white font-bold tracking-[0.3em]">Community Standard</h3>
-                <p>Part of the LVLUP Games ecosystem. We prioritize high-performance, low-latency web utilities that empower local creators to manage interactive events without high-cost backend infrastructure.</p>
+                <h3 class="text-white font-bold tracking-[0.3em]">Global Standard</h3>
+                <p>Part of the LVLUP Games ecosystem. We prioritize high-performance web tools for the Philippine gaming community, providing professional-grade RNG utilities for local events.</p>
             </div>
         </div>
     </section>
@@ -107,7 +98,7 @@
             <h3 class="text-violet-400 uppercase tracking-widest mb-2 font-bold text-[10px]">Victory Sequence Initiated:</h3>
             <h2 id="winnerName" class="gamer-font text-5xl text-white mb-10 break-words uppercase">NAME</h2>
             <div class="flex flex-col gap-4">
-                <button onclick="removeAndClose()" class="w-full bg-violet-600 text-white py-4 rounded-2xl font-bold transition-all uppercase text-xs tracking-widest shadow-lg shadow-violet-600/20">Remove & Continue</button>
+                <button onclick="removeAndClose()" class="w-full bg-violet-600 text-white py-4 rounded-2xl font-bold transition-all uppercase text-xs tracking-widest">Remove & Continue</button>
                 <button onclick="closeModal()" class="w-full bg-slate-800 text-slate-400 py-4 rounded-2xl font-bold transition-all uppercase text-xs tracking-widest hover:bg-slate-700">Keep in Table</button>
             </div>
         </div>
@@ -119,14 +110,12 @@
         const namesInput = document.getElementById('namesInput');
         const chosenList = document.getElementById('chosenList');
         const spinBtn = document.getElementById('spinBtn');
-        const copyBtn = document.getElementById('copyBtn');
         
         let names = [];
-        let winnersArray = [];
         let startAngle = 0;
         let arc = 0;
         let spinTimeout = null;
-        let spinAngleStart = 10;
+        let spinAngleStart = 0;
         let spinTime = 0;
         let spinTimeTotal = 0;
         let lastWinner = "";
@@ -151,12 +140,18 @@
             });
         }
 
+        // UPGRADED PHYSICS ENGINE
         function spin() {
             if (names.length < 2) { alert("Add at least 2 entries!"); return; }
             spinBtn.disabled = true;
-            spinAngleStart = Math.random() * 10 + 10;
+            spinBtn.innerText = "SPINNING...";
+            
+            // Higher initial burst speed
+            spinAngleStart = Math.random() * 15 + 25; 
             spinTime = 0;
-            spinTimeTotal = Math.random() * 3000 + 1000;
+            // Increased total spin time for drama (~5 seconds)
+            spinTimeTotal = Math.random() * 1000 + 4500; 
+            
             rotateWheel();
         }
 
@@ -166,12 +161,19 @@
             const spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
             startAngle += (spinAngle * Math.PI / 180);
             drawWheel();
+            
+            // Subtle visual feedback during spin
+            canvas.style.transform = `scale(${1 + (spinAngle/200)})`;
+            
             spinTimeout = setTimeout(rotateWheel, 30);
         }
 
         function stopRotateWheel() {
             clearTimeout(spinTimeout);
             spinBtn.disabled = false;
+            spinBtn.innerText = "INITIATE SPIN";
+            canvas.style.transform = `scale(1)`;
+            
             const degrees = startAngle * 180 / Math.PI + 90;
             const arcd = arc * 180 / Math.PI;
             const index = Math.floor((360 - degrees % 360) / arcd);
@@ -183,22 +185,10 @@
 
         function addToChosenList(name) {
             document.getElementById('emptyState').classList.add('hidden');
-            copyBtn.classList.remove('hidden');
-            winnersArray.push(name);
             const item = document.createElement('div');
-            item.className = "bg-slate-800/50 border-l-2 border-violet-500 p-3 rounded-lg text-[11px] font-semibold flex justify-between items-center";
+            item.className = "bg-slate-800/50 border-l-2 border-violet-500 p-3 rounded-lg text-[11px] font-semibold flex justify-between items-center animate-in fade-in slide-in-from-right-4";
             item.innerHTML = `<span>${name}</span><span class="text-[9px] text-slate-500 uppercase">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>`;
             chosenList.prepend(item);
-        }
-
-        function copyResults() {
-            if (winnersArray.length === 0) return;
-            const textToCopy = winnersArray.map((name, i) => `${i + 1}. ${name}`).join('\n');
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const originalText = copyBtn.innerText;
-                copyBtn.innerText = "DONE!";
-                setTimeout(() => copyBtn.innerText = originalText, 2000);
-            });
         }
 
         function removeAndClose() {
