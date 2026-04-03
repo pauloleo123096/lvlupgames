@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        h1, h2, h3, .brand { font-family: 'Rajdhani', sans-serif; }
         .gamer-font { font-family: 'Rajdhani', sans-serif; }
         canvas { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); }
         .ad-zone { background: #1e293b; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 0.75rem; text-transform: uppercase; }
@@ -18,69 +19,86 @@
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row">
+<body class="min-h-screen flex flex-col">
 
-    <div class="w-full md:w-1/4 p-6 border-r border-slate-800 flex flex-col gap-6">
-        <div class="ad-zone h-32 w-full">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-5597393742237061"
-                 data-ad-slot="default"
-                 data-ad-format="horizontal"
-                 data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full border-b border-slate-800/50">
+        <div class="brand text-3xl font-bold tracking-tighter text-violet-500">
+            <a href="index.html">LVLUP<span class="text-white">GAMES</span></a>
         </div>
-
-        <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 shadow-xl">
-            <h2 class="gamer-font text-2xl text-violet-400 mb-4 uppercase tracking-wider font-bold">Entries</h2>
-            <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-900 border border-slate-700 rounded-lg p-4 text-white outline-none focus:border-violet-500 transition-all text-sm" placeholder="Enter names (one per line)">Patrixja&#10;Player 2&#10;Loot Box&#10;Critical Hit&#10;Game Over&#10;Level Up</textarea>
+        <div class="hidden md:flex space-x-8 font-medium text-[10px] uppercase tracking-widest">
+            <a href="index.html" class="hover:text-violet-400 transition">Library</a>
+            <a href="spinner.html" class="text-violet-400 border-b-2 border-violet-500 pb-1">Loot Spinner</a>
+            <a href="guild.html" class="hover:text-violet-400 transition">The Guild</a>
+            <a href="guildrecruitment.html" class="hover:text-violet-400 transition">Recruitment</a>
+            <a href="builder.html" class="hover:text-violet-400 transition">Prank Builder</a>
         </div>
+        <a href="index.html" class="text-gray-400 hover:text-white transition text-[10px] uppercase font-bold tracking-widest">Back to Library</a>
+    </nav>
 
-        <div class="ad-zone h-48 w-full mt-auto">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-5597393742237061"
-                 data-ad-slot="default"
-                 data-ad-format="rectangle"
-                 data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-    </div>
-
-    <div class="flex-1 flex flex-col items-center justify-center p-6 relative">
-        <div class="absolute top-10 text-center">
-            <h1 class="gamer-font text-5xl font-bold text-white uppercase tracking-tighter">LOOT <span class="text-violet-500">SPINNER</span></h1>
-            <p class="text-gray-500 uppercase tracking-widest text-xs mt-1">Destiny is a spin away</p>
-        </div>
-
-        <div class="relative mt-20 scale-90 md:scale-100">
-            <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[30px] border-t-white drop-shadow-lg"></div>
-            <canvas id="wheelCanvas" width="500" height="500"></canvas>
-        </div>
-
-        <button id="spinBtn" onclick="spin()" class="mt-10 bg-gradient-to-r from-violet-600 to-indigo-600 hover:scale-110 active:scale-95 transition-all px-16 py-5 rounded-full font-bold text-2xl shadow-xl shadow-violet-500/40 uppercase tracking-widest">
-            Spin
-        </button>
-    </div>
-
-    <div class="w-full md:w-1/4 p-6 border-l border-slate-800 flex flex-col bg-slate-900/30">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="gamer-font text-2xl text-indigo-400 uppercase tracking-wider font-bold">Chosen Loot</h2>
-            <button id="copyBtn" onclick="copyResults()" class="text-[10px] bg-slate-700 hover:bg-violet-600 px-3 py-1 rounded-md transition-colors uppercase font-bold hidden">Copy All</button>
-        </div>
+    <div class="flex flex-col md:flex-row flex-1">
         
-        <div id="chosenList" class="flex flex-col gap-3 overflow-y-auto max-h-[70vh] pr-2">
-            <p id="emptyState" class="text-gray-600 italic text-sm text-center mt-10">No winners yet...</p>
+        <div class="w-full md:w-1/4 p-6 border-r border-slate-800 flex flex-col gap-6">
+            <div class="ad-zone h-32 w-full">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5597393742237061"
+                     data-ad-slot="default"
+                     data-ad-format="horizontal"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
+            <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 shadow-xl">
+                <h2 class="gamer-font text-2xl text-violet-400 mb-4 uppercase tracking-wider font-bold">Entries</h2>
+                <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-900 border border-slate-700 rounded-lg p-4 text-white outline-none focus:border-violet-500 transition-all text-sm" placeholder="Enter names (one per line)">Patrixja&#10;Player 2&#10;Loot Box&#10;Critical Hit&#10;Game Over&#10;Level Up</textarea>
+            </div>
+
+            <div class="ad-zone h-48 w-full mt-auto">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5597393742237061"
+                     data-ad-slot="default"
+                     data-ad-format="rectangle"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
         </div>
 
-        <div class="ad-zone h-32 w-full mt-auto pt-4">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-5597393742237061"
-                 data-ad-slot="default"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="flex-1 flex flex-col items-center justify-center p-6 relative">
+            <div class="text-center mb-8">
+                <h1 class="gamer-font text-5xl font-bold text-white uppercase tracking-tighter">LOOT <span class="text-violet-500">SPINNER</span></h1>
+                <p class="text-gray-500 uppercase tracking-widest text-xs mt-1">Destiny is a spin away</p>
+            </div>
+
+            <div class="relative scale-90 md:scale-100">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[30px] border-t-white drop-shadow-lg"></div>
+                <canvas id="wheelCanvas" width="500" height="500"></canvas>
+            </div>
+
+            <button id="spinBtn" onclick="spin()" class="mt-10 bg-gradient-to-r from-violet-600 to-indigo-600 hover:scale-110 active:scale-95 transition-all px-16 py-5 rounded-full font-bold text-2xl shadow-xl shadow-violet-500/40 uppercase tracking-widest">
+                Spin
+            </button>
+        </div>
+
+        <div class="w-full md:w-1/4 p-6 border-l border-slate-800 flex flex-col bg-slate-900/30">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="gamer-font text-2xl text-indigo-400 uppercase tracking-wider font-bold">Chosen Loot</h2>
+                <button id="copyBtn" onclick="copyResults()" class="text-[10px] bg-slate-700 hover:bg-violet-600 px-3 py-1 rounded-md transition-colors uppercase font-bold hidden">Copy All</button>
+            </div>
+            
+            <div id="chosenList" class="flex flex-col gap-3 overflow-y-auto max-h-[70vh] pr-2">
+                <p id="emptyState" class="text-gray-600 italic text-sm text-center mt-10">No winners yet...</p>
+            </div>
+
+            <div class="ad-zone h-32 w-full mt-auto pt-4">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5597393742237061"
+                     data-ad-slot="default"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
         </div>
     </div>
 
