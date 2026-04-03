@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5597393742237061"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5597393742237061" crossorigin="anonymous"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guild Command | LVLUP Games</title>
+    <title>The Guild | LVLUP Games</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; overflow-x: hidden; }
         h1, h2, h3, .brand { font-family: 'Rajdhani', sans-serif; }
-        .hero-gradient {
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-        }
-        .accent-glow {
-            text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
-        }
+        .hero-gradient { background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%); }
+        .accent-glow { text-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
+        
         /* The Classic Paper Quest Aesthetic */
         .paper-quest {
             background: #e2e8f0;
@@ -39,6 +35,10 @@
             border: 2px solid #450a0a;
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
+        .guild-card { background: rgba(30, 41, 59, 0.4); border: 1px solid #334155; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
 <body class="selection:bg-violet-500 selection:text-white">
@@ -49,11 +49,11 @@
         </div>
         <div class="hidden md:flex space-x-8 font-medium text-sm uppercase tracking-widest">
             <a href="index.html" class="hover:text-violet-400 transition">Library</a>
-            <a href="#" class="hover:text-violet-400 transition">Leaderboards</a>
+            <a href="spinner.html" class="hover:text-violet-400 transition">Spinner</a>
             <a href="guild.html" class="text-violet-400 transition font-bold border-b-2 border-violet-500">The Guild</a>
-            <a href="guildrecruitment.html" class="hover:text-violet-400 transition">Recruitment</a>
+            <a href="builder.html" class="hover:text-violet-400 transition">Prank Builder</a>
         </div>
-        <button class="bg-violet-600 hover:bg-violet-700 px-6 py-2 rounded-full font-bold transition">Profile</button>
+        <button class="bg-violet-600 hover:bg-violet-700 px-6 py-2 rounded-full font-bold transition text-xs uppercase tracking-widest">Profile</button>
     </nav>
 
     <header class="hero-gradient pt-16 pb-12 text-center border-b border-slate-800">
@@ -70,28 +70,38 @@
         
         <div class="lg:col-span-4 space-y-12">
             <section>
-                <h2 class="text-3xl font-bold text-violet-400 mb-6 uppercase italic">Protocol & Vision</h2>
-                <div class="p-6 bg-slate-800/30 border border-slate-800 rounded-2xl mb-6">
-                    <h3 class="text-white font-bold mb-2 uppercase text-sm">Our Mandate</h3>
+                <h2 class="text-3xl font-bold text-violet-400 mb-6 uppercase italic tracking-tight">Protocol & Vision</h2>
+                <div class="p-6 guild-card rounded-2xl mb-6">
+                    <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-widest">Our Mandate</h3>
                     <p class="text-gray-400 text-xs leading-relaxed">
-                        To empower independent creators by turning game development into a rewarding competitive ecosystem. Your rank is your reputation.
+                        To empower independent creators by turning game development and digital interaction into a rewarding competitive ecosystem. Your rank is your reputation within the Philippines' premier gaming tool network.
                     </p>
                 </div>
                 
-                <h3 class="text-white font-bold mb-4 uppercase text-sm">Rank Hierarchy</h3>
+                <h3 class="text-white font-bold mb-4 uppercase text-xs tracking-widest">Rank Hierarchy</h3>
                 <div class="space-y-3">
-                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border-l-4 border-violet-600">
-                        <span class="text-xs font-bold">Grand Architect</span>
+                    <div class="flex justify-between items-center p-3 bg-slate-900/80 rounded-lg border-l-4 border-violet-600">
+                        <span class="text-xs font-bold uppercase">Grand Architect</span>
                         <span class="text-[10px] text-violet-400 font-black">MAX LVL</span>
                     </div>
-                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border-l-4 border-slate-700">
-                        <span class="text-xs font-bold">Lead Developer</span>
+                    <div class="flex justify-between items-center p-3 bg-slate-900/80 rounded-lg border-l-4 border-slate-700">
+                        <span class="text-xs font-bold uppercase">Lead Developer</span>
                         <span class="text-[10px] text-gray-500 font-black">LVL 50</span>
                     </div>
-                    <div class="flex justify-between items-center p-3 bg-slate-900 rounded-lg border-l-4 border-slate-800">
-                        <span class="text-xs font-bold">Beta Paladin</span>
+                    <div class="flex justify-between items-center p-3 bg-slate-900/80 rounded-lg border-l-4 border-slate-800">
+                        <span class="text-xs font-bold uppercase">Beta Paladin</span>
                         <span class="text-[10px] text-gray-600 font-black">LVL 10</span>
                     </div>
+                </div>
+
+                <div class="mt-12 pt-6 border-t border-slate-800">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-5597393742237061"
+                         data-ad-slot="default"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                 </div>
             </section>
         </div>
@@ -107,19 +117,17 @@
                 <div class="grid md:grid-cols-2 gap-12">
                     <div class="paper-quest p-8 relative min-h-[350px] flex flex-col">
                         <div class="pin absolute -top-3 left-1/2 -translate-x-1/2"></div>
-                        <div class="text-[10px] font-black uppercase text-slate-400 mb-2">Request #A-201</div>
+                        <div class="text-[10px] font-black uppercase text-slate-400 mb-2 font-mono">Request #A-201</div>
                         <h3 class="text-2xl font-black uppercase border-b-2 border-slate-900/10 pb-2 mb-4">Spinner Audit</h3>
-                        <p class="text-sm font-bold text-slate-700 leading-snug mb-8 flex-grow">
-                            Client needs the "Evasion Logic" calibrated. Ensure the button stays exactly 150px away from the cursor at all times.
+                        <p class="text-sm font-bold text-slate-700 leading-snug mb-8 flex-grow italic">
+                            "Client needs the Evasion Logic calibrated. Ensure the button stays exactly 150px away from the cursor at all times for maximum difficulty."
                         </p>
                         <div class="mt-auto pt-4 border-t border-slate-900/5">
                             <div class="flex justify-between text-[10px] font-bold uppercase mb-1">
-                                <span>Party Size:</span>
-                                <span>1 - 2 Members</span>
+                                <span>Party Size:</span> <span>1 - 2 Members</span>
                             </div>
                             <div class="flex justify-between text-xl font-black text-violet-700">
-                                <span>Bounty:</span>
-                                <span>1,500 PTS</span>
+                                <span>Bounty:</span> <span>1,500 PTS</span>
                             </div>
                         </div>
                         <button onclick="openModal('Spinner Audit')" class="mt-6 w-full bg-slate-900 text-white py-3 font-bold uppercase text-xs hover:bg-violet-600 transition-colors">
@@ -129,19 +137,17 @@
 
                     <div class="paper-quest p-8 relative min-h-[350px] flex flex-col">
                         <div class="pin absolute -top-3 left-1/2 -translate-x-1/2"></div>
-                        <div class="text-[10px] font-black uppercase text-slate-400 mb-2">Request #B-404</div>
+                        <div class="text-[10px] font-black uppercase text-slate-400 mb-2 font-mono">Request #B-404</div>
                         <h3 class="text-2xl font-black uppercase border-b-2 border-slate-900/10 pb-2 mb-4">The Great Wipe</h3>
-                        <p class="text-sm font-bold text-slate-700 leading-snug mb-8 flex-grow">
-                            Client requires a purge of all non-active leaderboard entries older than 90 days. Precision is required.
+                        <p class="text-sm font-bold text-slate-700 leading-snug mb-8 flex-grow italic">
+                            "Registry Overflow detected. Requires a purge of all non-active leaderboard entries older than 90 days. Precision is required."
                         </p>
                         <div class="mt-auto pt-4 border-t border-slate-900/5">
                             <div class="flex justify-between text-[10px] font-bold uppercase mb-1">
-                                <span>Party Size:</span>
-                                <span>3 - 5 Members</span>
+                                <span>Party Size:</span> <span>3 - 5 Members</span>
                             </div>
                             <div class="flex justify-between text-xl font-black text-violet-700">
-                                <span>Bounty:</span>
-                                <span>4,000 PTS</span>
+                                <span>Bounty:</span> <span>4,000 PTS</span>
                             </div>
                         </div>
                         <button onclick="openModal('The Great Wipe')" class="mt-6 w-full bg-slate-900 text-white py-3 font-bold uppercase text-xs hover:bg-violet-600 transition-colors">
@@ -151,68 +157,121 @@
                 </div>
             </section>
 
+            <section class="guild-card p-8 rounded-3xl border-indigo-500/30">
+                <h2 class="text-3xl font-bold text-white uppercase italic mb-4">Cipher <span class="text-indigo-500">Decoder</span></h2>
+                <p class="text-xs text-gray-400 mb-6 max-w-lg leading-relaxed">
+                    Received an encrypted Guild ID? Use the decoder below to fragment the string and reveal hidden mission parameters or prank details.
+                </p>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <input type="text" id="cipherInput" placeholder="Enter ID (e.g., WWFuZ3xIQkQ)" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-5 py-4 text-sm font-mono focus:border-indigo-500 outline-none transition-all">
+                    <button onclick="decodeCipher()" class="bg-indigo-600 hover:bg-indigo-500 px-8 py-4 rounded-xl font-bold uppercase text-xs tracking-widest transition-all shadow-lg shadow-indigo-500/20">Decrypt</button>
+                </div>
+                <div id="decoderResult" class="hidden mt-6 p-6 bg-slate-950/80 border border-indigo-500/20 rounded-xl">
+                    <p class="text-[10px] text-indigo-400 font-bold uppercase mb-2">Decrypted Intel Found:</p>
+                    <p id="decodedText" class="text-lg text-white font-medium italic"></p>
+                </div>
+            </section>
+
             <section>
-                <h2 class="text-3xl font-bold text-white uppercase italic mb-8">Elite Operatives</h2>
+                <h2 class="text-3xl font-bold text-white uppercase italic mb-8">Hall of Legends</h2>
                 <div class="overflow-hidden border border-slate-800 rounded-xl">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-900 text-[10px] uppercase font-bold text-gray-500 tracking-widest">
                             <tr>
                                 <th class="p-5">Member</th>
-                                <th class="p-5">Field</th>
+                                <th class="p-5">Specialization</th>
                                 <th class="p-5 text-center">Quests</th>
-                                <th class="p-5 text-right">Rank</th>
+                                <th class="p-5 text-right">Rank Status</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-800 bg-slate-900/20">
                             <tr>
-                                <td class="p-5 font-bold text-violet-400">ZeroX_Dev</td>
-                                <td class="p-5 text-gray-400">Logic Architect</td>
+                                <td class="p-5 font-bold text-violet-400">Yang</td>
+                                <td class="p-5 text-gray-400">Lead Logic Admin</td>
                                 <td class="p-5 text-center font-black">142</td>
-                                <td class="p-5 text-right"><span class="text-[10px] bg-violet-500/10 border border-violet-500/40 px-2 py-1 rounded text-violet-400 uppercase font-black">Grand Architect</span></td>
+                                <td class="p-5 text-right"><span class="text-[9px] bg-violet-500/10 border border-violet-500/40 px-2 py-1 rounded text-violet-400 uppercase font-black tracking-widest">Grand Architect</span></td>
                             </tr>
                             <tr>
                                 <td class="p-5 font-bold text-blue-400">Nebula_Knight</td>
-                                <td class="p-5 text-gray-400">UI/UX Specialist</td>
+                                <td class="p-5 text-gray-400">UI/UX Operative</td>
                                 <td class="p-5 text-center font-black">89</td>
-                                <td class="p-5 text-right"><span class="text-[10px] bg-slate-800 px-2 py-1 rounded text-gray-400 uppercase font-black">Lead Dev</span></td>
+                                <td class="p-5 text-right"><span class="text-[9px] bg-slate-800 px-2 py-1 rounded text-gray-400 uppercase font-black tracking-widest">Lead Dev</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
         </div>
+
+        <section class="lg:col-span-12 mt-12 pt-20 border-t border-slate-800 max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold text-violet-400 mb-8 uppercase italic tracking-tighter">Guild Documentation & Lore</h2>
+            <div class="space-y-8 text-gray-400 leading-relaxed text-sm">
+                <p>
+                    The <strong>LVLUP Games Guild</strong> is more than just a repository of scripts; it is a dedicated platform designed to document and enhance the gaming tool experience for independent creators. In the digital age, transparency in tools like the <strong>Loot Spinner</strong> and <strong>Prank Builder</strong> is paramount. Our Guild documentation serves as a guide for understanding how probability and interactive design can create more engaging user experiences.
+                </p>
+                
+                <div>
+                    <h3 class="text-white font-bold uppercase text-xs tracking-widest mb-3">The Ethics of Randomized Design</h3>
+                    <p>
+                        At the heart of the Quest Board lies our commitment to fair-play algorithms. Whether using the <strong>Loot Spinner</strong> for a high-stakes Dungeons & Dragons session or a casual decision-maker, we prioritize RNG (Random Number Generation) integrity. Our developers, recognized through the Guild Ranking system, work tirelessly to calibrate the physics of the wheel to ensure that every outcome is mathematically sound. This technical documentation is crucial for publishers who rely on our tools for community events and game sessions.
+                    </p>
+                </div>
+
+                <div class="py-8">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-5597393742237061"
+                         data-ad-slot="default"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold uppercase text-xs tracking-widest mb-3">Understanding the Cipher Protocol</h3>
+                    <p>
+                        Privacy and user safety are built into the Guild’s architecture. By utilizing the <strong>Cipher Decoder</strong>, members can interact with complex datasets without the need for traditional account-based tracking. We leverage Base64 encoding to compress and secure "Intel" (prank data), ensuring that our community can share creative content across the Philippines and beyond without compromising digital security. This "No-Database" approach is part of our commitment to lightweight, efficient web development.
+                    </p>
+                </div>
+
+                <p class="border-l-2 border-violet-500 pl-6 italic text-xs">
+                    "Rank is not just a title; it is a measure of the value one provides to the Guild archives. Every quest completed is a step toward a more open and interactive web." — Guild Master's Ledger, 2026.
+                </p>
+            </div>
+        </section>
     </main>
 
-    <div id="questModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <footer class="py-12 border-t border-slate-800 text-center text-gray-500 text-xs">
+        <div class="flex justify-center space-x-8 mb-6 font-bold uppercase tracking-widest">
+            <a href="privacy.html" class="hover:text-white transition underline decoration-violet-500 decoration-2">Privacy Policy</a>
+            <a href="index.html" class="hover:text-white transition">Library</a>
+            <a href="https://github.com" class="hover:text-white transition">GitHub</a>
+        </div>
+        <p>&copy; 2026 LVLUP Games. Built for the Philippine Gaming Community.</p>
+    </footer>
+
+    <div id="questModal" class="hidden fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-violet-500/50 p-8 rounded-2xl max-w-md w-full shadow-2xl">
             <h2 class="text-2xl font-bold text-white mb-1 uppercase italic tracking-tight" id="activeQuestName">Contract Verification</h2>
             <p class="text-gray-400 text-[10px] mb-8 font-bold uppercase tracking-widest">Required by Guild Master</p>
             
-            <form onsubmit="event.preventDefault(); alert('Contract Sent to Guild Master.'); closeModal();" class="space-y-5">
+            <form onsubmit="event.preventDefault(); alert('Contract Sent to Guild Master. Your rank will update once reviewed.'); closeModal();" class="space-y-5">
                 <div>
                     <label class="text-[10px] font-bold text-violet-400 uppercase block mb-2">Member License Number</label>
                     <input type="text" required placeholder="LVL-0000-0000" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white outline-none focus:border-violet-500 transition">
                 </div>
                 <div>
-                    <label class="text-[10px] font-bold text-violet-400 uppercase block mb-2">List Party Members</label>
-                    <textarea required placeholder="Username_1, Username_2, Username_3..." class="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white outline-none focus:border-violet-500 transition" rows="3"></textarea>
+                    <label class="text-[10px] font-bold text-violet-400 uppercase block mb-2">Quest Party Summary</label>
+                    <textarea required placeholder="Describe your plan for this task..." class="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white outline-none focus:border-violet-500 transition" rows="3"></textarea>
                 </div>
                 
                 <div class="flex gap-4 pt-4">
-                    <button type="button" onclick="closeModal()" class="flex-1 px-4 py-3 text-xs font-bold text-gray-500 uppercase">Abandon</button>
-                    <button type="submit" class="flex-1 bg-violet-600 text-white text-xs font-black uppercase py-3 rounded-lg hover:bg-violet-700 shadow-lg shadow-violet-500/20">Sign Contract</button>
+                    <button type="button" onclick="closeModal()" class="flex-1 px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-widest">Abandon</button>
+                    <button type="submit" class="flex-1 bg-violet-600 text-white text-[10px] font-black uppercase py-3 rounded-lg hover:bg-violet-700 shadow-lg shadow-violet-500/20 tracking-widest">Sign Contract</button>
                 </div>
             </form>
         </div>
     </div>
-
-    <footer class="py-12 border-t border-slate-800 text-center text-gray-500 text-sm">
-        <p>&copy; 2026 LVLUP Games. Built for the community.</p>
-        <div class="flex justify-center space-x-6 mt-4">
-            <a href="https://github.com" class="hover:text-white transition">GitHub</a>
-            <a href="#" class="hover:text-white transition">Discord</a>
-        </div>
-    </footer>
 
     <script>
         function openModal(name) {
@@ -221,6 +280,28 @@
         }
         function closeModal() {
             document.getElementById('questModal').classList.add('hidden');
+        }
+
+        function decodeCipher() {
+            const input = document.getElementById('cipherInput').value.trim();
+            const resultDiv = document.getElementById('decoderResult');
+            const textDisplay = document.getElementById('decodedText');
+
+            if (!input) return;
+
+            try {
+                // Decode the Base64 ID (Matches the Builder logic)
+                const decoded = atob(input);
+                const [name, msg] = decoded.split('|');
+                
+                resultDiv.classList.remove('hidden');
+                textDisplay.innerText = `ID DECRYPTED: ${name} — ${msg}`;
+                textDisplay.classList.remove('text-red-400');
+            } catch(e) {
+                resultDiv.classList.remove('hidden');
+                textDisplay.innerText = "ERROR: Fragmented data. Cipher string invalid.";
+                textDisplay.classList.add('text-red-400');
+            }
         }
     </script>
 </body>
