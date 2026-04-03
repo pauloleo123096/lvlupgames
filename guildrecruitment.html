@@ -2,105 +2,113 @@
 <html lang="en">
 <head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5597393742237061" crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recruitment | LVLUP Games</title>
+    <title>Enlistment Hub | LVLUP Games</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
         h1, h2, h3, .brand { font-family: 'Rajdhani', sans-serif; }
-        .recruit-card { background: rgba(30, 41, 59, 0.4); border: 1px solid #334155; }
+        .input-glow:focus { 
+            outline: none; 
+            border-color: #8b5cf6; 
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); 
+        }
+        .form-container {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+        }
     </style>
 </head>
 <body class="selection:bg-violet-500 selection:text-white">
 
-    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
+    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto border-b border-slate-800/50">
         <div class="brand text-3xl font-bold tracking-tighter text-violet-500">
             <a href="index.html">LVLUP<span class="text-white">GAMES</span></a>
         </div>
-        <div class="hidden md:flex space-x-8 font-medium text-sm uppercase tracking-widest">
+        <div class="hidden md:flex space-x-8 font-medium text-[10px] uppercase tracking-widest">
             <a href="index.html" class="hover:text-violet-400 transition">Library</a>
+            <a href="spinner.html" class="hover:text-violet-400 transition">Loot Spinner</a>
             <a href="guild.html" class="hover:text-violet-400 transition">The Guild</a>
-            <a href="guildrecruitment.html" class="text-violet-400 font-bold border-b-2 border-violet-500">Recruitment</a>
+            <a href="guildrecruitment.html" class="text-violet-400 border-b-2 border-violet-500 pb-1">Recruitment</a>
+            <a href="builder.html" class="hover:text-violet-400 transition">Prank Builder</a>
         </div>
+        <a href="index.html" class="text-gray-400 hover:text-white transition text-[10px] uppercase font-bold tracking-widest">Back to Base</a>
     </nav>
 
     <main class="max-w-4xl mx-auto px-8 py-20">
-        <header class="mb-16">
-            <h1 class="text-6xl font-black uppercase italic tracking-tighter mb-4">Enlist in the <span class="text-violet-500">Guild.</span></h1>
-            <p class="text-gray-400 text-lg leading-relaxed">The LVLUP Games ecosystem is expanding. We are seeking logic architects, UI operatives, and creative pranksters to help build the future of Philippine interactive media.</p>
-        </header>
+        <div class="text-center mb-16">
+            <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-4">Guild <span class="text-violet-500">Enlistment.</span></h1>
+            <p class="text-gray-400 max-w-lg mx-auto text-sm leading-relaxed">
+                Initialize your developer profile to track quest progress, claim bounties, and join the Philippine elite ranking.
+            </p>
+        </div>
 
-        <section class="space-y-12 mb-20">
-            <div>
-                <h2 class="text-2xl font-bold text-white uppercase tracking-widest mb-4 italic">Why Join the Recruitment Phase?</h2>
-                <p class="text-gray-400 text-sm leading-relaxed mb-6">
-                    Joining the Guild isn't just about a profile badge; it's about contributing to a community-driven repository of gaming utilities. As a recruit, you gain early access to our experimental builds—including the 2026 Loot Spinner update and the advanced Prank Builder Cipher protocols.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="recruit-card p-6 rounded-2xl">
-                        <h3 class="text-violet-400 font-bold uppercase text-xs mb-2">Technical Growth</h3>
-                        <p class="text-xs text-gray-500">Work on Quest Board tasks that challenge your HTML, CSS, and JS logic in real-world scenarios.</p>
+        <div class="form-container p-8 md:p-12 rounded-[2.5rem] shadow-2xl mb-20">
+            <form class="space-y-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-violet-400 ml-1">Operative Alias</label>
+                        <input type="text" placeholder="e.g. Shadow_Dev" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-5 py-4 text-sm input-glow transition-all">
                     </div>
-                    <div class="recruit-card p-6 rounded-2xl">
-                        <h3 class="text-violet-400 font-bold uppercase text-xs mb-2">Reputation System</h3>
-                        <p class="text-xs text-gray-500">Every task completed moves you up the hierarchy from Beta Paladin to the coveted Grand Architect rank.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="py-4 border-y border-slate-800">
-                 <ins class="adsbygoogle"
-                      style="display:block"
-                      data-ad-client="ca-pub-5597393742237061"
-                      data-ad-slot="default"
-                      data-ad-format="auto"
-                      data-full-width-responsive="true"></ins>
-                 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-
-            <div>
-                <h2 class="text-2xl font-bold text-white uppercase tracking-widest mb-4 italic">The Recruitment Process</h2>
-                <p class="text-gray-400 text-sm leading-relaxed mb-4">
-                    Our vetting process is simple yet effective. We look for individuals who understand the balance between performance and user experience. Whether you're a seasoned developer or a gaming enthusiast, your input helps shape the "Evasion Logic" and "RNG Calibration" used by thousands.
-                </p>
-                <p class="text-gray-400 text-sm leading-relaxed italic">
-                    Note: LVLUP Games is committed to an open-source spirit. Membership is free, and the value you provide back to the Guild archives is what earns you your place in the Hall of Legends.
-                </p>
-            </div>
-        </section>
-
-        <section class="bg-slate-900 border border-violet-500/20 p-10 rounded-3xl shadow-2xl shadow-violet-500/10">
-            <h2 class="text-3xl font-black uppercase mb-8">Submit Your <span class="text-violet-500">Credentials</span></h2>
-            <form onsubmit="event.preventDefault(); alert('Application Received. The Guild Master will contact you via the archives.');" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="text-[10px] font-bold text-violet-400 uppercase block mb-2 tracking-widest">Callsign / Username</label>
-                        <input type="text" required placeholder="ZeroX_Dev" class="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl text-white outline-none focus:border-violet-500 transition">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-violet-400 uppercase block mb-2 tracking-widest">Primary Field</label>
-                        <select class="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl text-white outline-none focus:border-violet-500 transition">
-                            <option>Logic Architecture</option>
-                            <option>UI/UX Operation</option>
-                            <option>Prank Engineering</option>
-                            <option>Lore Archiving</option>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-violet-400 ml-1">Specialization</label>
+                        <select class="w-full bg-slate-950 border border-slate-800 rounded-xl px-5 py-4 text-sm input-glow transition-all text-gray-400">
+                            <option>Frontend Architect</option>
+                            <option>Logic Engineer</option>
+                            <option>RNG Tester</option>
+                            <option>UI/UX Designer</option>
                         </select>
                     </div>
                 </div>
-                <div>
-                    <label class="text-[10px] font-bold text-violet-400 uppercase block mb-2 tracking-widest">Manifesto / Cover Letter</label>
-                    <textarea required placeholder="Why do you want to join the Guild archives?" class="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl text-white outline-none focus:border-violet-500 transition" rows="4"></textarea>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-violet-400 ml-1">Communication Channel (Email)</label>
+                    <input type="email" placeholder="agent@lvlupgames.org" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-5 py-4 text-sm input-glow transition-all">
                 </div>
-                <button type="submit" class="w-full bg-violet-600 text-white font-black uppercase py-4 rounded-xl hover:bg-violet-700 transition shadow-lg shadow-violet-500/20 tracking-widest">Enlist Now</button>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-violet-400 ml-1">Brief Profile Bio</label>
+                    <textarea rows="4" placeholder="Tell us about your experience in the gaming scene..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-5 py-4 text-sm input-glow transition-all"></textarea>
+                </div>
+
+                <button type="button" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-black uppercase tracking-[0.2em] py-5 rounded-2xl transition-all shadow-xl shadow-violet-600/20 text-sm">
+                    Initialize Enlistment
+                </button>
             </form>
+        </div>
+
+        <section class="space-y-12">
+            <h2 class="text-3xl font-bold text-white uppercase italic text-center tracking-tight">Frequently Asked <span class="text-violet-500">Protocols</span></h2>
+            
+            <div class="grid gap-6">
+                <div class="p-6 bg-slate-900/30 border border-slate-800 rounded-2xl">
+                    <h3 class="text-violet-400 font-bold uppercase text-xs mb-2 tracking-widest">Is the Guild free to join?</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">Yes. LVLUP Games is a community-driven project based in the Philippines. Our mission is to provide free technical tools for gamers and developers alike without any paywalls.</p>
+                </div>
+
+                <div class="p-6 bg-slate-900/30 border border-slate-800 rounded-2xl">
+                    <h3 class="text-violet-400 font-bold uppercase text-xs mb-2 tracking-widest">How do I earn Guild Ranks?</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">Ranks are earned by completing tasks on the Quest Board located in the Guild Hall. Each quest submitted and verified by our architects adds reputation points to your operative profile.</p>
+                </div>
+
+                <div class="p-6 bg-slate-900/30 border border-slate-800 rounded-2xl">
+                    <h3 class="text-violet-400 font-bold uppercase text-xs mb-2 tracking-widest">What happens to my data?</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">We prioritize privacy. All recruitment data is used solely for the internal leaderboard and community identification. Check our <a href="privacy.html" class="text-violet-500 underline">Privacy Policy</a> for more details.</p>
+                </div>
+            </div>
         </section>
     </main>
 
-    <footer class="py-12 border-t border-slate-800 text-center text-gray-500 text-xs uppercase tracking-widest">
-        <a href="privacy.html" class="hover:text-white transition underline block mb-4">Privacy Policy</a>
-        <p>&copy; 2026 LVLUP Games Philippines. Recruitment Phase Active.</p>
+    <footer class="py-12 border-t border-slate-800 text-center text-gray-500 text-[10px] uppercase tracking-widest">
+        <div class="flex justify-center space-x-8 mb-4">
+            <a href="index.html" class="hover:text-white transition">Home</a>
+            <a href="guild.html" class="hover:text-white transition">Quest Board</a>
+            <a href="privacy.html" class="hover:text-white transition underline decoration-violet-500">Privacy Policy</a>
+        </div>
+        <p>&copy; 2026 LVLUP Games. Philippines. All Rights Reserved.</p>
     </footer>
 
 </body>
