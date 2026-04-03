@@ -5,7 +5,7 @@
      crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LVLUP | Prank Builder</title>
+    <title>LVLUP | Quest Maker Builder</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -14,11 +14,12 @@
         .brand { font-family: 'Rajdhani', sans-serif; }
         .input-style { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; width: 100%; color: white; outline: none; transition: border 0.2s; }
         .input-style:focus { border-color: #8b5cf6; }
+        .text-glow { text-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center">
 
-    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full border-b border-slate-800/50 mb-12">
+    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full border-b border-slate-800/50 mb-8">
         <div class="brand text-3xl font-bold tracking-tighter text-violet-500">
             <a href="index.html">LVLUP<span class="text-white">GAMES</span></a>
         </div>
@@ -33,14 +34,14 @@
     </nav>
 
     <div class="max-w-2xl w-full px-6">
-        <header class="text-center mb-12">
-            <h1 class="gamer-font text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">QUEST MAKER</h1>
-            <p class="text-gray-400 mt-2">Create your own impossible choice prank link.</p>
+        <header class="text-center mb-6">
+            <h1 class="gamer-font text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400 uppercase text-glow">Quest Maker</h1>
+            <p class="text-gray-400 mt-2 text-xs uppercase tracking-widest font-semibold">Impossible choice prank generator</p>
         </header>
 
-        <div class="mb-8">
+        <div class="mb-6 min-h-[60px] flex items-center justify-center border border-slate-800/50 rounded-lg overflow-hidden">
             <ins class="adsbygoogle"
-                 style="display:block"
+                 style="display:block; width:100%; height:auto;"
                  data-ad-client="ca-pub-5597393742237061"
                  data-ad-slot="default"
                  data-ad-format="horizontal"
@@ -48,52 +49,52 @@
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
 
-        <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 shadow-xl space-y-6">
+        <div class="bg-slate-800/40 p-8 rounded-2xl border border-slate-700 shadow-2xl space-y-6">
             <div>
-                <label class="block text-sm font-semibold text-violet-300 mb-2 uppercase tracking-wider">Recipient Name</label>
+                <label class="block text-[10px] font-bold text-violet-400 mb-2 uppercase tracking-[0.2em]">Recipient Name</label>
                 <input type="text" id="nameInput" placeholder="e.g. Patrixja" class="input-style">
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-violet-300 mb-2 uppercase tracking-wider">The Big Question</label>
+                <label class="block text-[10px] font-bold text-violet-400 mb-2 uppercase tracking-[0.2em]">The Big Question</label>
                 <input type="text" id="questionInput" placeholder="e.g. Will you be my Player 2?" class="input-style">
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold text-green-400 mb-2 uppercase tracking-wider">Yes Button</label>
-                    <input type="text" id="yesInput" placeholder="YES!" class="input-style">
+                    <label class="block text-[10px] font-bold text-green-400 mb-2 uppercase tracking-[0.2em]">Yes Button</label>
+                    <input type="text" id="yesInput" placeholder="YES!" class="input-style border-green-900/30">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-red-400 mb-2 uppercase tracking-wider">No Button</label>
-                    <input type="text" id="noInput" placeholder="NO" class="input-style">
+                    <label class="block text-[10px] font-bold text-red-400 mb-2 uppercase tracking-[0.2em]">No Button</label>
+                    <input type="text" id="noInput" placeholder="NO" class="input-style border-red-900/30">
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-violet-300 mb-2 uppercase tracking-wider">
-                    Victory Message <span class="text-[10px] text-green-400 font-normal ml-2">(PREMIUM - NOW FREE)</span>
+                <label class="block text-[10px] font-bold text-violet-400 mb-2 uppercase tracking-[0.2em]">
+                    Victory Message <span class="text-[9px] text-green-400 font-normal ml-2 opacity-70">(PREMIUM FEATURE ACTIVE)</span>
                 </label>
-                <textarea id="victoryInput" placeholder="e.g. You're the best! I knew you'd say yes." class="input-style h-24 resize-none"></textarea>
+                <textarea id="victoryInput" placeholder="e.g. You're the best! I knew you'd say yes." class="input-style h-24 resize-none leading-relaxed text-sm"></textarea>
             </div>
 
-            <button onclick="generateLink()" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-violet-500/20 uppercase tracking-widest">
+            <button onclick="generateLink()" class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold py-5 rounded-xl transition-all shadow-xl shadow-violet-500/10 uppercase tracking-[0.2em] gamer-font text-lg">
                 Generate Prank Link
             </button>
         </div>
 
-        <div id="resultArea" class="mt-8 hidden animate-in fade-in duration-500">
-            <div class="bg-violet-950/30 border border-violet-500/50 p-6 rounded-xl">
-                <p class="text-sm text-violet-300 mb-2 font-bold">YOUR CUSTOM LINK:</p>
+        <div id="resultArea" class="mt-8 hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div class="bg-slate-900 border border-violet-500/50 p-6 rounded-2xl shadow-2xl">
+                <p class="text-[10px] text-violet-300 mb-3 font-bold uppercase tracking-widest">Your Generated Quest URL:</p>
                 <div class="flex gap-2">
-                    <input type="text" id="generatedUrl" readonly class="input-style text-sm font-mono text-violet-200">
-                    <button id="copyBtn" onclick="copyLink(event)" class="bg-slate-700 px-4 rounded-lg hover:bg-slate-600 transition-colors">Copy</button>
+                    <input type="text" id="generatedUrl" readonly class="input-style text-xs font-mono text-violet-200 bg-slate-950 border-violet-900/30">
+                    <button id="copyBtn" onclick="copyLink(event)" class="bg-violet-600 px-6 rounded-lg hover:bg-violet-500 transition-colors uppercase font-bold text-[10px] tracking-widest shadow-lg shadow-violet-600/20">Copy</button>
                 </div>
-                <p class="text-xs text-gray-500 mt-4 italic">Send this link to your friend. They'll never be able to click "No"!</p>
+                <p class="text-[10px] text-gray-500 mt-4 italic text-center">Copy and send this link. The "No" button will evade the recipient's cursor!</p>
             </div>
         </div>
 
-        <div class="mt-12">
+        <div class="mt-12 min-h-[100px] border border-slate-800/50 rounded-lg overflow-hidden">
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-5597393742237061"
@@ -102,15 +103,26 @@
                  data-full-width-responsive="true"></ins>
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
+
+        <section class="mt-20 pt-10 border-t border-slate-800 grid md:grid-cols-2 gap-10 text-gray-500 text-[10px] leading-loose uppercase tracking-[0.1em]">
+            <div class="space-y-4">
+                <h3 class="text-white font-bold tracking-[0.2em]">Data Serialization Protocol</h3>
+                <p>The LVLUP Quest Maker implements a stateless data architecture using RFC 4648 Base64 encoding. This allows your custom quest parameters to be passed entirely through the URI string, ensuring that no user-generated prank data is stored on our servers, prioritizing privacy and security.</p>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-white font-bold tracking-[0.2em]">Community Compliance</h3>
+                <p>Developed for the Philippine gaming and dev community. This tool is part of the LVLUP open-source utility library designed to demonstrate interactive DOM manipulation and event listeners in a fun, non-malicious environment.</p>
+            </div>
+        </section>
     </div>
 
-    <footer class="w-full py-12 mt-20 border-t border-slate-800 text-center text-gray-600 text-[10px] uppercase tracking-widest">
-        <div class="flex justify-center space-x-8 mb-4">
-            <a href="index.html" class="hover:text-white transition">Home</a>
+    <footer class="w-full py-12 mt-20 border-t border-slate-800 text-center text-gray-600 text-[10px] uppercase tracking-[0.2em]">
+        <div class="flex justify-center space-x-8 mb-6">
+            <a href="index.html" class="hover:text-white transition">Library</a>
             <a href="guild.html" class="hover:text-white transition">The Guild</a>
-            <a href="privacy.html" class="hover:text-white transition underline">Privacy Policy</a>
+            <a href="privacy.html" class="hover:text-white transition underline decoration-violet-500/50 underline-offset-8">Privacy Policy</a>
         </div>
-        <p>&copy; 2026 LVLUP Games Philippines. All Rights Reserved.</p>
+        <p class="opacity-60">&copy; 2026 LVLUP Games Hub | Philippines. All Rights Reserved.</p>
     </footer>
 
     <script>
@@ -123,14 +135,18 @@
                 v: document.getElementById('victoryInput').value || "The best co-op journey begins now!"
             };
 
+            // Enhanced encoding to handle special characters/emojis for the engine
             const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
             
-            // Fixed base URL to point to engine.html in the same directory
+            // Generate link pointing to engine.html in the same directory
             const baseUrl = window.location.origin + window.location.pathname.replace('builder.html', 'engine.html');
             const finalUrl = `${baseUrl}?data=${encodedData}`;
 
             document.getElementById('generatedUrl').value = finalUrl;
             document.getElementById('resultArea').classList.remove('hidden');
+            
+            // Scroll to result smoothly
+            document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
         function copyLink(e) {
@@ -138,10 +154,15 @@
             copyText.select();
             navigator.clipboard.writeText(copyText.value);
             
-            const btn = e.target;
+            const btn = e.currentTarget;
             const originalText = btn.innerText;
-            btn.innerText = "Saved!";
-            setTimeout(() => { btn.innerText = originalText; }, 2000);
+            btn.innerText = "COPIED!";
+            btn.classList.replace('bg-violet-600', 'bg-green-600');
+            
+            setTimeout(() => { 
+                btn.innerText = originalText; 
+                btn.classList.replace('bg-green-600', 'bg-violet-600');
+            }, 2000);
         }
     </script>
 </body>
