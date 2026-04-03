@@ -12,13 +12,16 @@
         .gamer-font { font-family: 'Rajdhani', sans-serif; }
         canvas { filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.4)); transition: transform 0.1s ease-out; max-width: 100%; height: auto; }
         .ad-zone { background: #1e293b; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 0.75rem; text-transform: uppercase; border-radius: 12px; }
+        .text-glow { text-shadow: 0 0 10px rgba(139, 92, 246, 0.8); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
     <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full border-b border-slate-800/50">
         <div class="gamer-font text-3xl font-bold tracking-tighter text-violet-500">
-            <a href="index.html text-glow">LVLUP<span class="text-white">GAMES</span></a>
+            <a href="index.html">LVLUP<span class="text-white text-glow">GAMES</span></a>
         </div>
         <div class="hidden lg:flex space-x-6 font-medium text-[10px] uppercase tracking-widest items-center">
             <a href="index.html" class="hover:text-violet-400 transition">Library</a>
@@ -40,14 +43,14 @@
             </div>
             <div class="bg-slate-800/30 p-6 rounded-2xl border border-slate-700 shadow-xl">
                 <h2 class="gamer-font text-xl text-violet-400 mb-4 uppercase font-bold tracking-widest">Loot Table</h2>
-                <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none focus:border-violet-500 transition-all text-sm leading-relaxed" placeholder="One name per line...">Common Loot&#10;Epic Drop&#10;Rare Gem&#10;Legendary Core</textarea>
+                <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none focus:border-violet-500 transition-all text-sm leading-relaxed" placeholder="One name per line...">Patrixja&#10;LeeYawn&#10;Justine&#10;Rome&#10;Irene</textarea>
             </div>
         </aside>
 
         <section class="flex-1 flex flex-col items-center justify-center p-8 relative">
             <div class="text-center mb-10">
                 <h1 class="gamer-font text-5xl md:text-6xl font-black text-white uppercase tracking-tighter">LOOT <span class="text-violet-500">SPINNER.</span></h1>
-                <p class="text-gray-500 uppercase tracking-widest text-[9px] mt-2 font-bold opacity-80">High-Precision RNG Algorithmic Probability</p>
+                <p class="text-gray-500 uppercase tracking-widest text-[9px] mt-2 font-bold opacity-80 italic tracking-[0.2em]">RNG Distribution for the Core Guild</p>
             </div>
 
             <div class="relative mb-10">
@@ -61,7 +64,7 @@
         </section>
 
         <aside class="w-full md:w-1/4 p-6 border-l border-slate-800 flex flex-col bg-slate-900/20">
-            <h2 class="gamer-font text-xl text-indigo-400 uppercase font-bold tracking-widest mb-6">Drop History</h2>
+            <h2 class="gamer-font text-xl text-indigo-400 uppercase font-bold tracking-widest mb-6 text-center">Drop History</h2>
             <div id="chosenList" class="flex flex-col gap-3 overflow-y-auto flex-1 mb-6">
                 <p id="emptyState" class="text-slate-600 italic text-xs text-center mt-10">Awaiting first drop...</p>
             </div>
@@ -72,33 +75,37 @@
         </aside>
     </main>
 
-    <section class="max-w-7xl mx-auto px-8 py-20 border-t border-slate-800 bg-slate-950/30">
+    <section class="max-w-7xl mx-auto px-8 py-16 border-t border-slate-800 bg-slate-950/30">
         <div class="grid md:grid-cols-3 gap-12 text-[10px] leading-loose text-slate-500 uppercase tracking-widest">
-            <div class="space-y-4">
-                <h3 class="text-white font-bold tracking-[0.3em]">Physics Engine</h3>
-                <p>Our randomization utilizes a cubic ease-out function. By distributing angular velocity across a ~5000ms timeframe, we simulate mechanical friction and rotational inertia for authentic outcomes.</p>
+            <div>
+                <h3 class="text-white font-bold tracking-[0.3em] mb-2">High-Tension Physics</h3>
+                <p>Features a 5000ms variable friction algorithm. The initial burst velocity simulates mechanical inertia, providing a cinematic slowdown phase for maximum tension.</p>
             </div>
-            <div class="space-y-4">
-                <h3 class="text-white font-bold tracking-[0.3em]">Developer Note</h3>
-                <p>This utility is built on a client-side Canvas API. All data remains local to your browser session, ensuring zero latency and 100% privacy for your loot tables and guild lists.</p>
+            <div>
+                <h3 class="text-white font-bold tracking-[0.3em] mb-2">Privacy & Local Processing</h3>
+                <p>This utility operates entirely within the client-side DOM. No entry data, including loot names or results, is transmitted to external servers.</p>
             </div>
-            <div class="space-y-4">
-                <h3 class="text-white font-bold tracking-[0.3em]">Global Standard</h3>
-                <p>Part of the LVLUP Games ecosystem. We prioritize high-performance web tools for the Philippine gaming community, providing professional-grade RNG utilities for local events.</p>
+            <div>
+                <h3 class="text-white font-bold tracking-[0.3em] mb-2">Guild Support</h3>
+                <p>Proudly powered by the LVLUP Games Philippines community. Special thanks to our core contributors and patrons for enabling continued development.</p>
             </div>
         </div>
     </section>
 
     <footer class="py-10 border-t border-slate-900 text-center text-slate-600 text-[10px] uppercase tracking-widest">
-        <p>&copy; 2026 LVLUP Games Hub | <a href="privacy.html" class="underline hover:text-white transition">Privacy Policy</a></p>
+        <div class="flex justify-center space-x-6 mb-4">
+            <a href="index.html" class="hover:text-white transition">Home</a>
+            <a href="privacy.html" class="hover:text-white transition underline decoration-violet-500/30 underline-offset-4">Privacy Policy</a>
+        </div>
+        <p>&copy; 2026 LVLUP Games Hub</p>
     </footer>
 
     <div id="winnerModal" class="fixed inset-0 bg-slate-950/95 hidden flex items-center justify-center z-[100] backdrop-blur-xl">
         <div class="text-center p-12 bg-slate-900 rounded-[2.5rem] border border-violet-500/30 shadow-2xl max-w-sm w-full mx-4">
-            <h3 class="text-violet-400 uppercase tracking-widest mb-2 font-bold text-[10px]">Victory Sequence Initiated:</h3>
+            <h3 class="text-violet-400 uppercase tracking-widest mb-2 font-bold text-[10px]">Result Decided:</h3>
             <h2 id="winnerName" class="gamer-font text-5xl text-white mb-10 break-words uppercase">NAME</h2>
             <div class="flex flex-col gap-4">
-                <button onclick="removeAndClose()" class="w-full bg-violet-600 text-white py-4 rounded-2xl font-bold transition-all uppercase text-xs tracking-widest">Remove & Continue</button>
+                <button onclick="removeAndClose()" class="w-full bg-violet-600 text-white py-4 rounded-2xl font-bold transition-all uppercase text-xs tracking-widest">Remove Entry</button>
                 <button onclick="closeModal()" class="w-full bg-slate-800 text-slate-400 py-4 rounded-2xl font-bold transition-all uppercase text-xs tracking-widest hover:bg-slate-700">Keep in Table</button>
             </div>
         </div>
@@ -140,16 +147,13 @@
             });
         }
 
-        // UPGRADED PHYSICS ENGINE
         function spin() {
             if (names.length < 2) { alert("Add at least 2 entries!"); return; }
             spinBtn.disabled = true;
             spinBtn.innerText = "SPINNING...";
             
-            // Higher initial burst speed
             spinAngleStart = Math.random() * 15 + 25; 
             spinTime = 0;
-            // Increased total spin time for drama (~5 seconds)
             spinTimeTotal = Math.random() * 1000 + 4500; 
             
             rotateWheel();
@@ -161,10 +165,7 @@
             const spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
             startAngle += (spinAngle * Math.PI / 180);
             drawWheel();
-            
-            // Subtle visual feedback during spin
             canvas.style.transform = `scale(${1 + (spinAngle/200)})`;
-            
             spinTimeout = setTimeout(rotateWheel, 30);
         }
 
