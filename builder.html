@@ -11,20 +11,44 @@
     <style>
         body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
         .gamer-font { font-family: 'Rajdhani', sans-serif; }
+        .brand { font-family: 'Rajdhani', sans-serif; }
         .input-style { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; width: 100%; color: white; outline: none; transition: border 0.2s; }
         .input-style:focus { border-color: #8b5cf6; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-12 px-6">
+<body class="min-h-screen flex flex-col items-center">
 
-    <div class="max-w-2xl w-full">
+    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full border-b border-slate-800/50 mb-12">
+        <div class="brand text-3xl font-bold tracking-tighter text-violet-500">
+            <a href="index.html">LVLUP<span class="text-white">GAMES</span></a>
+        </div>
+        <div class="hidden md:flex space-x-8 font-medium text-[10px] uppercase tracking-widest">
+            <a href="index.html" class="hover:text-violet-400 transition">Library</a>
+            <a href="spinner.html" class="hover:text-violet-400 transition">Loot Spinner</a>
+            <a href="guild.html" class="hover:text-violet-400 transition">The Guild</a>
+            <a href="guildrecruitment.html" class="hover:text-violet-400 transition">Recruitment</a>
+            <a href="builder.html" class="text-violet-400 border-b-2 border-violet-500 pb-1">Quest Maker</a>
+        </div>
+        <a href="index.html" class="text-gray-400 hover:text-white transition text-[10px] uppercase font-bold tracking-widest">Back to Base</a>
+    </nav>
+
+    <div class="max-w-2xl w-full px-6">
         <header class="text-center mb-12">
             <h1 class="gamer-font text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">QUEST MAKER</h1>
             <p class="text-gray-400 mt-2">Create your own impossible choice prank link.</p>
         </header>
 
+        <div class="mb-8">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5597393742237061"
+                 data-ad-slot="default"
+                 data-ad-format="horizontal"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
         <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 shadow-xl space-y-6">
-            
             <div>
                 <label class="block text-sm font-semibold text-violet-300 mb-2 uppercase tracking-wider">Recipient Name</label>
                 <input type="text" id="nameInput" placeholder="e.g. Patrixja" class="input-style">
@@ -63,12 +87,31 @@
                 <p class="text-sm text-violet-300 mb-2 font-bold">YOUR CUSTOM LINK:</p>
                 <div class="flex gap-2">
                     <input type="text" id="generatedUrl" readonly class="input-style text-sm font-mono text-violet-200">
-                    <button onclick="copyLink()" class="bg-slate-700 px-4 rounded-lg hover:bg-slate-600 transition-colors">Copy</button>
+                    <button id="copyBtn" onclick="copyLink(event)" class="bg-slate-700 px-4 rounded-lg hover:bg-slate-600 transition-colors">Copy</button>
                 </div>
                 <p class="text-xs text-gray-500 mt-4 italic">Send this link to your friend. They'll never be able to click "No"!</p>
             </div>
         </div>
+
+        <div class="mt-12">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5597393742237061"
+                 data-ad-slot="default"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
     </div>
+
+    <footer class="w-full py-12 mt-20 border-t border-slate-800 text-center text-gray-600 text-[10px] uppercase tracking-widest">
+        <div class="flex justify-center space-x-8 mb-4">
+            <a href="index.html" class="hover:text-white transition">Home</a>
+            <a href="guild.html" class="hover:text-white transition">The Guild</a>
+            <a href="privacy.html" class="hover:text-white transition underline">Privacy Policy</a>
+        </div>
+        <p>&copy; 2026 LVLUP Games Philippines. All Rights Reserved.</p>
+    </footer>
 
     <script>
         function generateLink() {
@@ -80,23 +123,22 @@
                 v: document.getElementById('victoryInput').value || "The best co-op journey begins now!"
             };
 
-            // Enhanced encoding to handle special characters/emojis
             const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
             
-            const baseUrl = window.location.href.replace('builder.html', 'engine.html');
+            // Fixed base URL to point to engine.html in the same directory
+            const baseUrl = window.location.origin + window.location.pathname.replace('builder.html', 'engine.html');
             const finalUrl = `${baseUrl}?data=${encodedData}`;
 
             document.getElementById('generatedUrl').value = finalUrl;
             document.getElementById('resultArea').classList.remove('hidden');
         }
 
-        function copyLink() {
+        function copyLink(e) {
             const copyText = document.getElementById("generatedUrl");
             copyText.select();
             navigator.clipboard.writeText(copyText.value);
             
-            // Just a bit of flair for the copy button
-            const btn = event.target;
+            const btn = e.target;
             const originalText = btn.innerText;
             btn.innerText = "Saved!";
             setTimeout(() => { btn.innerText = originalText; }, 2000);
