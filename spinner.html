@@ -8,15 +8,9 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230f172a%22/><text x=%2250%%22 y=%2260%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22'Rajdhani', sans-serif%22 font-weight=%22700%22 font-size=%2255%22 fill=%22%238b5cf6%22>lvl</text><path d=%22M30 15 L50 35 L70 15 L60 15 L60 5 L40 5 L40 15 Z%22 fill=%22%2322d3ee%22/></svg>">
 
     <meta name="title" content="Loot Spinner | LVLUP Games">
-    <meta name="description" content="Precision RNG Loot Spinner for the Philippine gaming community. Level up your decision making.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://lvlupgames.org/spinner.html">
-    <meta property="og:title" content="Loot Spinner | LVLUP Games">
-    <meta property="og:description" content="Precision RNG Loot Spinner for the Philippine gaming community.">
+    <meta name="description" content="Precision RNG Loot Spinner for the Philippine gaming community.">
     <meta property="og:image" content="https://lvlupgames.org/logo.png">
-    <meta property="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="#8b5cf6">
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -24,60 +18,51 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5597393742237061" crossorigin="anonymous"></script>
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; }
         .font-brand { font-family: 'Rajdhani', sans-serif; }
-        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(139, 92, 246, 0.2); }
-        .spin-item { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .active-spin { color: #22d3ee; text-shadow: 0 0 15px rgba(34, 211, 238, 0.5); transform: scale(1.1); }
+        .neon-border { border: 1px solid rgba(139, 92, 246, 0.3); box-shadow: 0 0 15px rgba(139, 92, 246, 0.1); }
+        .terminal-bg { background: #0f172a; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen p-4 md:p-8">
 
-    <nav class="p-6 border-b border-slate-800 bg-slate-900/50">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="font-brand text-2xl font-bold text-violet-500 hover:text-cyan-400 transition-colors">LVLUP <span class="text-slate-400">GAMES</span></a>
-            <a href="index.html" class="text-sm text-slate-400 hover:text-white uppercase tracking-widest">Dashboard</a>
+    <div class="max-w-xl mx-auto space-y-6">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+            <a href="index.html" class="font-brand text-2xl font-black text-violet-500 tracking-tighter hover:text-cyan-400 transition-colors">LVLUP GAMES</a>
+            <span class="text-[10px] text-slate-500 uppercase tracking-[0.2em]">Module: RNG_SPINNER_V2</span>
         </div>
-    </nav>
 
-    <main class="flex-grow container mx-auto px-4 py-12 max-w-2xl">
-        <div class="glass-panel p-8 rounded-3xl shadow-2xl">
-            <h1 class="font-brand text-4xl mb-2 text-center uppercase">Loot Spinner</h1>
-            <p class="text-slate-400 text-center mb-8 text-sm italic">Define your loot pool and initiate the RNG.</p>
+        <div class="terminal-bg neon-border rounded-lg p-12 text-center relative overflow-hidden group">
+            <div id="winnerText" class="font-brand text-5xl md:text-6xl font-black text-slate-800 uppercase tracking-tighter">READY</div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-violet-500/50 to-transparent"></div>
+        </div>
 
-            <div class="space-y-4 mb-8">
-                <div class="relative">
-                    <input type="text" id="itemInput" placeholder="Enter item name..." 
-                           class="w-full bg-slate-900/80 border border-slate-700 rounded-xl py-4 px-6 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all text-lg">
-                    <button id="addBtn" class="absolute right-2 top-2 bottom-2 px-6 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-bold transition-colors">ADD</button>
+        <div class="space-y-4">
+            <div class="flex gap-2">
+                <input type="text" id="itemInput" placeholder="ADD ITEM TO POOL..." 
+                       class="flex-1 bg-slate-900 border border-slate-800 rounded px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 transition-all font-mono uppercase">
+                <button id="addBtn" class="bg-violet-600 hover:bg-violet-500 px-6 rounded font-bold text-xs uppercase tracking-widest transition-all">ADD</button>
+            </div>
+
+            <div id="itemList" class="flex flex-wrap gap-2 p-4 bg-slate-950/50 border border-slate-900 rounded min-h-[60px]">
                 </div>
-                
-                <div id="itemList" class="flex flex-wrap gap-2 min-h-[100px] p-4 bg-slate-900/40 rounded-xl border border-dashed border-slate-800">
-                    </div>
-            </div>
-
-            <div id="displayArea" class="h-32 flex items-center justify-center bg-slate-950 rounded-2xl border-2 border-violet-900/30 mb-8 relative overflow-hidden">
-                <div id="winnerText" class="font-brand text-5xl font-black text-slate-700 tracking-tighter uppercase">READY</div>
-                <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-violet-500/5 to-transparent"></div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button id="spinBtn" class="flex-1 bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-violet-900/20 transition-all transform hover:scale-[1.02] active:scale-95 uppercase tracking-wider">
-                    Initiate Spin
-                </button>
-                
-                <button id="copyBtn" class="sm:w-20 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 py-4 px-4 rounded-xl transition-all flex items-center justify-center group" title="Copy List">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                    </svg>
-                </button>
-            </div>
         </div>
-    </main>
 
-    <footer class="p-8 text-center text-slate-500 text-xs tracking-widest uppercase">
-        &copy; 2026 LVLUP GAMES | <a href="privacy.html" class="hover:text-violet-400">Privacy Policy</a>
-    </footer>
+        <div class="grid grid-cols-4 gap-2">
+            <button id="spinBtn" class="col-span-3 bg-cyan-600 hover:bg-cyan-500 text-white font-black py-4 rounded uppercase tracking-[0.3em] shadow-lg shadow-cyan-900/20 transition-all active:scale-95">
+                Initiate Spin
+            </button>
+            <button id="copyBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-400 rounded flex items-center justify-center transition-all" title="Copy Pool">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="text-center">
+            <a href="index.html" class="text-[10px] text-slate-600 hover:text-slate-400 uppercase tracking-widest">← Return to Main Terminal</a>
+        </div>
+    </div>
 
     <script>
         const items = [];
@@ -93,8 +78,8 @@
             itemList.innerHTML = '';
             items.forEach((item, index) => {
                 const tag = document.createElement('div');
-                tag.className = 'bg-slate-800 text-slate-300 px-3 py-1 rounded-md text-sm border border-slate-700 flex items-center gap-2 animate-in fade-in zoom-in duration-300';
-                tag.innerHTML = `${item} <button onclick="removeItem(${index})" class="text-slate-500 hover:text-red-400">×</button>`;
+                tag.className = 'bg-slate-900 text-cyan-500/70 border border-slate-800 px-3 py-1 rounded text-[10px] font-mono uppercase flex items-center gap-2';
+                tag.innerHTML = `${item} <button onclick="removeItem(${index})" class="hover:text-red-500">×</button>`;
                 itemList.appendChild(tag);
             });
         }
@@ -113,13 +98,10 @@
             }
         });
 
-        itemInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addBtn.click();
-        });
+        itemInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addBtn.click(); });
 
         spinBtn.addEventListener('click', () => {
             if (items.length < 2) {
-                // YOUR CUSTOM MESSAGE UPDATE
                 alert("Add the last one on the list.");
                 return;
             }
@@ -127,32 +109,25 @@
 
             isSpinning = true;
             let counter = 0;
-            const finalWinner = Math.floor(Math.random() * items.length);
+            winnerText.classList.remove('text-slate-800', 'text-cyan-400');
+            winnerText.classList.add('text-violet-400');
             
             const interval = setInterval(() => {
                 winnerText.innerText = items[Math.floor(Math.random() * items.length)];
-                winnerText.classList.add('active-spin');
                 counter++;
-
-                if (counter > 20) {
+                if (counter > 25) {
                     clearInterval(interval);
+                    const finalWinner = Math.floor(Math.random() * items.length);
                     winnerText.innerText = items[finalWinner];
-                    winnerText.classList.add('text-cyan-400');
+                    winnerText.classList.replace('text-violet-400', 'text-cyan-400');
                     isSpinning = false;
                 }
-            }, 100);
+            }, 80);
         });
 
-        // RESTORED COPY LOGIC
         copyBtn.addEventListener('click', () => {
-            if (items.length === 0) {
-                alert("The list is empty!");
-                return;
-            }
-            const textToCopy = items.join('\n');
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                alert("List copied to clipboard!");
-            });
+            if (items.length === 0) return;
+            navigator.clipboard.writeText(items.join('\n')).then(() => alert("POOL DATA COPIED"));
         });
     </script>
 </body>
