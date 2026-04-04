@@ -3,242 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loot Spinner | LVLUP Games Hub</title>
+    <title>Loot Spinner | LVLUP Games</title>
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230f172a%22/><text x=%2250%%22 y=%2260%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22'Rajdhani', sans-serif%22 font-weight=%22700%22 font-size=%2255%22 fill=%22%238b5cf6%22>lvl</text><path d=%22M30 15 L50 35 L70 15 L60 15 L60 5 L40 5 L40 15 Z%22 fill=%22%2322d3ee%22/></svg>">
-    
-    <meta name="title" content="LVLUP Games | PH Gaming Utilities">
-    <meta name="description" content="Precision RNG Loot Spinner and interactive Quest Maker for the Philippine gaming community.">
 
+    <meta name="title" content="Loot Spinner | LVLUP Games">
+    <meta name="description" content="Precision RNG Loot Spinner for the Philippine gaming community. Level up your decision making.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://lvlupgames.org/">
-    <meta property="og:title" content="LVLUP Games | Loot Spinner & Quest Maker">
-    <meta property="og:description" content="High-precision gaming tools optimized for your guild.">
+    <meta property="og:url" content="https://lvlupgames.org/spinner.html">
+    <meta property="og:title" content="Loot Spinner | LVLUP Games">
+    <meta property="og:description" content="Precision RNG Loot Spinner for the Philippine gaming community.">
     <meta property="og:image" content="https://lvlupgames.org/logo.png">
-
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://lvlupgames.org/">
-    <meta property="twitter:title" content="LVLUP Games | PH Gaming Utilities">
-    <meta property="twitter:description" content="Precision RNG tools and interactive quest builders.">
-    <meta property="twitter:image" content="https://lvlupgames.org/logo.png">
-
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
-    <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#8b5cf6">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
 
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5597393742237061" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5597393742237061" crossorigin="anonymous"></script>
+
     <style>
-        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        .gamer-font { font-family: 'Rajdhani', sans-serif; }
-        canvas { filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.4)); transition: transform 0.1s ease-out; max-width: 100%; height: auto; }
-        .ad-zone { background: #1e293b; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 0.75rem; text-transform: uppercase; border-radius: 12px; }
-        .text-glow { text-shadow: 0 0 10px rgba(139, 92, 246, 0.8); }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .font-brand { font-family: 'Rajdhani', sans-serif; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(139, 92, 246, 0.2); }
+        .spin-item { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .active-spin { color: #22d3ee; text-shadow: 0 0 15px rgba(34, 211, 238, 0.5); transform: scale(1.1); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full border-b border-slate-800/50">
-        <div class="gamer-font text-3xl font-bold tracking-tighter text-violet-500">
-            <a href="index.html">LVLUP<span class="text-white text-glow">GAMES</span></a>
+    <nav class="p-6 border-b border-slate-800 bg-slate-900/50">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="font-brand text-2xl font-bold text-violet-500 hover:text-cyan-400 transition-colors">LVLUP <span class="text-slate-400">GAMES</span></a>
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white uppercase tracking-widest">Dashboard</a>
         </div>
-        <div class="hidden lg:flex space-x-6 font-medium text-[10px] uppercase tracking-widest items-center">
-            <a href="index.html" class="hover:text-violet-400 transition">Library</a>
-            <a href="spinner.html" class="text-violet-400 border-b-2 border-violet-500 pb-1">Spinner</a>
-            <a href="builder.html" class="hover:text-violet-400 transition">Quest Maker</a>
-            <a href="guild.html" class="hover:text-violet-400 transition">The Guild</a>
-            <a href="guildrecruitment.html" class="hover:text-violet-400 transition">Recruit</a>
-            <span class="h-4 w-[1px] bg-slate-800"></span>
-            <a href="privacy.html" class="text-gray-500 hover:text-white transition">Privacy</a>
-        </div>
-        <a href="index.html" class="text-gray-500 hover:text-white transition text-[10px] font-bold uppercase border border-slate-800 px-3 py-2 rounded-lg">Home</a>
     </nav>
 
-    <main class="flex-1 flex flex-col md:flex-row max-w-[1600px] mx-auto w-full">
-        <aside class="w-full md:w-1/4 p-6 border-r border-slate-800 space-y-6">
-            <div class="ad-zone h-32 w-full">
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5597393742237061" data-ad-slot="default" data-ad-format="horizontal"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-            <div class="bg-slate-800/30 p-6 rounded-2xl border border-slate-700 shadow-xl">
-                <h2 class="gamer-font text-xl text-violet-400 mb-4 uppercase font-bold tracking-widest">Loot Table</h2>
-                <textarea id="namesInput" oninput="updateWheel()" class="w-full h-64 bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none focus:border-violet-500 transition-all text-sm leading-relaxed" placeholder="One name per line...">Patrixja&#10;LeeYawn&#10;Justine&#10;Rome&#10;Irene</textarea>
-            </div>
-        </aside>
+    <main class="flex-grow container mx-auto px-4 py-12 max-w-2xl">
+        <div class="glass-panel p-8 rounded-3xl shadow-2xl">
+            <h1 class="font-brand text-4xl mb-2 text-center uppercase">Loot Spinner</h1>
+            <p class="text-slate-400 text-center mb-8 text-sm italic">Define your loot pool and initiate the RNG.</p>
 
-        <section class="flex-1 flex flex-col items-center justify-center p-8 relative">
-            <div class="text-center mb-10">
-                <h1 class="gamer-font text-5xl md:text-6xl font-black text-white uppercase tracking-tighter">LOOT <span class="text-violet-500">SPINNER.</span></h1>
-                <p class="text-gray-500 uppercase tracking-widest text-[9px] mt-2 font-bold opacity-80 italic tracking-[0.2em]">RNG Distribution for the Core Guild</p>
+            <div class="space-y-4 mb-8">
+                <div class="relative">
+                    <input type="text" id="itemInput" placeholder="Enter item name..." 
+                           class="w-full bg-slate-900/80 border border-slate-700 rounded-xl py-4 px-6 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all text-lg">
+                    <button id="addBtn" class="absolute right-2 top-2 bottom-2 px-6 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-bold transition-colors">ADD</button>
+                </div>
+                
+                <div id="itemList" class="flex flex-wrap gap-2 min-h-[100px] p-4 bg-slate-900/40 rounded-xl border border-dashed border-slate-800">
+                    </div>
             </div>
 
-            <div class="relative mb-10">
-                <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[25px] border-t-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
-                <canvas id="wheelCanvas" width="500" height="500"></canvas>
+            <div id="displayArea" class="h-32 flex items-center justify-center bg-slate-950 rounded-2xl border-2 border-violet-900/30 mb-8 relative overflow-hidden">
+                <div id="winnerText" class="font-brand text-5xl font-black text-slate-700 tracking-tighter uppercase">READY</div>
+                <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-violet-500/5 to-transparent"></div>
             </div>
 
-            <button id="spinBtn" onclick="spin()" class="bg-gradient-to-br from-violet-600 to-indigo-700 hover:scale-105 active:scale-95 transition-all px-16 py-5 rounded-2xl font-bold text-xl shadow-2xl shadow-violet-500/20 uppercase tracking-[0.2em] gamer-font">
-                Initiate Spin
-            </button>
-        </section>
-
-        <aside class="w-full md:w-1/4 p-6 border-l border-slate-800 flex flex-col bg-slate-900/20">
-            <h2 class="gamer-font text-xl text-indigo-400 uppercase font-bold tracking-widest mb-6 text-center">Drop History</h2>
-            <div id="chosenList" class="flex flex-col gap-3 overflow-y-auto flex-1 mb-6">
-                <p id="emptyState" class="text-slate-600 italic text-xs text-center mt-10">Awaiting first drop...</p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button id="spinBtn" class="flex-1 bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-violet-900/20 transition-all transform hover:scale-[1.02] active:scale-95 uppercase tracking-wider">
+                    Initiate Spin
+                </button>
+                
+                <button id="copyBtn" class="sm:w-20 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 py-4 px-4 rounded-xl transition-all flex items-center justify-center group" title="Copy List">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                </button>
             </div>
-            <div class="ad-zone h-64 w-full">
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5597393742237061" data-ad-slot="default" data-ad-format="rectangle"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-        </aside>
+        </div>
     </main>
 
-    <section class="max-w-7xl mx-auto px-8 py-16 border-t border-slate-800 bg-slate-950/30">
-        <div class="grid md:grid-cols-3 gap-12 text-[10px] leading-loose text-slate-500 uppercase tracking-widest">
-            <div>
-                <h3 class="text-white font-bold tracking-[0.3em] mb-2">High-Tension Physics</h3>
-                <p>Features a 5000ms variable friction algorithm. The initial burst velocity simulates mechanical inertia, providing a cinematic slowdown phase for maximum tension.</p>
-            </div>
-            <div>
-                <h3 class="text-white font-bold tracking-[0.3em] mb-2">Privacy & Local Processing</h3>
-                <p>This utility operates entirely within the client-side DOM. No entry data, including loot names or results, is transmitted to external servers.</p>
-            </div>
-            <div>
-                <h3 class="text-white font-bold tracking-[0.3em] mb-2">Guild Support</h3>
-                <p>Proudly powered by the LVLUP Games Philippines community. Special thanks to our core contributors and patrons for enabling continued development.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="py-10 border-t border-slate-900 text-center text-slate-600 text-[10px] uppercase tracking-widest">
-        <div class="flex justify-center space-x-6 mb-4">
-            <a href="index.html" class="hover:text-white transition">Home</a>
-            <a href="privacy.html" class="hover:text-white transition underline decoration-violet-500/30 underline-offset-4">Privacy Policy</a>
-        </div>
-        <p>&copy; 2026 LVLUP Games Hub</p>
+    <footer class="p-8 text-center text-slate-500 text-xs tracking-widest uppercase">
+        &copy; 2026 LVLUP GAMES | <a href="privacy.html" class="hover:text-violet-400">Privacy Policy</a>
     </footer>
 
-    <div id="winnerModal" class="fixed inset-0 bg-slate-950/95 hidden flex items-center justify-center z-[100] backdrop-blur-xl">
-        <div class="text-center p-12 bg-slate-900 rounded-[2.5rem] border border-violet-500/30 shadow-2xl max-w-sm w-full mx-4">
-            <h3 class="text-violet-400 uppercase tracking-widest mb-2 font-bold text-[10px]">Result Decided:</h3>
-            <h2 id="winnerName" class="gamer-font text-5xl text-white mb-10 break-words uppercase">NAME</h2>
-            <div class="flex flex-col gap-4">
-                <button onclick="removeAndClose()" class="w-full bg-violet-600 text-white py-4 rounded-2xl font-bold transition-all uppercase text-xs tracking-widest">Remove Entry</button>
-                <button onclick="closeModal()" class="w-full bg-slate-800 text-slate-400 py-4 rounded-2xl font-bold transition-all uppercase text-xs tracking-widest hover:bg-slate-700">Keep in Table</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        const canvas = document.getElementById('wheelCanvas');
-        const ctx = canvas.getContext('2d');
-        const namesInput = document.getElementById('namesInput');
-        const chosenList = document.getElementById('chosenList');
+        const items = [];
+        const itemInput = document.getElementById('itemInput');
+        const addBtn = document.getElementById('addBtn');
+        const itemList = document.getElementById('itemList');
+        const winnerText = document.getElementById('winnerText');
         const spinBtn = document.getElementById('spinBtn');
-        
-        let names = [];
-        let startAngle = 0;
-        let arc = 0;
-        let spinTimeout = null;
-        let spinAngleStart = 0;
-        let spinTime = 0;
-        let spinTimeTotal = 0;
-        let lastWinner = "";
+        const copyBtn = document.getElementById('copyBtn');
+        let isSpinning = false;
 
-        const colors = ["#8b5cf6", "#6d28d9", "#4c1d95", "#7c3aed", "#5b21b6", "#1e1b4b"];
-
-        function drawWheel() {
-            names = namesInput.value.split('\n').filter(name => name.trim() !== "");
-            if (names.length === 0) { ctx.clearRect(0,0,500,500); return; }
-            arc = Math.PI / (names.length / 2);
-            ctx.clearRect(0,0,500,500);
-            names.forEach((name, i) => {
-                const angle = startAngle + i * arc;
-                ctx.fillStyle = colors[i % colors.length];
-                ctx.beginPath(); ctx.moveTo(250, 250);
-                ctx.arc(250, 250, 240, angle, angle + arc, false);
-                ctx.lineTo(250, 250); ctx.fill();
-                ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 2; ctx.stroke();
-                ctx.save(); ctx.fillStyle = "white"; ctx.font = 'bold 16px Inter';
-                ctx.translate(250 + Math.cos(angle + arc / 2) * 180, 250 + Math.sin(angle + arc / 2) * 180);
-                ctx.rotate(angle + arc / 2); ctx.fillText(name, -ctx.measureText(name).width / 2, 0); ctx.restore();
+        function updateList() {
+            itemList.innerHTML = '';
+            items.forEach((item, index) => {
+                const tag = document.createElement('div');
+                tag.className = 'bg-slate-800 text-slate-300 px-3 py-1 rounded-md text-sm border border-slate-700 flex items-center gap-2 animate-in fade-in zoom-in duration-300';
+                tag.innerHTML = `${item} <button onclick="removeItem(${index})" class="text-slate-500 hover:text-red-400">×</button>`;
+                itemList.appendChild(tag);
             });
         }
 
-        function spin() {
-            if (names.length < 2) { alert("Add at least 2 entries!"); return; }
-            spinBtn.disabled = true;
-            spinBtn.innerText = "SPINNING...";
-            
-            spinAngleStart = Math.random() * 15 + 25; 
-            spinTime = 0;
-            spinTimeTotal = Math.random() * 1000 + 4500; 
-            
-            rotateWheel();
+        function removeItem(index) {
+            items.splice(index, 1);
+            updateList();
         }
 
-        function rotateWheel() {
-            spinTime += 30;
-            if(spinTime >= spinTimeTotal) { stopRotateWheel(); return; }
-            const spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
-            startAngle += (spinAngle * Math.PI / 180);
-            drawWheel();
-            canvas.style.transform = `scale(${1 + (spinAngle/200)})`;
-            spinTimeout = setTimeout(rotateWheel, 30);
-        }
-
-        function stopRotateWheel() {
-            clearTimeout(spinTimeout);
-            spinBtn.disabled = false;
-            spinBtn.innerText = "INITIATE SPIN";
-            canvas.style.transform = `scale(1)`;
-            
-            const degrees = startAngle * 180 / Math.PI + 90;
-            const arcd = arc * 180 / Math.PI;
-            const index = Math.floor((360 - degrees % 360) / arcd);
-            lastWinner = names[index < 0 ? index + names.length : index];
-            document.getElementById('winnerName').innerText = lastWinner;
-            document.getElementById('winnerModal').classList.remove('hidden');
-            addToChosenList(lastWinner);
-        }
-
-        function addToChosenList(name) {
-            document.getElementById('emptyState').classList.add('hidden');
-            const item = document.createElement('div');
-            item.className = "bg-slate-800/50 border-l-2 border-violet-500 p-3 rounded-lg text-[11px] font-semibold flex justify-between items-center animate-in fade-in slide-in-from-right-4";
-            item.innerHTML = `<span>${name}</span><span class="text-[9px] text-slate-500 uppercase">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>`;
-            chosenList.prepend(item);
-        }
-
-        function removeAndClose() {
-            const currentNames = namesInput.value.split('\n').filter(n => n.trim() !== "");
-            const index = currentNames.indexOf(lastWinner);
-            if (index > -1) {
-                currentNames.splice(index, 1);
-                namesInput.value = currentNames.join('\n');
-                updateWheel();
+        addBtn.addEventListener('click', () => {
+            const val = itemInput.value.trim();
+            if (val) {
+                items.push(val);
+                itemInput.value = '';
+                updateList();
             }
-            closeModal();
-        }
+        });
 
-        function easeOut(t, b, c, d) {
-            const ts = (t /= d) * t;
-            const tc = ts * t;
-            return b + c * (tc + -3 * ts + 3 * t);
-        }
+        itemInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addBtn.click();
+        });
 
-        function updateWheel() { drawWheel(); }
-        function closeModal() { document.getElementById('winnerModal').classList.add('hidden'); }
-        updateWheel();
+        spinBtn.addEventListener('click', () => {
+            if (items.length < 2) {
+                // YOUR CUSTOM MESSAGE UPDATE
+                alert("Add the last one on the list.");
+                return;
+            }
+            if (isSpinning) return;
+
+            isSpinning = true;
+            let counter = 0;
+            const finalWinner = Math.floor(Math.random() * items.length);
+            
+            const interval = setInterval(() => {
+                winnerText.innerText = items[Math.floor(Math.random() * items.length)];
+                winnerText.classList.add('active-spin');
+                counter++;
+
+                if (counter > 20) {
+                    clearInterval(interval);
+                    winnerText.innerText = items[finalWinner];
+                    winnerText.classList.add('text-cyan-400');
+                    isSpinning = false;
+                }
+            }, 100);
+        });
+
+        // RESTORED COPY LOGIC
+        copyBtn.addEventListener('click', () => {
+            if (items.length === 0) {
+                alert("The list is empty!");
+                return;
+            }
+            const textToCopy = items.join('\n');
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert("List copied to clipboard!");
+            });
+        });
     </script>
 </body>
 </html>
