@@ -164,18 +164,25 @@
         }
 
         function spin() {
-            if (names.length < 2) { 
-                // FIX 1: Programmatically add the squad
-                const squad = ["Patrixja", "Leeyawn", "Justine", "Rome", "Irene"];
-                namesInput.value = squad.join('\n');
+            if (names.length === 1) {
+                // Instantly declare the last remaining entry as the winner
+                lastWinner = names[0];
+                document.getElementById('winnerName').innerText = lastWinner;
+                document.getElementById('winnerModal').classList.remove('hidden');
+                addToChosenList(lastWinner);
+                
+                // Remove them from the active list since they are the last one
+                namesInput.value = "";
                 updateWheel();
-                alert("Add the last one on the list."); 
-                return; 
+                return;
+            } else if (names.length === 0) {
+                alert("The wheel is empty! Please add entries to spin.");
+                return;
             }
+
             spinBtn.disabled = true;
             spinAngleStart = Math.random() * 10 + 10;
             spinTime = 0;
-            // FIX 2: Spin duration set between 4-6 seconds
             spinTimeTotal = Math.random() * 2000 + 4000;
             rotateWheel();
         }
