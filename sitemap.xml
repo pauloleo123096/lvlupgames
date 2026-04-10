@@ -2,31 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
       <loc>https://lvlupgames.org/index.html</loc>
-      <lastmod>2026-04-04</lastmod>
+      <lastmod>2026-04-11</lastmod>
       <changefreq>weekly</changefreq>
       <priority>1.0</priority>
    </url>
    <url>
       <loc>https://lvlupgames.org/spinner.html</loc>
-      <lastmod>2026-04-04</lastmod>
+      <lastmod>2026-04-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
       <loc>https://lvlupgames.org/builder.html</loc>
-      <lastmod>2026-04-04</lastmod>
+      <lastmod>2026-04-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://lvlupgames.org/guild.html</loc>
-      <lastmod>2026-04-04</lastmod>
-      <changefreq>yearly</changefreq>
-      <priority>0.5</priority>
-   </url>
-   <url>
       <loc>https://lvlupgames.org/privacy.html</loc>
-      <lastmod>2026-04-04</lastmod>
+      <lastmod>2026-04-11</lastmod>
       <changefreq>yearly</changefreq>
       <priority>0.3</priority>
    </url>
