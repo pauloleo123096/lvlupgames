@@ -128,14 +128,20 @@
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
 
-        <section class="mt-20 pt-10 border-t border-slate-800 grid md:grid-cols-2 gap-10 text-gray-500 text-[10px] leading-loose uppercase tracking-[0.1em]">
-            <div class="space-y-4">
-                <h3 class="text-white font-bold tracking-[0.2em]">Data Serialization Protocol</h3>
-                <p>The LVLUP Quest Maker implements a stateless data architecture using RFC 4648 Base64 encoding. This allows your custom quest parameters to be passed entirely through the URI string, ensuring that no user-generated prank data is stored on our servers, prioritizing privacy and security.</p>
-            </div>
-            <div class="space-y-4">
-                <h3 class="text-white font-bold tracking-[0.2em]">Community Compliance</h3>
-                <p>Developed for the Philippine gaming and dev community. This tool is part of the LVLUP open-source utility library designed to demonstrate interactive DOM manipulation and event listeners in a fun, non-malicious environment.</p>
+        <section class="mt-20 pt-10 border-t border-slate-800 text-gray-400 text-sm leading-relaxed">
+            <h2 class="gamer-font text-3xl text-white uppercase mb-8 text-center">Engine <span class="text-violet-500">Architecture</span></h2>
+
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="bg-slate-900/30 p-8 border border-slate-800 rounded-2xl">
+                    <h3 class="text-violet-400 font-bold tracking-[0.2em] uppercase text-xs mb-4">Data Serialization</h3>
+                    <p class="mb-4">The LVLUP Quest Maker implements a stateless data architecture using RFC 4648 Base64 encoding. This allows your custom quest parameters—including recipient names, dialogue, and UI text—to be passed entirely through the URI string.</p>
+                    <p>By relying on URL parameters rather than database storage, we ensure that no user-generated prank data is ever stored on our centralized servers, prioritizing strict privacy and data security.</p>
+                </div>
+                <div class="bg-slate-900/30 p-8 border border-slate-800 rounded-2xl">
+                    <h3 class="text-violet-400 font-bold tracking-[0.2em] uppercase text-xs mb-4">Community Compliance</h3>
+                    <p class="mb-4">Developed for the Philippine gaming and developer community, this tool is part of the LVLUP open-source utility library. It is designed specifically to demonstrate interactive DOM manipulation, collision detection, and event listeners in a fun, non-malicious environment.</p>
+                    <p>The "evasive button" logic utilizes client-side viewport clamping to ensure the UI remains responsive across both desktop cursors and mobile touchscreens without causing browser memory leaks.</p>
+                </div>
             </div>
         </section>
     </div>
