@@ -31,7 +31,6 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#8b5cf6">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -56,14 +55,15 @@
 <body class="selection:bg-violet-500 selection:text-white">
 
     <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto border-b border-slate-800/50">
-        <div class="brand text-3xl font-bold tracking-tighter text-violet-500">
+        <div class="brand text-3xl font-bold tracking-tighter text-violet-500 w-48">
             <a href="index.html">LVLUP<span class="text-white">GAMES</span></a>
         </div>
-        <div class="hidden md:flex space-x-8 font-medium text-xs uppercase tracking-widest">
+        <div class="hidden md:flex space-x-8 font-medium text-xs uppercase tracking-widest justify-center flex-1">
             <a href="index.html" class="text-violet-400 border-b-2 border-violet-500 pb-1">Library</a>
             <a href="spinner.html" class="hover:text-violet-400 transition">Loot Spinner</a>
             <a href="builder.html" class="hover:text-violet-400 transition">Prank Builder</a>
         </div>
+        <div class="w-48 hidden md:block"></div>
     </nav>
 
     <header class="hero-bg pt-28 pb-24 px-8 text-center">
