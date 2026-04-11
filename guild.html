@@ -52,36 +52,264 @@
         </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-6 pb-24">
-        <header class="text-center mb-16">
-            <h1 class="gamer-font text-5xl md:text-6xl font-black uppercase tracking-tight mb-4 text-glow">The <span class="text-violet-500">Guild</span></h1>
-            <p class="text-slate-500 uppercase tracking-[0.4em] text-[10px]">Community-Driven Gaming Utilities</p>
+    <!-- Login Section -->
+    <div id="login-section" class="max-w-md mx-auto px-6 pb-24 text-center mt-20 hidden">
+        <h1 class="gamer-font text-5xl font-black uppercase tracking-tight mb-8 text-glow">Join The <span class="text-violet-500">Guild</span></h1>
+        <div class="vision-card p-8 rounded-3xl">
+            <p class="text-slate-400 mb-6 text-sm">Log in to view the social feed and connect with the community.</p>
+            <input type="text" id="username-input" placeholder="Enter your username" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white mb-4 focus:outline-none focus:border-violet-500 transition">
+            <button id="login-btn" class="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-3 px-4 rounded-lg transition gamer-font uppercase tracking-wider text-lg">
+                Log In
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Social Feed Section -->
+    <main id="main-app" class="max-w-4xl mx-auto px-6 pb-24 hidden">
+        <header class="text-center mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="gamer-font text-4xl md:text-5xl font-black uppercase tracking-tight text-glow">The <span class="text-violet-500">Guild</span> Feed</h1>
+            <button id="logout-btn" class="text-slate-400 hover:text-white transition text-sm uppercase tracking-widest font-bold">Logout</button>
         </header>
 
-        <section class="vision-card p-10 rounded-[2.5rem] mb-12">
-            <h2 class="gamer-font text-3xl uppercase mb-6 text-white">Our Mission</h2>
-            <p class="text-slate-400 leading-relaxed mb-6">
-                LVLUP Games Hub was established to provide the Philippine gaming community with high-performance, client-side tools that enhance social interaction and fair play. From transparent loot distribution to interactive engagement tools, we build for the players.
-            </p>
-            <p class="text-slate-400 leading-relaxed">
-                Every line of code is optimized for low latency and high reliability, ensuring that whether you are managing a guild recruitment or running a community giveaway, the experience is seamless.
-            </p>
+        <!-- Create Post Section -->
+        <section id="create-post-section" class="vision-card p-6 rounded-3xl mb-10">
+            <h2 class="gamer-font text-2xl uppercase mb-4 text-violet-400">Create Post</h2>
+
+            <div class="flex gap-4 mb-4">
+                <button id="tab-short" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg transition border border-slate-600 focus:border-violet-500 text-sm">Short Note</button>
+                <button id="tab-long" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg transition border border-slate-600 focus:border-violet-500 text-sm">Long Note</button>
+                <button id="tab-pic" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg transition border border-slate-600 focus:border-violet-500 text-sm">Picture</button>
+            </div>
+
+            <!-- Short Note Form -->
+            <div id="form-short" class="post-form">
+                <textarea id="short-note-input" rows="2" maxlength="150" placeholder="What's on your mind? (150 chars max)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white mb-2 focus:outline-none focus:border-violet-500 transition resize-none"></textarea>
+            </div>
+
+            <!-- Long Note Form -->
+            <div id="form-long" class="post-form hidden">
+                <textarea id="long-note-input" rows="5" maxlength="1000" placeholder="Share a detailed quest or story..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white mb-2 focus:outline-none focus:border-violet-500 transition resize-y"></textarea>
+            </div>
+
+            <!-- Picture Form -->
+            <div id="form-pic" class="post-form hidden">
+                <input type="text" id="pic-url-input" placeholder="Enter Image URL (e.g., https://example.com/image.png)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white mb-3 focus:outline-none focus:border-violet-500 transition">
+                <textarea id="pic-caption-input" rows="2" placeholder="Write a caption..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white mb-2 focus:outline-none focus:border-violet-500 transition resize-none"></textarea>
+            </div>
+
+            <div class="flex justify-between items-center mt-2">
+                <p class="text-xs text-slate-500 italic">By posting, you agree to our <a href="privacy.html" class="text-violet-400 hover:underline">Privacy Policy</a>.</p>
+                <button id="submit-post-btn" class="bg-violet-600 hover:bg-violet-500 text-white font-bold py-2 px-6 rounded-lg transition gamer-font uppercase tracking-wider">
+                    Post
+                </button>
+            </div>
+
+            <div id="limit-warning" class="hidden mt-4 p-3 bg-red-900/50 border border-red-500/50 text-red-200 text-sm rounded-lg text-center">
+                You have reached your limit of 3 posts.
+            </div>
         </section>
 
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="vision-card p-8 rounded-3xl">
-                <h3 class="gamer-font text-xl uppercase text-violet-400 mb-3">Community First</h3>
-                <p class="text-xs text-slate-500 leading-loose">We prioritize user feedback to iterate on our RNG algorithms and UI/UX flows, ensuring our tools meet the specific needs of local gaming groups.</p>
-            </div>
-            <div class="vision-card p-8 rounded-3xl">
-                <h3 class="gamer-font text-xl uppercase text-indigo-400 mb-3">Open Innovation</h3>
-                <p class="text-xs text-slate-500 leading-loose">While our core leadership remains focused on stability, we welcome technical contributions from developers across the archipelago.</p>
-            </div>
-        </div>
+        <!-- Feed Section -->
+        <section id="feed-section" class="space-y-6">
+            <!-- Posts will be generated here -->
+        </section>
     </main>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginSection = document.getElementById('login-section');
+            const mainApp = document.getElementById('main-app');
+            const usernameInput = document.getElementById('username-input');
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+
+            function checkLogin() {
+                const username = localStorage.getItem('guild_username');
+                if (username) {
+                    loginSection.classList.add('hidden');
+                    mainApp.classList.remove('hidden');
+                } else {
+                    loginSection.classList.remove('hidden');
+                    mainApp.classList.add('hidden');
+                }
+            }
+
+            loginBtn.addEventListener('click', () => {
+                const username = usernameInput.value.trim();
+                if (username) {
+                    localStorage.setItem('guild_username', username);
+                    checkLogin();
+                } else {
+                    alert('Please enter a username.');
+                }
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('guild_username');
+                usernameInput.value = '';
+                checkLogin();
+            });
+
+            // --- POSTING FUNCTIONALITY ---
+            const tabShort = document.getElementById('tab-short');
+            const tabLong = document.getElementById('tab-long');
+            const tabPic = document.getElementById('tab-pic');
+
+            const formShort = document.getElementById('form-short');
+            const formLong = document.getElementById('form-long');
+            const formPic = document.getElementById('form-pic');
+
+            const shortInput = document.getElementById('short-note-input');
+            const longInput = document.getElementById('long-note-input');
+            const picUrlInput = document.getElementById('pic-url-input');
+            const picCaptionInput = document.getElementById('pic-caption-input');
+
+            const submitPostBtn = document.getElementById('submit-post-btn');
+            const feedSection = document.getElementById('feed-section');
+            const limitWarning = document.getElementById('limit-warning');
+
+            let currentTab = 'short';
+            let posts = JSON.parse(localStorage.getItem('guild_posts')) || [];
+
+            function switchTab(tab) {
+                currentTab = tab;
+                [formShort, formLong, formPic].forEach(el => el.classList.add('hidden'));
+                [tabShort, tabLong, tabPic].forEach(el => el.classList.remove('border-violet-500', 'text-violet-400'));
+
+                if (tab === 'short') {
+                    formShort.classList.remove('hidden');
+                    tabShort.classList.add('border-violet-500', 'text-violet-400');
+                } else if (tab === 'long') {
+                    formLong.classList.remove('hidden');
+                    tabLong.classList.add('border-violet-500', 'text-violet-400');
+                } else if (tab === 'pic') {
+                    formPic.classList.remove('hidden');
+                    tabPic.classList.add('border-violet-500', 'text-violet-400');
+                }
+            }
+
+            tabShort.addEventListener('click', () => switchTab('short'));
+            tabLong.addEventListener('click', () => switchTab('long'));
+            tabPic.addEventListener('click', () => switchTab('pic'));
+
+            // Initialize tab
+            switchTab('short');
+
+            function renderPosts() {
+                feedSection.innerHTML = '';
+
+                if (posts.length === 0) {
+                    feedSection.innerHTML = '<div class="text-center text-slate-500 italic py-10">No posts yet. Be the first to share!</div>';
+                } else {
+                    posts.forEach(post => {
+                        const postEl = document.createElement('div');
+                        postEl.className = 'vision-card p-6 rounded-3xl';
+
+                        let contentHTML = '';
+                        if (post.type === 'short' || post.type === 'long') {
+                            contentHTML = `<p class="text-slate-300 whitespace-pre-wrap">${escapeHTML(post.content)}</p>`;
+                        } else if (post.type === 'pic') {
+                            contentHTML = `
+                                <img src="${escapeHTML(post.url)}" alt="User posted image" class="rounded-xl w-full max-h-96 object-cover mb-4 border border-slate-700">
+                                <p class="text-slate-300 whitespace-pre-wrap">${escapeHTML(post.caption)}</p>
+                            `;
+                        }
+
+                        postEl.innerHTML = `
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center font-bold text-lg mr-3 gamer-font">
+                                    ${escapeHTML(post.author.charAt(0).toUpperCase())}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-violet-400">${escapeHTML(post.author)}</p>
+                                    <p class="text-xs text-slate-500">${new Date(post.timestamp).toLocaleString()}</p>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                ${contentHTML}
+                            </div>
+                        `;
+                        feedSection.appendChild(postEl);
+                    });
+                }
+
+                checkPostLimit();
+            }
+
+            function checkPostLimit() {
+                const currentUser = localStorage.getItem('guild_username');
+                const userPosts = posts.filter(p => p.author === currentUser);
+
+                if (userPosts.length >= 3) {
+                    submitPostBtn.disabled = true;
+                    submitPostBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    limitWarning.classList.remove('hidden');
+                } else {
+                    submitPostBtn.disabled = false;
+                    submitPostBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    limitWarning.classList.add('hidden');
+                }
+            }
+
+            submitPostBtn.addEventListener('click', () => {
+                const currentUser = localStorage.getItem('guild_username');
+                if (!currentUser) return;
+
+                const userPosts = posts.filter(p => p.author === currentUser);
+                if (userPosts.length >= 3) {
+                    alert('You have reached the maximum limit of 3 posts.');
+                    return;
+                }
+
+                let newPost = {
+                    id: Date.now().toString(),
+                    author: currentUser,
+                    timestamp: new Date().toISOString(),
+                    type: currentTab
+                };
+
+                if (currentTab === 'short') {
+                    if (!shortInput.value.trim()) return alert('Please write something.');
+                    newPost.content = shortInput.value.trim();
+                    shortInput.value = '';
+                } else if (currentTab === 'long') {
+                    if (!longInput.value.trim()) return alert('Please write something.');
+                    newPost.content = longInput.value.trim();
+                    longInput.value = '';
+                } else if (currentTab === 'pic') {
+                    if (!picUrlInput.value.trim()) return alert('Please provide an image URL.');
+                    newPost.url = picUrlInput.value.trim();
+                    newPost.caption = picCaptionInput.value.trim();
+                    picUrlInput.value = '';
+                    picCaptionInput.value = '';
+                }
+
+                posts.unshift(newPost); // Add to beginning of array
+                localStorage.setItem('guild_posts', JSON.stringify(posts));
+                renderPosts();
+            });
+
+            function escapeHTML(str) {
+                return str.replace(/[&<>'"]/g,
+                    tag => ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        "'": '&#39;',
+                        '"': '&quot;'
+                    }[tag] || tag)
+                );
+            }
+
+            checkLogin();
+            renderPosts(); // Initial render
+        });
+    </script>
+
     <footer class="py-12 border-t border-slate-900 text-center text-slate-600 text-[10px] uppercase tracking-widest">
-        <p>&copy; 2026 LVLUP Games Hub | Philippines</p>
+        <p class="mb-2">&copy; 2026 LVLUP Games Hub | Philippines</p>
+        <p class="text-slate-500 italic lowercase tracking-normal text-xs">Disclaimer: We value your privacy. We do not sell user data.</p>
+        <a href="privacy.html" class="text-violet-500 hover:text-violet-400 transition mt-2 inline-block">Read our Privacy Policy</a>
     </footer>
 
 </body>
