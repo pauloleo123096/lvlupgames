@@ -48,7 +48,7 @@
         <a href="index.html" class="text-gray-400 hover:text-white transition text-[10px] uppercase font-bold tracking-widest">Back to Library</a>
     </nav>
 
-    <div class="flex flex-col md:flex-row flex-1">
+    <div class="flex flex-col md:flex-row">
         <div class="w-full md:w-1/4 p-6 border-r border-slate-800 flex flex-col gap-6">
             <div class="ad-zone h-32 w-full">
                 <ins class="adsbygoogle"
@@ -114,6 +114,24 @@
         </div>
     </div>
 
+    <section class="max-w-5xl mx-auto mt-20 mb-12 p-8 md:p-12 bg-slate-900/30 border border-slate-800 rounded-[2.5rem]">
+        <h2 class="gamer-font text-3xl text-white uppercase mb-6">About the <span class="text-violet-500">Loot Spinner</span> Engine</h2>
+        <div class="space-y-6 text-gray-400 text-sm leading-relaxed">
+            <p>
+                The LVLUP Loot Spinner is a high-fidelity Random Number Generator (RNG) utility designed specifically for the Philippine gaming community. Whether you are a Dungeon Master deciding the fate of a tabletop campaign, a guild leader distributing high-tier raid drops, or a streamer hosting a community giveaway, true randomness is essential for transparent and fair play.
+            </p>
+            <p>
+                Our client-side architecture ensures that every spin is mathematically unpredictable. Because the physics simulation and randomization logic execute entirely within your local browser, there is zero network latency and no possibility of server-side manipulation. This guarantees a provably fair outcome for all guild members.
+            </p>
+            <h3 class="text-violet-400 font-bold uppercase tracking-widest mt-8 mb-4 text-xs">Standard Operating Procedure:</h3>
+            <ul class="list-disc pl-5 space-y-3">
+                <li>Input your squad members, raid participants, or specific loot items into the terminal (one entry per line).</li>
+                <li>Initialize the module to activate the physics engine.</li>
+                <li>Consult the "Chosen Loot" log, which automatically tracks successful hits and timestamps to prevent post-raid disputes.</li>
+            </ul>
+        </div>
+    </section>
+
     <div id="winnerModal" class="fixed inset-0 bg-slate-950/90 hidden flex items-center justify-center z-[100] backdrop-blur-md">
         <div class="text-center p-12 bg-slate-900 rounded-3xl border border-violet-500 shadow-2xl max-w-sm w-full mx-4">
             <h3 class="text-violet-400 uppercase tracking-widest mb-2 font-bold text-sm">Target Acquired:</h3>
@@ -165,13 +183,11 @@
 
         function spin() {
             if (names.length === 1) {
-                // Instantly declare the last remaining entry as the winner
                 lastWinner = names[0];
                 document.getElementById('winnerName').innerText = lastWinner;
                 document.getElementById('winnerModal').classList.remove('hidden');
                 addToChosenList(lastWinner);
                 
-                // Remove them from the active list since they are the last one
                 namesInput.value = "";
                 updateWheel();
                 return;
