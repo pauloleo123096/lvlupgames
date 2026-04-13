@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LVLUP | TD Engine Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow: hidden; }
+        .gamer-font { font-family: 'Rajdhani', sans-serif; }
+        canvas { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; box-shadow: 0 0 20px rgba(139, 92, 246, 0.1); }
+        textarea { font-family: monospace; background: #020617; border: 1px solid #475569; color: #38bdf8; resize: none; outline: none; }
+        textarea:focus { border-color: #8b5cf6; }
+    </style>
+</head>
+<body class="h-screen flex flex-col p-6">
+
+    <header class="mb-6 flex justify-between items-end">
+        <div>
+            <h1 class="gamer-font text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400 uppercase tracking-tighter">Project: Override</h1>
+            <p class="text-xs text-gray-500 uppercase tracking-widest font-bold">Data-Driven HTML5 Canvas Engine</p>
+        </div>
+        <div class="text-right">
+            <p class="text-xs text-gray-400 uppercase tracking-widest">Base Health: <span id="baseHealth" class="text-green-400 font-bold">100</span></p>
+            <p class="text-xs text-gray-400 uppercase tracking-widest">Credits: <span id="credits" class="text-yellow-400 font-bold">0</span></p>
+        </div>
+    </header>
+
+    <div class="flex-1 flex gap-6">
+        <div class="flex-1 flex justify-center items-center relative">
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+            
+            <div id="gameOver" class="absolute inset-0 bg-slate-950/80 hidden flex-col items-center justify-center z-10 rounded-xl">
+                <h2 class="gamer-font text-5xl text-red-500 uppercase tracking-widest mb-4">Breach Detected</h2>
+                <button onclick="location.reload()" class="bg-red-600 hover:bg-red-500 px-6 py-2 rounded font-bold uppercase text-xs tracking-widest">Reboot Engine</button>
+            </div>
+        </div>
+
+        <div class="w-1/3 flex flex-col bg-slate-900/50 p-6 rounded-xl border border-slate-800">
+            <h2 class="gamer-font text-2xl text-violet-400 uppercase tracking-widest mb-4">Mod Terminal (JSON)</h2>
+            <p class="text-xs text-gray-500 mb-4">Edit the tower's stats below. Changes update the engine instantly.</p>
+            
+            <textarea id="jsonEditor" class="flex-1 rounded p-4 text-sm w-full mb-4"></textarea>
+            
+            <button onclick="applyMods()" class="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold py-3 rounded transition-all uppercase tracking-widest text-sm shadow-lg shadow-violet-500/20">
+                Apply Mod Data
+            </button>
+            <p id="modStatus" class="text-[10px] text-green-400 uppercase text-center mt-2 opacity-0 transition-opacity">Data Overwritten</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const jsonEditor = document.getElementById('jsonEditor');
+        const baseHealthUI = document.getElementById('baseHealth');
+        const creditsUI = document.getElementById('credits');
+        
+        // --- THE DATA (What the user mods) ---
+        let gameData = {
+            "tower": {
+                "range": 120,
+                "damage": 25,
+                "fireRateMs": 500,
+                "laserColor": "#8b5cf6"
+            },
+            "enemy": {
+                "speed": 1.5,
+                "health": 50,
+                "spawnRateMs": 1500
+            }
+        };
+
+        // Populate editor on load
+        jsonEditor.value = JSON.stringify(gameData, null, 4);
+
+        function applyMods() {
+            try {
+                gameData = JSON.parse(jsonEditor.value);
+                document.getElementById('modStatus').style.opacity = 1;
+                setTimeout(() => document.getElementById('modStatus').style.opacity = 0, 2000);
+            } catch (e) {
+                alert("Invalid JSON formatting. Check your brackets and quotes.");
+            }
+        }
+
+        // --- THE ENGINE (How the game works) ---
+        let enemies = [];
+        let particles = [];
+        let lastSpawn = 0;
+        let lastFire = 0;
+        let baseHealth = 100;
+        let credits = 0;
+        let isGameOver = false;
+
+        // Hardcoded path for the prototype
+        const path = [
+            {x: 0, y: 50}, {x: 450, y: 50}, {x: 450, y: 350}, {x: 600, y: 350}
+        ];
+
+        // The single tower placed in the center
+        const tower = { x: 300, y: 200 };
+
+        function drawPath() {
+            ctx.beginPath();
+            ctx.moveTo(path[0].x, path[0].y);
+            for(let i=1; i<path.length; i++) ctx.lineTo(path[i].x, path[i].y);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 40;
+            ctx.stroke();
+            
+            // Draw Base
+            ctx.fillStyle = '#10b981';
+            ctx.fillRect(580, 310, 20, 80);
+        }
+
+        function drawTower() {
+            // Draw Range Radius (Pulled from JSON)
+            ctx.beginPath();
+            ctx.arc(tower.x, tower.y, gameData.tower.range, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(139, 92, 246, 0.05)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(139, 92, 246, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Draw Tower Base
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(tower.x - 15, tower.y - 15, 30, 30);
+            ctx.strokeStyle = gameData.tower.laserColor;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(tower.x - 15, tower.y - 15, 30, 30);
+            
+            // Core
+            ctx.fillStyle = gameData.tower.laserColor;
+            ctx.beginPath(); ctx.arc(tower.x, tower.y, 6, 0, Math.PI*2); ctx.fill();
+        }
+
+        function updateAndDrawEnemies() {
+            const now = Date.now();
+            
+            // Spawner (Pulled from JSON)
+            if (now - lastSpawn > gameData.enemy.spawnRateMs) {
+                enemies.push({ x: path[0].x, y: path[0].y, targetIndex: 1, hp: gameData.enemy.health, maxHp: gameData.enemy.health });
+                lastSpawn = now;
+            }
+
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                let e = enemies[i];
+                let target = path[e.targetIndex];
+                
+                // Movement Math
+                let dx = target.x - e.x;
+                let dy = target.y - e.y;
+                let dist = Math.hypot(dx, dy);
+                
+                if (dist < gameData.enemy.speed) {
+                    e.targetIndex++;
+                    if (e.targetIndex >= path.length) {
+                        baseHealth -= 10; // Hit base
+                        baseHealthUI.innerText = baseHealth;
+                        if(baseHealth <= 0) isGameOver = true;
+                        enemies.splice(i, 1);
+                        continue;
+                    }
+                } else {
+                    e.x += (dx / dist) * gameData.enemy.speed; // Speed from JSON
+                    e.y += (dy / dist) * gameData.enemy.speed;
+                }
+
+                // Draw Enemy
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath(); ctx.arc(e.x, e.y, 10, 0, Math.PI*2); ctx.fill();
+                
+                // Health bar
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(e.x - 10, e.y - 15, 20, 3);
+                ctx.fillStyle = '#22c55e';
+                ctx.fillRect(e.x - 10, e.y - 15, 20 * (e.hp / e.maxHp), 3);
+            }
+        }
+
+        function towerCombat() {
+            const now = Date.now();
+            if (now - lastFire < gameData.tower.fireRateMs) return; // Cooldown from JSON
+
+            for (let i = 0; i < enemies.length; i++) {
+                let e = enemies[i];
+                let dist = Math.hypot(tower.x - e.x, tower.y - e.y);
+                
+                if (dist <= gameData.tower.range) { // Range check from JSON
+                    // Shoot
+                    particles.push({ x1: tower.x, y1: tower.y, x2: e.x, y2: e.y, life: 10, color: gameData.tower.laserColor });
+                    e.hp -= gameData.tower.damage; // Damage from JSON
+                    
+                    if (e.hp <= 0) {
+                        enemies.splice(i, 1);
+                        credits += 15;
+                        creditsUI.innerText = credits;
+                    }
+                    lastFire = now;
+                    break; // One shot per cooldown
+                }
+            }
+        }
+
+        function drawParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                ctx.strokeStyle = p.color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(p.x1, p.y1);
+                ctx.lineTo(p.x2, p.y2);
+                ctx.stroke();
+                p.life--;
+                if(p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function gameLoop() {
+            if(isGameOver) {
+                document.getElementById('gameOver').classList.remove('hidden');
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPath();
+            drawTower();
+            updateAndDrawEnemies();
+            towerCombat();
+            drawParticles();
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Boot Engine
+        gameLoop();
+    </script>
+</body>
+</html>
