@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LVLUP | Orchids vs Hecate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow: hidden; }
+        .gamer-font { font-family: 'Rajdhani', sans-serif; }
+        canvas { background-color: #1e293b; border: 2px solid #4c1d95; border-radius: 8px; cursor: crosshair; }
+        textarea { font-family: monospace; background: #020617; border: 1px solid #475569; color: #a855f7; resize: none; outline: none; }
+        textarea:focus { border-color: #c084fc; }
+        .selected-orchid { border-color: #a855f7 !important; background-color: rgba(168, 85, 247, 0.2); }
+    </style>
+</head>
+<body class="h-screen flex flex-col p-6">
+
+    <header class="mb-4 flex justify-between items-end border-b border-slate-800 pb-4">
+        <div>
+            <h1 class="gamer-font text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-violet-500 uppercase tracking-tighter">Orchids vs Hecate</h1>
+            <p class="text-xs text-gray-500 uppercase tracking-widest font-bold">5-Lane Grid Defense Engine</p>
+        </div>
+        <div class="text-right">
+            <p class="text-sm text-gray-400 uppercase tracking-widest">Mana (Energy): <span id="manaDisplay" class="text-fuchsia-400 font-black text-2xl">50</span></p>
+        </div>
+    </header>
+
+    <div class="flex gap-4 mb-4" id="toolbar">
+        <button onclick="selectOrchid('shooter')" id="btn_shooter" class="selected-orchid border-2 border-slate-700 px-6 py-2 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors">
+            Arcane Orchid <span class="text-fuchsia-400 ml-2">100M</span>
+        </button>
+        <button onclick="selectOrchid('generator')" id="btn_generator" class="border-2 border-slate-700 px-6 py-2 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors">
+            Mana Bloom <span class="text-fuchsia-400 ml-2">50M</span>
+        </button>
+        <button onclick="selectOrchid('wall')" id="btn_wall" class="border-2 border-slate-700 px-6 py-2 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors">
+            Ironbanyan <span class="text-fuchsia-400 ml-2">50M</span>
+        </button>
+    </div>
+
+    <div class="flex-1 flex gap-6">
+        <div class="flex-1 relative">
+            <canvas id="gameCanvas" width="800" height="500"></canvas>
+            
+            <div id="gameOver" class="absolute inset-0 bg-slate-950/90 hidden flex-col items-center justify-center z-10">
+                <h2 class="gamer-font text-6xl text-red-500 uppercase tracking-widest mb-4">Hecate Breached</h2>
+                <button onclick="location.reload()" class="bg-violet-600 hover:bg-violet-500 px-8 py-3 rounded-lg font-bold uppercase text-sm tracking-widest">Restart Protocol</button>
+            </div>
+        </div>
+
+        <div class="w-1/3 flex flex-col bg-slate-900/50 p-6 rounded-xl border border-slate-800">
+            <h2 class="gamer-font text-2xl text-violet-400 uppercase tracking-widest mb-2">Hecate's Grimoire (JSON)</h2>
+            <p class="text-[10px] text-gray-500 mb-4 uppercase tracking-widest">Real-time data mutation</p>
+            
+            <textarea id="jsonEditor" class="flex-1 rounded p-4 text-xs w-full mb-4"></textarea>
+            
+            <button onclick="applyMods()" class="bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 text-white font-bold py-3 rounded-lg transition-all uppercase tracking-widest text-sm">
+                Inject Overrides
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const manaDisplay = document.getElementById('manaDisplay');
+        const jsonEditor = document.getElementById('jsonEditor');
+        
+        // --- DATA ARCHITECTURE (JSON) ---
+        let gameData = {
+            "orchids": {
+                "shooter": { "name": "Arcane Orchid", "cost": 100, "hp": 100, "damage": 20, "fireRateMs": 1500, "color": "#d946ef", "type": "attack" },
+                "generator": { "name": "Mana Bloom", "cost": 50, "hp": 80, "generates": 25, "fireRateMs": 5000, "color": "#fcd34d", "type": "resource" },
+                "wall": { "name": "Ironbanyan", "cost": 50, "hp": 500, "color": "#64748b", "type": "defense" }
+            },
+            "hecate": {
+                "grunt": { "hp": 100, "speed": 0.4, "eatDamage": 10, "eatRateMs": 1000, "color": "#020617", "spawnRateMs": 4000 }
+            }
+        };
+
+        jsonEditor.value = JSON.stringify(gameData, null, 4);
+
+        function applyMods() {
+            try {
+                gameData = JSON.parse(jsonEditor.value);
+            } catch (e) {
+                alert("JSON Syntax Error. Check brackets and quotes.");
+            }
+        }
+
+        // --- ENGINE STATE ---
+        const rows = 5;
+        const cols = 9;
+        const cellSize = 100; // 500px height / 5 rows = 100. 800px width / 9 cols ≈ 88px width.
+        const cellWidth = canvas.width / cols;
+        const cellHeight = canvas.height / rows;
+
+        let mana = 50;
+        let selectedType = 'shooter';
+        let isGameOver = false;
+        let lastSpawn = Date.now();
+
+        // Game Arrays
+        let grid = []; // 2D array to hold Orchids
+        let enemies = [];
+        let projectiles = [];
+        let resources = []; // Floating mana to click
+
+        // Initialize empty grid
+        for (let r = 0; r < rows; r++) {
+            grid[r] = [];
+            for (let c = 0; c < cols; c++) grid[r][c] = null;
+        }
+
+        // UI Logic
+        function selectOrchid(type) {
+            selectedType = type;
+            document.querySelectorAll('#toolbar button').forEach(b => b.classList.remove('selected-orchid'));
+            document.getElementById('btn_' + type).classList.add('selected-orchid');
+        }
+
+        // Interaction Logic
+        canvas.addEventListener('mousedown', (e) => {
+            if (isGameOver) return;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Check for clicking floating resources first
+            for (let i = resources.length - 1; i >= 0; i--) {
+                let res = resources[i];
+                let dist = Math.hypot(mouseX - res.x, mouseY - res.y);
+                if (dist < 20) {
+                    mana += res.amount;
+                    manaDisplay.innerText = mana;
+                    resources.splice(i, 1);
+                    return; // Stop here so we don't place a plant
+                }
+            }
+
+            // Grid Placement
+            const c = Math.floor(mouseX / cellWidth);
+            const r = Math.floor(mouseY / cellHeight);
+
+            if (c >= 0 && c < cols && r >= 0 && r < rows) {
+                if (grid[r][c] === null) {
+                    const orchidData = gameData.orchids[selectedType];
+                    if (mana >= orchidData.cost) {
+                        mana -= orchidData.cost;
+                        manaDisplay.innerText = mana;
+                        
+                        grid[r][c] = {
+                            type: selectedType,
+                            hp: orchidData.hp,
+                            maxHp: orchidData.hp,
+                            lastAction: Date.now(),
+                            x: c * cellWidth + cellWidth / 2,
+                            y: r * cellHeight + cellHeight / 2
+                        };
+                    }
+                }
+            }
+        });
+
+        // --- DRAWING & LOGIC ---
+
+        function drawGrid() {
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for (let r = 0; r <= rows; r++) {
+                ctx.beginPath(); ctx.moveTo(0, r * cellHeight); ctx.lineTo(canvas.width, r * cellHeight); ctx.stroke();
+            }
+            for (let c = 0; c <= cols; c++) {
+                ctx.beginPath(); ctx.moveTo(c * cellWidth, 0); ctx.lineTo(c * cellWidth, canvas.height); ctx.stroke();
+            }
+
+            // Draw alternating lane backgrounds
+            for (let r = 0; r < rows; r++) {
+                if (r % 2 === 0) {
+                    ctx.fillStyle = 'rgba(15, 23, 42, 0.3)';
+                    ctx.fillRect(0, r * cellHeight, canvas.width, cellHeight);
+                }
+            }
+        }
+
+        function updateAndDrawOrchids() {
+            const now = Date.now();
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    let orchid = grid[r][c];
+                    if (!orchid) continue;
+
+                    let data = gameData.orchids[orchid.type];
+
+                    // Draw Orchid
+                    ctx.fillStyle = data.color;
+                    ctx.beginPath();
+                    ctx.arc(orchid.x, orchid.y, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // Logic based on type
+                    if (data.type === 'attack') {
+                        // Check if enemy in lane
+                        let enemyInLane = enemies.some(e => e.row === r && e.x > orchid.x);
+                        if (enemyInLane && now - orchid.lastAction >= data.fireRateMs) {
+                            projectiles.push({ x: orchid.x + 20, y: orchid.y, row: r, damage: data.damage, color: data.color });
+                            orchid.lastAction = now;
+                        }
+                    } else if (data.type === 'resource') {
+                        if (now - orchid.lastAction >= data.fireRateMs) {
+                            resources.push({ 
+                                x: orchid.x + (Math.random() * 20 - 10), 
+                                y: orchid.y + (Math.random() * 20 - 10), 
+                                amount: data.generates, 
+                                life: 10000 
+                            });
+                            orchid.lastAction = now;
+                        }
+                    }
+
+                    // Health Bar
+                    if (orchid.hp < orchid.maxHp) {
+                        ctx.fillStyle = '#ef4444'; ctx.fillRect(orchid.x - 15, orchid.y - 30, 30, 4);
+                        ctx.fillStyle = '#22c55e'; ctx.fillRect(orchid.x - 15, orchid.y - 30, 30 * (orchid.hp / orchid.maxHp), 4);
+                    }
+                }
+            }
+        }
+
+        function updateAndDrawHecate() {
+            const now = Date.now();
+            
+            // Spawn logic
+            if (now - lastSpawn > gameData.hecate.grunt.spawnRateMs) {
+                let randomRow = Math.floor(Math.random() * rows);
+                enemies.push({
+                    row: randomRow,
+                    x: canvas.width + 20,
+                    y: randomRow * cellHeight + cellHeight / 2,
+                    hp: gameData.hecate.grunt.hp,
+                    maxHp: gameData.hecate.grunt.hp,
+                    lastEat: 0
+                });
+                lastSpawn = now;
+            }
+
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                let e = enemies[i];
+                let data = gameData.hecate.grunt;
+                let c = Math.floor(e.x / cellWidth);
+                
+                let eating = false;
+                // Collision with Orchid
+                if (c >= 0 && c < cols && grid[e.row][c]) {
+                    // Stop and eat
+                    eating = true;
+                    if (now - e.lastEat > data.eatRateMs) {
+                        grid[e.row][c].hp -= data.eatDamage;
+                        if (grid[e.row][c].hp <= 0) grid[e.row][c] = null; // Orchid dies
+                        e.lastEat = now;
+                    }
+                }
+
+                if (!eating) e.x -= data.speed;
+
+                // Game Over Condition
+                if (e.x < 0) {
+                    isGameOver = true;
+                }
+
+                // Draw Hecate Forces
+                ctx.fillStyle = data.color;
+                ctx.beginPath(); ctx.arc(e.x, e.y, 25, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 3; ctx.stroke();
+
+                // Draw Eyes
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath(); ctx.arc(e.x - 10, e.y - 5, 4, 0, Math.PI*2); ctx.fill();
+
+                // HP Bar
+                ctx.fillStyle = '#fff'; ctx.fillRect(e.x - 15, e.y - 35, 30, 4);
+                ctx.fillStyle = '#ef4444'; ctx.fillRect(e.x - 15, e.y - 35, 30 * (e.hp / e.maxHp), 4);
+            }
+        }
+
+        function updateAndDrawProjectiles() {
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                let p = projectiles[i];
+                p.x += 5; // Projectile Speed
+
+                // Draw
+                ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI * 2); ctx.fill();
+
+                // Collision with enemies
+                let hit = false;
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    let e = enemies[j];
+                    if (p.row === e.row && p.x > e.x - 25 && p.x < e.x + 25) {
+                        e.hp -= p.damage;
+                        if (e.hp <= 0) enemies.splice(j, 1);
+                        hit = true;
+                        break;
+                    }
+                }
+
+                if (hit || p.x > canvas.width) {
+                    projectiles.splice(i, 1);
+                }
+            }
+        }
+
+        function drawResources() {
+            for (let i = resources.length - 1; i >= 0; i--) {
+                let r = resources[i];
+                ctx.fillStyle = '#fcd34d'; // Sun/Mana color
+                ctx.shadowColor = '#fbbf24';
+                ctx.shadowBlur = 10;
+                ctx.beginPath(); ctx.arc(r.x, r.y, 12, 0, Math.PI * 2); ctx.fill();
+                ctx.shadowBlur = 0; // Reset
+            }
+        }
+
+        function gameLoop() {
+            if (isGameOver) {
+                document.getElementById('gameOver').classList.remove('hidden');
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
+            updateAndDrawOrchids();
+            updateAndDrawHecate();
+            updateAndDrawProjectiles();
+            drawResources();
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Boot
+        gameLoop();
+    </script>
+</body>
+</html>
