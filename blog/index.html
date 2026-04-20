@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LVLUP Blog | Insights into the PH Gaming Economy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; }
+        .gamer-font { font-family: 'Rajdhani', sans-serif; }
+        .blog-card { 
+            background: rgba(30, 41, 59, 0.5); 
+            border: 1px solid #334155; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .blog-card:hover { 
+            border-color: #8b5cf6; 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 30px -10px rgba(139, 92, 246, 0.2);
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12 selection:bg-violet-500 selection:text-white">
+    
+    <nav class="mb-16 flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto gap-6 border-b border-slate-800 pb-6">
+        <a href="../index.html" class="gamer-font text-4xl font-bold text-violet-500 tracking-tighter">LVLUP<span class="text-white">GAMES</span></a>
+        <a href="../index.html" class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition flex items-center gap-2">
+            <span>←</span> Return to Main Hub
+        </a>
+    </nav>
+
+    <main class="max-w-5xl mx-auto">
+        <header class="mb-16 text-center md:text-left">
+            <div class="inline-block bg-violet-500/10 border border-violet-500/20 px-3 py-1 rounded-full mb-4">
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-violet-400">Transmission Log</span>
+            </div>
+            <h1 class="gamer-font text-6xl md:text-8xl font-black uppercase tracking-tighter mb-4 leading-none">The <span class="text-violet-500">Archive.</span></h1>
+            <p class="text-gray-400 text-lg max-w-2xl leading-relaxed">
+                Deep dives into game mechanics, the Philippine esports landscape, and the architectural future of browser-based utilities.
+            </p>
+        </header>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <a href="evolution-of-rng.html" class="blog-card p-8 rounded-[2rem] flex flex-col h-full group block">
+                <div class="mb-6">
+                    <span class="text-violet-400 text-[10px] font-bold uppercase tracking-widest bg-violet-500/10 px-3 py-1 rounded-full">Mechanics</span>
+                </div>
+                <h2 class="gamer-font text-3xl font-bold mb-4 uppercase leading-tight group-hover:text-violet-400 transition-colors">The Mechanics of Chance: RNG Evolution</h2>
+                <p class="text-gray-400 text-sm mb-8 flex-grow leading-relaxed">
+                    If you've spent any time raiding in modern MMOs, you already know the chaos that follows a high-stakes loot drop. Here is the math behind digital fairness...
+                </p>
+                <div class="text-white font-bold text-xs uppercase tracking-widest border-b border-transparent group-hover:border-violet-500 inline-block pb-1 self-start transition-all">
+                    Read Protocol →
+                </div>
+            </a>
+
+            <a href="browser-gaming-resurgence.html" class="blog-card p-8 rounded-[2rem] flex flex-col h-full group block">
+                <div class="mb-6">
+                    <span class="text-cyan-400 text-[10px] font-bold uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full">Industry</span>
+                </div>
+                <h2 class="gamer-font text-3xl font-bold mb-4 uppercase leading-tight group-hover:text-cyan-400 transition-colors">The Post-Flash Era: Browser Games Return</h2>
+                <p class="text-gray-400 text-sm mb-8 flex-grow leading-relaxed">
+                    There was a collective mourning when Adobe Flash was unplugged. But the culture of instant-play gaming is aggressively fighting its way back using HTML5 Canvas...
+                </p>
+                <div class="text-white font-bold text-xs uppercase tracking-widest border-b border-transparent group-hover:border-cyan-500 inline-block pb-1 self-start transition-all">
+                    Read Protocol →
+                </div>
+            </a>
+
+            <a href="tabletop-philippines.html" class="blog-card p-8 rounded-[2rem] flex flex-col h-full group block">
+                <div class="mb-6">
+                    <span class="text-fuchsia-400 text-[10px] font-bold uppercase tracking-widest bg-fuchsia-500/10 px-3 py-1 rounded-full">Community</span>
+                </div>
+                <h2 class="gamer-font text-3xl font-bold mb-4 uppercase leading-tight group-hover:text-fuchsia-400 transition-colors">Analog Chaos: Tabletop in the PH</h2>
+                <p class="text-gray-400 text-sm mb-8 flex-grow leading-relaxed">
+                    Walk into any major mall in Metro Manila or Iloilo City, and you'll find groups furiously rolling polyhedral dice. How digital utilities are saving analog campaigns...
+                </p>
+                <div class="text-white font-bold text-xs uppercase tracking-widest border-b border-transparent group-hover:border-fuchsia-500 inline-block pb-1 self-start transition-all">
+                    Read Protocol →
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <footer class="mt-24 pt-8 border-t border-slate-800 text-center max-w-5xl mx-auto">
+        <p class="text-gray-600 text-[10px] uppercase tracking-[0.3em] font-medium">&copy; 2026 LVLUP Games. Knowledge Base.</p>
+    </footer>
+
+</body>
+</html>
