@@ -3,346 +3,463 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LVLUP | Orchids vs Hecate</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Orchids vs Hecate: Mythos</title>
     <style>
-        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .gamer-font { font-family: 'Rajdhani', sans-serif; }
-        canvas { background-color: #1e293b; border: 2px solid #4c1d95; border-radius: 8px; cursor: crosshair; }
-        textarea { font-family: monospace; background: #020617; border: 1px solid #475569; color: #a855f7; resize: none; outline: none; }
-        textarea:focus { border-color: #c084fc; }
-        .selected-orchid { border-color: #a855f7 !important; background-color: rgba(168, 85, 247, 0.2); }
+        body {
+            margin: 0;
+            background: #111;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            user-select: none;
+        }
+        #game-container {
+            position: relative;
+            margin-top: 20px;
+            box-shadow: 0 0 50px rgba(100,0,150,0.3);
+            border: 4px solid #333;
+        }
+        canvas {
+            background: #2a3328; /* Dark mythic grass */
+            display: block;
+            cursor: crosshair;
+        }
+        #ui-panel {
+            width: 900px;
+            height: 80px;
+            background: #222;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 20px;
+            border-bottom: none;
+        }
+        .slot {
+            width: 80px;
+            height: 70px;
+            background: #444;
+            border: 2px solid #666;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            justify-content: center;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .slot:hover { background: #555; }
+        .slot.active { border-color: #f1c40f; background: #333; }
+        .sun-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f1c40f;
+            min-width: 100px;
+        }
+        #controls { margin-top: 10px; display: flex; gap: 10px; }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #8e44ad;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        button.editor-on { background: #e94560; }
+        #spritesheet-preview {
+            display: none; /* Set to block if you want to see the generated sheet */
+            position: absolute; top: 10px; left: 10px; border: 1px solid red; background: #222;
+        }
     </style>
 </head>
-<body class="h-screen flex flex-col p-6">
+<body>
 
-    <header class="mb-4 flex justify-between items-end border-b border-slate-800 pb-4">
-        <div>
-            <h1 class="gamer-font text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-violet-500 uppercase tracking-tighter">Orchids vs Hecate</h1>
-            <p class="text-xs text-gray-500 uppercase tracking-widest font-bold">5-Lane Grid Defense Engine</p>
+    <div id="ui-panel">
+        <div class="sun-display">☀️ <span id="sun-count">100</span></div>
+        <div class="slot" onclick="selectPlant('golden', 50, this)">
+            <div style="color:#f1c40f; font-weight:bold;">Golden</div>
+            <span>Oncidium (50)</span>
         </div>
-        <div class="text-right">
-            <p class="text-sm text-gray-400 uppercase tracking-widest">Mana (Energy): <span id="manaDisplay" class="text-fuchsia-400 font-black text-2xl">50</span></p>
+        <div class="slot" onclick="selectPlant('slipper', 100, this)">
+            <div style="color:#4ecca3; font-weight:bold;">Slipper</div>
+            <span>Orchid (100)</span>
         </div>
-    </header>
-
-    <div class="flex gap-4 mb-4" id="toolbar">
-        <button onclick="selectOrchid('shooter')" id="btn_shooter" class="selected-orchid border-2 border-slate-700 px-6 py-2 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors">
-            Arcane Orchid <span class="text-fuchsia-400 ml-2">100M</span>
-        </button>
-        <button onclick="selectOrchid('generator')" id="btn_generator" class="border-2 border-slate-700 px-6 py-2 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors">
-            Mana Bloom <span class="text-fuchsia-400 ml-2">50M</span>
-        </button>
-        <button onclick="selectOrchid('wall')" id="btn_wall" class="border-2 border-slate-700 px-6 py-2 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors">
-            Ironbanyan <span class="text-fuchsia-400 ml-2">50M</span>
-        </button>
+        <div class="slot" onclick="selectPlant('bastion', 75, this)">
+            <div style="color:#c39bd3; font-weight:bold;">Dendrobium</div>
+            <span>Bastion (75)</span>
+        </div>
+        <div style="margin-left: auto; color: #aaa;">Orchids vs Hecate: Mythos</div>
     </div>
 
-    <div class="flex-1 flex gap-6">
-        <div class="flex-1 relative">
-            <canvas id="gameCanvas" width="800" height="500"></canvas>
-            
-            <div id="gameOver" class="absolute inset-0 bg-slate-950/90 hidden flex-col items-center justify-center z-10">
-                <h2 class="gamer-font text-6xl text-red-500 uppercase tracking-widest mb-4">Hecate Breached</h2>
-                <button onclick="location.reload()" class="bg-violet-600 hover:bg-violet-500 px-8 py-3 rounded-lg font-bold uppercase text-sm tracking-widest">Restart Protocol</button>
-            </div>
-        </div>
-
-        <div class="w-1/3 flex flex-col bg-slate-900/50 p-6 rounded-xl border border-slate-800">
-            <h2 class="gamer-font text-2xl text-violet-400 uppercase tracking-widest mb-2">Hecate's Grimoire (JSON)</h2>
-            <p class="text-[10px] text-gray-500 mb-4 uppercase tracking-widest">Real-time data mutation</p>
-            
-            <textarea id="jsonEditor" class="flex-1 rounded p-4 text-xs w-full mb-4"></textarea>
-            
-            <button onclick="applyMods()" class="bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 text-white font-bold py-3 rounded-lg transition-all uppercase tracking-widest text-sm">
-                Inject Overrides
-            </button>
-        </div>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
     </div>
 
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const manaDisplay = document.getElementById('manaDisplay');
-        const jsonEditor = document.getElementById('jsonEditor');
+    <div id="controls">
+        <button id="editorBtn" onclick="toggleEditor()">Editor Mode: OFF</button>
+        <span id="status" style="line-height: 40px;">Defend against Hecate's Minions!</span>
+    </div>
+
+    <canvas id="spritesheet-preview" width="500" height="300"></canvas>
+
+<script>
+/** @type {HTMLCanvasElement} */
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const sunDisplay = document.getElementById('sun-count');
+
+// --- 1. PROCEDURAL SPRITESHEET GENERATION ---
+// Instead of an external image, we draw the sprites perfectly to an offscreen canvas
+const spriteCanvas = document.getElementById('spritesheet-preview');
+const sCtx = spriteCanvas.getContext('2d');
+
+function buildSpriteSheet() {
+    // 0,0: Golden Oncidium (Sun producer)
+    sCtx.save(); sCtx.translate(50, 50);
+    sCtx.fillStyle = '#f1c40f';
+    for(let i=0; i<5; i++) { sCtx.rotate((Math.PI*2)/5); sCtx.beginPath(); sCtx.ellipse(0, 15, 8, 20, 0, 0, Math.PI*2); sCtx.fill(); sCtx.stroke(); }
+    sCtx.fillStyle = '#d35400'; sCtx.beginPath(); sCtx.arc(0, 0, 10, 0, Math.PI*2); sCtx.fill();
+    sCtx.restore();
+
+    // 100,0: Slipper Orchid (Shooter)
+    sCtx.save(); sCtx.translate(150, 50);
+    sCtx.fillStyle = '#27ae60'; sCtx.beginPath(); sCtx.ellipse(-10, 0, 10, 30, 0.5, 0, Math.PI*2); sCtx.fill(); // Leaf
+    sCtx.fillStyle = '#8e44ad'; sCtx.beginPath(); sCtx.ellipse(10, 5, 20, 15, 0, 0, Math.PI*2); sCtx.fill(); // Pouch
+    sCtx.fillStyle = '#a569bd'; sCtx.beginPath(); sCtx.ellipse(5, -10, 15, 25, -0.3, 0, Math.PI*2); sCtx.fill(); // Top petal
+    sCtx.fillStyle = '#2ecc71'; sCtx.beginPath(); sCtx.arc(20, 5, 5, 0, Math.PI*2); sCtx.fill(); // mouth
+    sCtx.restore();
+
+    // 200,0: Dendrobium Bastion (Blocker)
+    sCtx.save(); sCtx.translate(250, 50);
+    sCtx.fillStyle = '#2ecc71'; sCtx.fillRect(-15, 0, 30, 40); // thick stem
+    sCtx.fillStyle = '#c39bd3'; 
+    sCtx.beginPath(); sCtx.arc(-15, -10, 15, 0, Math.PI*2); sCtx.fill(); sCtx.stroke();
+    sCtx.beginPath(); sCtx.arc(15, -5, 15, 0, Math.PI*2); sCtx.fill(); sCtx.stroke();
+    sCtx.beginPath(); sCtx.arc(0, -25, 20, 0, Math.PI*2); sCtx.fill(); sCtx.stroke();
+    sCtx.restore();
+
+    // 300,0: Sun Drop
+    sCtx.save(); sCtx.translate(350, 50);
+    sCtx.fillStyle = 'rgba(241, 196, 15, 0.8)';
+    sCtx.beginPath(); sCtx.arc(0, 0, 20, 0, Math.PI*2); sCtx.fill();
+    sCtx.fillStyle = '#fff'; sCtx.beginPath(); sCtx.arc(-5, -5, 5, 0, Math.PI*2); sCtx.fill();
+    sCtx.restore();
+
+    // 400,0: Seed Projectile
+    sCtx.save(); sCtx.translate(450, 50);
+    sCtx.fillStyle = '#873600';
+    sCtx.beginPath(); sCtx.ellipse(0, 0, 12, 8, 0, 0, Math.PI*2); sCtx.fill(); sCtx.stroke();
+    sCtx.restore();
+
+    // 0,100 & 100,100: Harpy (2 Frames)
+    for(let f=0; f<2; f++) {
+        sCtx.save(); sCtx.translate(50 + (f*100), 150);
+        sCtx.fillStyle = '#2c3e50'; // Dark body
+        sCtx.beginPath(); sCtx.ellipse(0, 0, 20, 30, 0.2, 0, Math.PI*2); sCtx.fill(); // Body
+        sCtx.beginPath(); sCtx.arc(-15, -20, 15, 0, Math.PI*2); sCtx.fill(); // Head
+        sCtx.fillStyle = '#e74c3c'; sCtx.beginPath(); sCtx.arc(-22, -22, 3, 0, Math.PI*2); sCtx.fill(); // Evil eye
+        sCtx.fillStyle = '#f39c12'; sCtx.beginPath(); sCtx.moveTo(-30, -15); sCtx.lineTo(-15, -10); sCtx.lineTo(-15, -20); sCtx.fill(); // Beak
+        // Wings flapping
+        sCtx.fillStyle = '#34495e';
+        if (f === 0) { sCtx.beginPath(); sCtx.ellipse(15, -10, 30, 10, -0.5, 0, Math.PI*2); sCtx.fill(); }
+        else { sCtx.beginPath(); sCtx.ellipse(15, 10, 30, 10, 0.5, 0, Math.PI*2); sCtx.fill(); }
+        sCtx.restore();
+    }
+
+    // 0,200 & 100,200: Minotaur (2 Frames)
+    for(let f=0; f<2; f++) {
+        sCtx.save(); sCtx.translate(50 + (f*100), 250);
+        sCtx.fillStyle = '#17202a'; // Huge dark body
+        sCtx.beginPath(); sCtx.roundRect(-30, -20, 60, 60, 10); sCtx.fill(); // Torso
+        sCtx.beginPath(); sCtx.arc(-20, -30, 20, 0, Math.PI*2); sCtx.fill(); // Head
+        sCtx.fillStyle = '#ecf0f1'; // Horns
+        sCtx.beginPath(); sCtx.moveTo(-20, -50); sCtx.quadraticCurveTo(-40, -60, -40, -30); sCtx.stroke();
+        sCtx.beginPath(); sCtx.moveTo(-10, -45); sCtx.quadraticCurveTo(10, -60, 10, -30); sCtx.stroke();
+        sCtx.fillStyle = '#e74c3c'; sCtx.beginPath(); sCtx.arc(-30, -30, 4, 0, Math.PI*2); sCtx.fill(); // Eye
+        // Legs walking
+        sCtx.fillStyle = '#17202a';
+        if (f === 0) { sCtx.fillRect(-20, 40, 15, 20); sCtx.fillRect(10, 30, 15, 20); }
+        else { sCtx.fillRect(-20, 30, 15, 20); sCtx.fillRect(10, 40, 15, 20); }
+        sCtx.restore();
+    }
+}
+buildSpriteSheet();
+
+// --- 2. RECORDED SPRITE COORDINATES ---
+// We map exactly to the 100x100 grid we just drew above.
+const SPRITE_MAP = {
+    'golden':  { sx: 0,   sy: 0,   sw: 100, sh: 100 }, 
+    'slipper': { sx: 100, sy: 0,   sw: 100, sh: 100 }, 
+    'bastion': { sx: 200, sy: 0,   sw: 100, sh: 100 }, 
+    'sun':     { sx: 300, sy: 0,   sw: 100, sh: 100 },  
+    'seed':    { sx: 400, sy: 0,   sw: 100, sh: 100 },  
+    'harpy': [
+        { sx: 0,   sy: 100, sw: 100, sh: 100 }, // Frame 1 (Wings Up)
+        { sx: 100, sy: 100, sw: 100, sh: 100 }  // Frame 2 (Wings Down)
+    ],
+    'minotaur': [
+        { sx: 0,   sy: 200, sw: 100, sh: 100 }, // Frame 1 (Step Left)
+        { sx: 100, sy: 200, sw: 100, sh: 100 }  // Frame 2 (Step Right)
+    ]
+};
+
+// Game Config
+const GRID_ROWS = 5;
+const GRID_COLS = 9;
+const CELL_SIZE = 100;
+canvas.width = GRID_COLS * CELL_SIZE;
+canvas.height = GRID_ROWS * CELL_SIZE;
+
+// Game State
+let sunPoints = 100;
+let selectedPlant = null;
+let plantCost = 0;
+let isEditorMode = false;
+let gameFrame = 0;
+let gameOver = false;
+
+const orchids = [];
+const minions = [];
+const projectiles = [];
+const suns = [];
+const grid = [];
+
+// Helper function to extract and draw from our procedural spritesheet
+function drawSprite(spriteKey, x, y, width, height, frameIndex = 0) {
+    let spriteData = SPRITE_MAP[spriteKey];
+    if (Array.isArray(spriteData)) {
+        spriteData = spriteData[frameIndex % spriteData.length];
+    }
+    // Draw directly from the hidden canvas
+    ctx.drawImage(
+        spriteCanvas, 
+        spriteData.sx, spriteData.sy, spriteData.sw, spriteData.sh, 
+        x, y, width, height                                         
+    );
+}
+
+// --- Classes ---
+
+class Cell {
+    constructor(x, y) {
+        this.x = x; this.y = y;
+        this.width = CELL_SIZE; this.height = CELL_SIZE;
+    }
+    draw() {
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
+    }
+}
+
+class Orchid {
+    constructor(x, y, type) {
+        this.x = x; this.y = y;
+        this.width = CELL_SIZE; this.height = CELL_SIZE;
+        this.type = type;
+        this.health = type === 'bastion' ? 800 : 100;
+        this.timer = 0;
+    }
+    draw() {
+        const yOffset = Math.sin(gameFrame * 0.05 + this.x) * 3; // Breathing animation
+        drawSprite(this.type, this.x, this.y + yOffset, this.width, this.height);
         
-        // --- DATA ARCHITECTURE (JSON) ---
-        let gameData = {
-            "orchids": {
-                "shooter": { "name": "Arcane Orchid", "cost": 100, "hp": 100, "damage": 20, "fireRateMs": 1500, "color": "#d946ef", "type": "attack" },
-                "generator": { "name": "Mana Bloom", "cost": 50, "hp": 80, "generates": 25, "fireRateMs": 5000, "color": "#fcd34d", "type": "resource" },
-                "wall": { "name": "Ironbanyan", "cost": 50, "hp": 500, "color": "#64748b", "type": "defense" }
-            },
-            "hecate": {
-                "grunt": { "hp": 100, "speed": 0.4, "eatDamage": 10, "eatRateMs": 1000, "color": "#020617", "spawnRateMs": 4000 }
-            }
-        };
-
-        jsonEditor.value = JSON.stringify(gameData, null, 4);
-
-        function applyMods() {
-            try {
-                gameData = JSON.parse(jsonEditor.value);
-            } catch (e) {
-                alert("JSON Syntax Error. Check brackets and quotes.");
+        // Health bar
+        if (this.health < (this.type === 'bastion' ? 800 : 100)) {
+            ctx.fillStyle = 'red'; ctx.fillRect(this.x + 20, this.y + 10, 60, 5);
+            ctx.fillStyle = 'green'; ctx.fillRect(this.x + 20, this.y + 10, 60 * (this.health / (this.type === 'bastion' ? 800 : 100)), 5);
+        }
+    }
+    update() {
+        if (this.type === 'golden') {
+            this.timer++;
+            if (this.timer % 400 === 0) suns.push(new Sun(this.x + 25, this.y, false));
+        }
+        if (this.type === 'slipper') {
+            this.timer++;
+            if (this.timer % 100 === 0 && this.isEnemyInRow()) {
+                projectiles.push(new Projectile(this.x + 60, this.y + 30));
             }
         }
+    }
+    isEnemyInRow() {
+        return minions.some(m => Math.abs(m.y - this.y) < 10);
+    }
+}
 
-        // --- ENGINE STATE ---
-        const rows = 5;
-        const cols = 9;
-        const cellSize = 100; // 500px height / 5 rows = 100. 800px width / 9 cols ≈ 88px width.
-        const cellWidth = canvas.width / cols;
-        const cellHeight = canvas.height / rows;
-
-        let mana = 50;
-        let selectedType = 'shooter';
-        let isGameOver = false;
-        let lastSpawn = Date.now();
-
-        // Game Arrays
-        let grid = []; // 2D array to hold Orchids
-        let enemies = [];
-        let projectiles = [];
-        let resources = []; // Floating mana to click
-
-        // Initialize empty grid
-        for (let r = 0; r < rows; r++) {
-            grid[r] = [];
-            for (let c = 0; c < cols; c++) grid[r][c] = null;
-        }
-
-        // UI Logic
-        function selectOrchid(type) {
-            selectedType = type;
-            document.querySelectorAll('#toolbar button').forEach(b => b.classList.remove('selected-orchid'));
-            document.getElementById('btn_' + type).classList.add('selected-orchid');
-        }
-
-        // Interaction Logic
-        canvas.addEventListener('mousedown', (e) => {
-            if (isGameOver) return;
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-
-            // Check for clicking floating resources first
-            for (let i = resources.length - 1; i >= 0; i--) {
-                let res = resources[i];
-                let dist = Math.hypot(mouseX - res.x, mouseY - res.y);
-                if (dist < 20) {
-                    mana += res.amount;
-                    manaDisplay.innerText = mana;
-                    resources.splice(i, 1);
-                    return; // Stop here so we don't place a plant
-                }
-            }
-
-            // Grid Placement
-            const c = Math.floor(mouseX / cellWidth);
-            const r = Math.floor(mouseY / cellHeight);
-
-            if (c >= 0 && c < cols && r >= 0 && r < rows) {
-                if (grid[r][c] === null) {
-                    const orchidData = gameData.orchids[selectedType];
-                    if (mana >= orchidData.cost) {
-                        mana -= orchidData.cost;
-                        manaDisplay.innerText = mana;
-                        
-                        grid[r][c] = {
-                            type: selectedType,
-                            hp: orchidData.hp,
-                            maxHp: orchidData.hp,
-                            lastAction: Date.now(),
-                            x: c * cellWidth + cellWidth / 2,
-                            y: r * cellHeight + cellHeight / 2
-                        };
-                    }
-                }
-            }
-        });
-
-        // --- DRAWING & LOGIC ---
-
-        function drawGrid() {
-            ctx.strokeStyle = '#1e293b';
-            ctx.lineWidth = 1;
-            for (let r = 0; r <= rows; r++) {
-                ctx.beginPath(); ctx.moveTo(0, r * cellHeight); ctx.lineTo(canvas.width, r * cellHeight); ctx.stroke();
-            }
-            for (let c = 0; c <= cols; c++) {
-                ctx.beginPath(); ctx.moveTo(c * cellWidth, 0); ctx.lineTo(c * cellWidth, canvas.height); ctx.stroke();
-            }
-
-            // Draw alternating lane backgrounds
-            for (let r = 0; r < rows; r++) {
-                if (r % 2 === 0) {
-                    ctx.fillStyle = 'rgba(15, 23, 42, 0.3)';
-                    ctx.fillRect(0, r * cellHeight, canvas.width, cellHeight);
-                }
+class Minion {
+    constructor(y, isLarge = false) {
+        this.x = canvas.width;
+        this.y = y;
+        this.type = isLarge ? 'minotaur' : 'harpy';
+        this.width = CELL_SIZE;
+        this.height = CELL_SIZE;
+        this.speed = isLarge ? Math.random() * 0.1 + 0.2 : Math.random() * 0.2 + 0.5;
+        this.health = isLarge ? 300 : 100;
+        this.maxHealth = this.health;
+        this.attackPower = isLarge ? 1 : 0.5;
+        this.isAttacking = false;
+    }
+    draw() {
+        const frameIndex = Math.floor(gameFrame / 15); 
+        drawSprite(this.type, this.x, this.y, this.width, this.height, frameIndex);
+        
+        // Health bar
+        ctx.fillStyle = 'red'; ctx.fillRect(this.x + 20, this.y + 10, 60, 5);
+        ctx.fillStyle = 'orange'; ctx.fillRect(this.x + 20, this.y + 10, 60 * (this.health / this.maxHealth), 5);
+    }
+    update() {
+        this.isAttacking = false;
+        for (let i = 0; i < orchids.length; i++) {
+            if (this.x < orchids[i].x + CELL_SIZE - 20 && this.x + 50 > orchids[i].x && this.y === orchids[i].y) {
+                this.isAttacking = true;
+                orchids[i].health -= this.attackPower;
+                if (orchids[i].health <= 0) orchids.splice(i, 1);
             }
         }
+        if (!this.isAttacking) this.x -= this.speed;
+        if (this.x < -50) gameOver = true;
+    }
+}
 
-        function updateAndDrawOrchids() {
-            const now = Date.now();
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols; c++) {
-                    let orchid = grid[r][c];
-                    if (!orchid) continue;
+class Projectile {
+    constructor(x, y) {
+        this.x = x; this.y = y;
+        this.width = 40; this.height = 40;
+        this.speed = 5; this.power = 25;
+    }
+    update() { this.x += this.speed; }
+    draw() { drawSprite('seed', this.x, this.y, this.width, this.height); }
+}
 
-                    let data = gameData.orchids[orchid.type];
+class Sun {
+    constructor(x, y, isFalling = true) {
+        this.x = x; this.y = y;
+        this.targetY = isFalling ? Math.random() * (canvas.height - 100) + 50 : y + 20;
+        this.isFalling = isFalling;
+        this.width = 60; this.height = 60;
+        this.timer = 0;
+    }
+    draw() { drawSprite('sun', this.x, this.y, this.width, this.height); }
+    update() {
+        if (this.y < this.targetY) this.y += 1;
+        this.timer++;
+    }
+}
 
-                    // Draw Orchid
-                    ctx.fillStyle = data.color;
-                    ctx.beginPath();
-                    ctx.arc(orchid.x, orchid.y, 20, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.strokeStyle = '#fff';
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
+// --- Logic ---
+for (let y = 0; y < canvas.height; y += CELL_SIZE) {
+    for (let x = 0; x < canvas.width; x += CELL_SIZE) grid.push(new Cell(x, y));
+}
 
-                    // Logic based on type
-                    if (data.type === 'attack') {
-                        // Check if enemy in lane
-                        let enemyInLane = enemies.some(e => e.row === r && e.x > orchid.x);
-                        if (enemyInLane && now - orchid.lastAction >= data.fireRateMs) {
-                            projectiles.push({ x: orchid.x + 20, y: orchid.y, row: r, damage: data.damage, color: data.color });
-                            orchid.lastAction = now;
-                        }
-                    } else if (data.type === 'resource') {
-                        if (now - orchid.lastAction >= data.fireRateMs) {
-                            resources.push({ 
-                                x: orchid.x + (Math.random() * 20 - 10), 
-                                y: orchid.y + (Math.random() * 20 - 10), 
-                                amount: data.generates, 
-                                life: 10000 
-                            });
-                            orchid.lastAction = now;
-                        }
-                    }
-
-                    // Health Bar
-                    if (orchid.hp < orchid.maxHp) {
-                        ctx.fillStyle = '#ef4444'; ctx.fillRect(orchid.x - 15, orchid.y - 30, 30, 4);
-                        ctx.fillStyle = '#22c55e'; ctx.fillRect(orchid.x - 15, orchid.y - 30, 30 * (orchid.hp / orchid.maxHp), 4);
-                    }
-                }
+function handleLogic() {
+    // Projectiles
+    for (let i = 0; i < projectiles.length; i++) {
+        projectiles[i].update(); projectiles[i].draw();
+        for (let j = 0; j < minions.length; j++) {
+            if (projectiles[i] && projectiles[i].x > minions[j].x + 20 && projectiles[i].x < minions[j].x + 80 && 
+                projectiles[i].y > minions[j].y && projectiles[i].y < minions[j].y + 100) {
+                minions[j].health -= projectiles[i].power;
+                projectiles.splice(i, 1); i--;
+                if (minions[j].health <= 0) minions.splice(j, 1);
+                break;
             }
         }
+        if (projectiles[i] && projectiles[i].x > canvas.width) { projectiles.splice(i, 1); i--; }
+    }
 
-        function updateAndDrawHecate() {
-            const now = Date.now();
-            
-            // Spawn logic
-            if (now - lastSpawn > gameData.hecate.grunt.spawnRateMs) {
-                let randomRow = Math.floor(Math.random() * rows);
-                enemies.push({
-                    row: randomRow,
-                    x: canvas.width + 20,
-                    y: randomRow * cellHeight + cellHeight / 2,
-                    hp: gameData.hecate.grunt.hp,
-                    maxHp: gameData.hecate.grunt.hp,
-                    lastEat: 0
-                });
-                lastSpawn = now;
-            }
+    // Suns
+    if (gameFrame % 300 === 0) suns.push(new Sun(Math.random() * (canvas.width - 50), -50));
+    for (let i = 0; i < suns.length; i++) {
+        suns[i].update(); suns[i].draw();
+        if (suns[i].timer > 800) { suns.splice(i, 1); i--; }
+    }
 
-            for (let i = enemies.length - 1; i >= 0; i--) {
-                let e = enemies[i];
-                let data = gameData.hecate.grunt;
-                let c = Math.floor(e.x / cellWidth);
-                
-                let eating = false;
-                // Collision with Orchid
-                if (c >= 0 && c < cols && grid[e.row][c]) {
-                    // Stop and eat
-                    eating = true;
-                    if (now - e.lastEat > data.eatRateMs) {
-                        grid[e.row][c].hp -= data.eatDamage;
-                        if (grid[e.row][c].hp <= 0) grid[e.row][c] = null; // Orchid dies
-                        e.lastEat = now;
-                    }
-                }
+    // Minions
+    for (let i = 0; i < minions.length; i++) { minions[i].update(); minions[i].draw(); }
+    if (gameFrame % 400 === 0 && !isEditorMode && gameFrame > 200) {
+        let verticalPos = Math.floor(Math.random() * GRID_ROWS) * CELL_SIZE;
+        let isLarge = Math.random() > 0.8;
+        minions.push(new Minion(verticalPos, isLarge));
+    }
+}
 
-                if (!eating) e.x -= data.speed;
+// --- Interactions ---
+function selectPlant(type, cost, el) {
+    document.querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
+    selectedPlant = type; plantCost = cost;
+    el.classList.add('active');
+}
 
-                // Game Over Condition
-                if (e.x < 0) {
-                    isGameOver = true;
-                }
+function toggleEditor() {
+    isEditorMode = !isEditorMode;
+    const btn = document.getElementById('editorBtn');
+    btn.innerText = isEditorMode ? "Editor Mode: ON" : "Editor Mode: OFF";
+    btn.className = isEditorMode ? "editor-on" : "";
+    document.getElementById('status').innerText = isEditorMode ? "L-Click: Harpy | R-Click: Minotaur" : "Defend against Hecate's Minions!";
+}
 
-                // Draw Hecate Forces
-                ctx.fillStyle = data.color;
-                ctx.beginPath(); ctx.arc(e.x, e.y, 25, 0, Math.PI * 2); ctx.fill();
-                ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 3; ctx.stroke();
+canvas.addEventListener('contextmenu', (e) => {
+    e.preventDefault(); 
+    if (isEditorMode) {
+        const rect = canvas.getBoundingClientRect();
+        const gridY = Math.floor((e.clientY - rect.top) / CELL_SIZE) * CELL_SIZE;
+        minions.push(new Minion(gridY, true)); 
+    }
+});
 
-                // Draw Eyes
-                ctx.fillStyle = '#ef4444';
-                ctx.beginPath(); ctx.arc(e.x - 10, e.y - 5, 4, 0, Math.PI*2); ctx.fill();
+canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left; const mouseY = e.clientY - rect.top;
 
-                // HP Bar
-                ctx.fillStyle = '#fff'; ctx.fillRect(e.x - 15, e.y - 35, 30, 4);
-                ctx.fillStyle = '#ef4444'; ctx.fillRect(e.x - 15, e.y - 35, 30 * (e.hp / e.maxHp), 4);
-            }
+    // Collect Sun
+    for (let i = 0; i < suns.length; i++) {
+        if (Math.hypot(mouseX - (suns[i].x + 30), mouseY - (suns[i].y + 30)) < 40) {
+            sunPoints += 25; sunDisplay.innerText = sunPoints;
+            suns.splice(i, 1); return;
         }
+    }
 
-        function updateAndDrawProjectiles() {
-            for (let i = projectiles.length - 1; i >= 0; i--) {
-                let p = projectiles[i];
-                p.x += 5; // Projectile Speed
+    const gridX = Math.floor(mouseX / CELL_SIZE) * CELL_SIZE;
+    const gridY = Math.floor(mouseY / CELL_SIZE) * CELL_SIZE;
 
-                // Draw
-                ctx.fillStyle = p.color;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI * 2); ctx.fill();
+    if (isEditorMode) {
+        minions.push(new Minion(gridY, false)); 
+    } else {
+        if (!selectedPlant || sunPoints < plantCost) return;
+        if (orchids.some(p => p.x === gridX && p.y === gridY)) return; // Cell occupied
 
-                // Collision with enemies
-                let hit = false;
-                for (let j = enemies.length - 1; j >= 0; j--) {
-                    let e = enemies[j];
-                    if (p.row === e.row && p.x > e.x - 25 && p.x < e.x + 25) {
-                        e.hp -= p.damage;
-                        if (e.hp <= 0) enemies.splice(j, 1);
-                        hit = true;
-                        break;
-                    }
-                }
+        orchids.push(new Orchid(gridX, gridY, selectedPlant));
+        sunPoints -= plantCost; sunDisplay.innerText = sunPoints;
+        
+        // Deselect after planting for smooth gameplay
+        selectedPlant = null;
+        document.querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
+    }
+});
 
-                if (hit || p.x > canvas.width) {
-                    projectiles.splice(i, 1);
-                }
-            }
-        }
+// --- Main Loop ---
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    grid.forEach(cell => cell.draw());
+    orchids.forEach(o => { o.update(); o.draw(); });
+    handleLogic();
 
-        function drawResources() {
-            for (let i = resources.length - 1; i >= 0; i--) {
-                let r = resources[i];
-                ctx.fillStyle = '#fcd34d'; // Sun/Mana color
-                ctx.shadowColor = '#fbbf24';
-                ctx.shadowBlur = 10;
-                ctx.beginPath(); ctx.arc(r.x, r.y, 12, 0, Math.PI * 2); ctx.fill();
-                ctx.shadowBlur = 0; // Reset
-            }
-        }
-
-        function gameLoop() {
-            if (isGameOver) {
-                document.getElementById('gameOver').classList.remove('hidden');
-                return;
-            }
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawGrid();
-            updateAndDrawOrchids();
-            updateAndDrawHecate();
-            updateAndDrawProjectiles();
-            drawResources();
-            
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Boot
-        gameLoop();
-    </script>
+    gameFrame++;
+    if (!gameOver) {
+        requestAnimationFrame(animate);
+    } else {
+        ctx.fillStyle = 'rgba(0,0,0,0.8)'; ctx.fillRect(0,0, canvas.width, canvas.height);
+        ctx.fillStyle = '#e94560'; ctx.font = 'bold 48px Arial'; ctx.textAlign = 'center';
+        ctx.fillText('HECATE HAS CONQUERED', canvas.width/2, canvas.height/2);
+        ctx.fillStyle = 'white'; ctx.font = '24px Arial';
+        ctx.fillText('Refresh to try again', canvas.width/2, canvas.height/2 + 50);
+    }
+}
+animate();
+</script>
 </body>
 </html>
