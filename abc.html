@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alphabet Adventure</title>
+<style>
+  :root {
+    --blue: #4285f4;
+    --green: #34a853;
+    --yellow: #fbbc05;
+    --red: #ea4335;
+    --bg-light: #f8f9fa;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #e9ecef;
+  }
+
+  .game-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    width: 850px;
+  }
+
+  header {
+    margin-bottom: 25px;
+  }
+
+  h1 {
+    margin: 0 0 10px 0;
+    font-size: 26px;
+    letter-spacing: 1px;
+  }
+
+  #instruction {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  main {
+    display: flex;
+    gap: 30px;
+  }
+
+  /* Board Styles */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px;
+    flex-grow: 1;
+  }
+
+  .board-slot {
+    aspect-ratio: 1;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: bold;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: background-color 0.2s ease;
+  }
+
+  /* Sidebar Styles */
+  .sidebar {
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-left: 2px solid #eee;
+    padding-left: 20px;
+  }
+
+  .scroll-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #eaf3ff;
+    border: 3px solid #b3d4fc;
+    border-radius: 40px;
+    padding: 15px 10px;
+    width: 80px;
+    position: relative;
+  }
+
+  .scroll-arrow {
+    font-size: 30px;
+    color: #4285f4;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+
+  .draggable-letter {
+    width: 70px;
+    height: 70px;
+    background: white;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    font-size: 44px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    z-index: 2;
+  }
+
+  .draggable-letter:active {
+    cursor: grabbing;
+  }
+
+  .timer-section {
+    margin-top: auto;
+    text-align: center;
+  }
+
+  .timer-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  #timer {
+    font-size: 48px;
+    color: var(--blue);
+    font-weight: bold;
+    margin-top: 5px;
+  }
+
+  /* Color Classes for Letters */
+  .color-0 { color: var(--blue); }
+  .color-1 { color: var(--green); }
+  .color-2 { color: var(--yellow); }
+  .color-3 { color: var(--red); }
+
+</style>
+</head>
+<body>
+
+<div class="game-container">
+  <header>
+    <h1>ALPHABET ADVENTURE: DRAG & DROP GAME.</h1>
+    <p id="instruction">FIND AND DRAG THE LETTER 'A' TO THE BOARD!</p>
+  </header>
+  <main>
+    <!-- Left Side: A-Z Grid -->
+    <div class="board" id="board"></div>
+
+    <!-- Right Side: Randomizer & Timer -->
+    <aside class="sidebar">
+      <div class="scroll-area">
+        <div class="scroll-arrow">⌃</div>
+        <div class="draggable-letter" draggable="true" id="current-letter">A</div>
+        <div class="scroll-arrow">⌄</div>
+      </div>
+      
+      <div class="timer-section">
+        <div class="timer-label">TIMER:</div>
+        <div id="timer">00:15</div>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const board = document.getElementById("board");
+  const currentLetterEl = document.getElementById("current-letter");
+  const instructionEl = document.getElementById("instruction");
+  const timerEl = document.getElementById("timer");
+  
+  let currentTarget = "";
+  let timerInterval;
+  let timeLeft = 15;
+
+  // 1. Generate the Alphabet Board
+  letters.forEach((letter, index) => {
+    const slot = document.createElement("div");
+    slot.classList.add("board-slot");
+    slot.classList.add(`color-${index % 4}`);
+    slot.textContent = letter;
+    slot.dataset.letter = letter; // Store letter for matching logic
+
+    // Drag-and-drop listeners for the board slots
+    slot.addEventListener("dragover", (e) => e.preventDefault()); // Allows dropping
+    slot.addEventListener("drop", handleDrop);
+
+    board.appendChild(slot);
+  });
+
+  // 2. Setup Dragging for the Target Letter
+  currentLetterEl.addEventListener("dragstart", (e) => {
+    e.dataTransfer.setData("text/plain", currentTarget);
+  });
+
+  // 3. Core Game Logic
+  function startRound() {
+    clearInterval(timerInterval);
+    timeLeft = 15;
+    updateTimerDisplay();
+
+    // Pick a random letter
+    currentTarget = letters[Math.floor(Math.random() * letters.length)];
+    currentLetterEl.textContent = currentTarget;
+    currentLetterEl.className = `draggable-letter color-${Math.floor(Math.random() * 4)}`;
+    
+    instructionEl.innerHTML = `FIND AND DRAG THE LETTER '<strong>${currentTarget}</strong>' TO THE BOARD!`;
+
+    // Start Timer
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimerDisplay();
+      
+      if (timeLeft <= 0) {
+        startRound(); // Time's up! Move to the next letter.
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    timerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    const draggedLetter = e.dataTransfer.getData("text/plain");
+    const targetSlotLetter = e.target.dataset.letter;
+
+    // Check if the dragged letter matches the drop slot
+    if (draggedLetter === targetSlotLetter) {
+      // Success Match! Flash green, then next round
+      e.target.style.backgroundColor = "#d4edda"; 
+      setTimeout(() => {
+        e.target.style.backgroundColor = "white";
+        startRound();
+      }, 300);
+    } else {
+      // Wrong Match! Flash red briefly
+      e.target.style.backgroundColor = "#f8d7da";
+      setTimeout(() => {
+        e.target.style.backgroundColor = "white";
+      }, 300);
+    }
+  }
+
+  // Initialize the first round on page load
+  startRound();
+
+</script>
+</body>
+</html>
