@@ -72,7 +72,13 @@
     font-weight: bold;
     background: white;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    transition: background-color 0.2s ease;
+    transition: transform 0.1s ease, background-color 0.2s ease;
+    cursor: grab; /* Indicates these are now draggable */
+  }
+
+  .board-slot:active {
+    cursor: grabbing;
+    transform: scale(0.95);
   }
 
   /* Sidebar Styles */
@@ -104,24 +110,21 @@
     margin: 10px 0;
   }
 
-  .draggable-letter {
+  /* This is now the drop zone */
+  .target-dropzone {
     width: 70px;
     height: 70px;
     background: white;
-    border: 2px solid #ccc;
+    border: 2px dashed #4285f4; /* Dashed border to indicate drop zone */
     border-radius: 12px;
     font-size: 44px;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: grab;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     z-index: 2;
-  }
-
-  .draggable-letter:active {
-    cursor: grabbing;
+    transition: background-color 0.3s;
   }
 
   .timer-section {
@@ -155,17 +158,17 @@
 <div class="game-container">
   <header>
     <h1>ALPHABET ADVENTURE: DRAG & DROP GAME.</h1>
-    <p id="instruction">FIND AND DRAG THE LETTER 'A' TO THE BOARD!</p>
+    <p id="instruction">FIND AND DRAG THE LETTER 'A' TO THE RIGHT!</p>
   </header>
   <main>
-    <!-- Left Side: A-Z Grid -->
+    <!-- Left Side: A-Z Grid (Now Draggable) -->
     <div class="board" id="board"></div>
 
-    <!-- Right Side: Randomizer & Timer -->
+    <!-- Right Side: Target Dropzone & Timer -->
     <aside class="sidebar">
       <div class="scroll-area">
         <div class="scroll-arrow">⌃</div>
-        <div class="draggable-letter" draggable="true" id="current-letter">A</div>
+        <div class="target-dropzone" id="current-letter">A</div>
         <div class="scroll-arrow">⌄</div>
       </div>
       
@@ -178,9 +181,9 @@
 </div>
 
 <script>
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const baseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const board = document.getElementById("board");
-  const currentLetterEl = document.getElementById("current-letter");
+  const targetDropzoneEl = document.getElementById("current-letter");
   const instructionEl = document.getElementById("instruction");
   const timerEl = document.getElementById("timer");
   
@@ -188,38 +191,57 @@
   let timerInterval;
   let timeLeft = 15;
 
-  // 1. Generate the Alphabet Board
-  letters.forEach((letter, index) => {
-    const slot = document.createElement("div");
-    slot.classList.add("board-slot");
-    slot.classList.add(`color-${index % 4}`);
-    slot.textContent = letter;
-    slot.dataset.letter = letter; // Store letter for matching logic
+  // 1. Array Shuffler (Fisher-Yates algorithm)
+  function shuffleArray(array) {
+    let shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
 
-    // Drag-and-drop listeners for the board slots
-    slot.addEventListener("dragover", (e) => e.preventDefault()); // Allows dropping
-    slot.addEventListener("drop", handleDrop);
+  // 2. Render the Jumbled Board
+  function renderBoard() {
+    board.innerHTML = ""; // Clear current board
+    const jumbledLetters = shuffleArray(baseLetters);
 
-    board.appendChild(slot);
-  });
+    jumbledLetters.forEach((letter, index) => {
+      const slot = document.createElement("div");
+      slot.classList.add("board-slot");
+      slot.classList.add(`color-${index % 4}`); // Keep colors distributed
+      slot.textContent = letter;
+      slot.dataset.letter = letter;
+      slot.draggable = true; // Make left-side letters draggable
 
-  // 2. Setup Dragging for the Target Letter
-  currentLetterEl.addEventListener("dragstart", (e) => {
-    e.dataTransfer.setData("text/plain", currentTarget);
-  });
+      // Add dragstart listener to left-side letters
+      slot.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/plain", letter);
+      });
 
-  // 3. Core Game Logic
+      board.appendChild(slot);
+    });
+  }
+
+  // 3. Setup Dropzone (Right Side)
+  targetDropzoneEl.addEventListener("dragover", (e) => e.preventDefault()); // Allow drop
+  targetDropzoneEl.addEventListener("drop", handleDrop);
+
+  // 4. Core Game Logic
   function startRound() {
     clearInterval(timerInterval);
     timeLeft = 15;
     updateTimerDisplay();
 
-    // Pick a random letter
-    currentTarget = letters[Math.floor(Math.random() * letters.length)];
-    currentLetterEl.textContent = currentTarget;
-    currentLetterEl.className = `draggable-letter color-${Math.floor(Math.random() * 4)}`;
+    // Pick a random letter for the right-side target
+    currentTarget = baseLetters[Math.floor(Math.random() * baseLetters.length)];
+    targetDropzoneEl.textContent = currentTarget;
+    targetDropzoneEl.className = `target-dropzone color-${Math.floor(Math.random() * 4)}`;
     
-    instructionEl.innerHTML = `FIND AND DRAG THE LETTER '<strong>${currentTarget}</strong>' TO THE BOARD!`;
+    instructionEl.innerHTML = `FIND AND DRAG '<strong>${currentTarget}</strong>' FROM THE BOARD TO THE BOX!`;
+
+    // Jumble the board every new round
+    renderBoard();
 
     // Start Timer
     timerInterval = setInterval(() => {
@@ -227,7 +249,7 @@
       updateTimerDisplay();
       
       if (timeLeft <= 0) {
-        startRound(); // Time's up! Move to the next letter.
+        startRound(); // Time's up! Re-roll and re-jumble.
       }
     }, 1000);
   }
@@ -239,21 +261,20 @@
   function handleDrop(e) {
     e.preventDefault();
     const draggedLetter = e.dataTransfer.getData("text/plain");
-    const targetSlotLetter = e.target.dataset.letter;
 
-    // Check if the dragged letter matches the drop slot
-    if (draggedLetter === targetSlotLetter) {
+    // Check if dragged board letter matches the right-side target
+    if (draggedLetter === currentTarget) {
       // Success Match! Flash green, then next round
-      e.target.style.backgroundColor = "#d4edda"; 
+      targetDropzoneEl.style.backgroundColor = "#d4edda"; 
       setTimeout(() => {
-        e.target.style.backgroundColor = "white";
-        startRound();
+        targetDropzoneEl.style.backgroundColor = "white";
+        startRound(); // Triggers the next letter AND jumbles the board
       }, 300);
     } else {
       // Wrong Match! Flash red briefly
-      e.target.style.backgroundColor = "#f8d7da";
+      targetDropzoneEl.style.backgroundColor = "#f8d7da";
       setTimeout(() => {
-        e.target.style.backgroundColor = "white";
+        targetDropzoneEl.style.backgroundColor = "white";
       }, 300);
     }
   }
