@@ -5,77 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LVLUP | Incoming Quest...</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230f172a%22/><text x=%2250%%22 y=%2260%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22'Rajdhani', sans-serif%22 font-weight=%22700%22 font-size=%2255%22 fill=%22%238b5cf6%22>lvl</text><path d=%22M30 15 L50 35 L70 15 L60 15 L60 5 L40 5 L40 15 Z%22 fill=%22%2322d3ee%22/></svg>">
-
+    <meta name="title" content="LVLUP Games | Interactive Quest Engine">
+    <meta name="description" content="A precision-built interactive tool for gaming community engagement and social experiments.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; margin: 0; }
-        .gamer-font { font-family: 'Rajdhani', sans-serif; }
-        .glass-panel { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(139, 92, 246, 0.3); backdrop-filter: blur(12px); }
-        .text-glow { text-shadow: 0 0 20px rgba(139, 92, 246, 0.5); }
-        
-        #noBtn {
-            position: absolute;
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .gamer-font {
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .btn-evasive {
             transition: all 0.15s ease-out;
+            position: fixed !important;
             z-index: 100;
         }
-        #yesBtn { position: relative; z-index: 50; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            backdrop-filter: blur(12px);
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+        #yesBtn {
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 50;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4 relative">
-
     <div id="questCard" class="glass-panel p-8 md:p-12 rounded-[2.5rem] max-w-lg w-full text-center shadow-2xl relative z-10">
-        <h3 id="recipientDisplay" class="text-violet-400 uppercase tracking-[0.3em] font-semibold text-sm mb-2">New Objective</h3>
-        <h1 class="text-3xl md:text-4xl gamer-font font-bold mb-6 text-glow">Do you accept this quest?</h1>
+        <h3 id="recipientDisplay" class="text-violet-400 uppercase tracking-[0.3em] font-bold text-sm mb-2 gamer-font">Incoming Quest</h3>
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-6 gamer-font text-glow">Will you be my Player 2?</h1>
+        <p class="text-slate-300 mb-8 text-sm md:text-base">Accept this quest to unlock cooperative gameplay, shared achievements, and epic adventures together.</p>
         
-        <div class="flex items-center justify-center gap-4 mt-8 relative">
-            <button id="yesBtn" class="bg-violet-600 hover:bg-violet-500 text-white font-semibold px-8 py-3 rounded-xl transition-all shadow-lg shadow-violet-600/30">
-                Yes
+        <div id="buttonGroup" class="flex flex-col sm:flex-row items-center justify-center gap-4 relative min-h-[60px]">
+            <button id="yesBtn" class="w-full sm:w-auto px-8 py-3 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-xl shadow-lg shadow-violet-600/30 gamer-font text-lg cursor-pointer">
+                ACCEPT QUEST
             </button>
-            <button id="noBtn" class="bg-slate-700 hover:bg-slate-600 text-slate-300 font-semibold px-8 py-3 rounded-xl">
-                No
+            <button id="noBtn" class="btn-evasive px-8 py-3 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-xl shadow-lg gamer-font text-lg cursor-pointer">
+                DECLINE
             </button>
         </div>
     </div>
 
+    <!-- Success Screen -->
+    <div id="successScreen" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-md flex flex-col items-center justify-center hidden z-50 text-center p-4">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-cyan-400 gamer-font text-glow mb-4">QUEST ACCEPTED!</h1>
+        <p class="text-xl text-slate-300 gamer-font">Co-op mode unlocked. Let the adventure begin! 🚀</p>
+    </div>
+
     <script>
-        const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
         const questCard = document.getElementById('questCard');
+        const successScreen = document.getElementById('successScreen');
+
+        // Position the No button neatly next to the Yes button initially on load
+        window.addEventListener('load', () => {
+            const yesRect = yesBtn.getBoundingClientRect();
+            noBtn.style.left = (yesRect.right + 16) + 'px';
+            noBtn.style.top = yesRect.top + 'px';
+        });
 
         function moveNoButton() {
-            // Get viewport dimensions
-            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
-            
-            // Random coordinates within safe window bounds
-            let randomX = Math.floor(Math.random() * (maxX - 20)) + 10;
-            let randomY = Math.floor(Math.random() * (maxY - 20)) + 10;
-
-            // Ensure it doesn't overlap the central quest card roughly
+            const btnRect = noBtn.getBoundingClientRect();
             const cardRect = questCard.getBoundingClientRect();
             
-            // Simple check to push it away if it lands too close to the center card
-            if (
-                randomX > cardRect.left - 50 && randomX < cardRect.right + 50 &&
-                randomY > cardRect.top - 50 && randomY < cardRect.bottom + 50
-            ) {
-                randomX = Math.min(maxX, cardRect.right + 40);
-                randomY = Math.min(maxY, cardRect.bottom + 40);
-            }
+            const padding = 20;
+            const maxX = window.innerWidth - btnRect.width - padding;
+            const maxY = window.innerHeight - btnRect.height - padding;
+            const minX = padding;
+            const minY = padding;
 
-            noBtn.style.left = `${randomX}px`;
-            noBtn.style.top = `${randomY}px`;
+            let randomX, randomY;
+            let attempts = 0;
+
+            // Generate coordinates until it doesn't overlap the main card/Yes button area
+            do {
+                randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+                randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+                attempts++;
+
+                const collidesWithCard = (
+                    randomX < cardRect.right &&
+                    randomX + btnRect.width > cardRect.left &&
+                    randomY < cardRect.bottom &&
+                    randomY + btnRect.height > cardRect.top
+                );
+
+                if (!collidesWithCard || attempts > 25) {
+                    break;
+                }
+            } while (attempts < 25);
+
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
         }
 
-        // Trigger movement on mouseenter or touchstart
+        // Trigger evasion on hover, click, or touch
         noBtn.addEventListener('mouseover', moveNoButton);
-        noBtn.addEventListener('touchstart', moveNoButton);
-        
-        // Initial placement or safety check
-        window.addEventListener('load', () => {
-            // Switch to absolute positioning relative to body cleanly
-            noBtn.style.position = 'absolute';
+        noBtn.addEventListener('click', moveNoButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        yesBtn.addEventListener('click', () => {
+            successScreen.classList.remove('hidden');
         });
     </script>
 </body>
